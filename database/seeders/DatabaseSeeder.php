@@ -12,11 +12,23 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Disable FK checks, truncate all tables, re-enable FK checks
+        Schema::disableForeignKeyConstraints();
+        DB::table('kost_facility')->truncate();
+        NearbyPlace::truncate();
+        KostImage::truncate();
+        Order::truncate();
+        Kost::truncate();
+        Facility::truncate();
+        City::truncate();
+        User::truncate();
+        Schema::enableForeignKeyConstraints();
         // ── Admin User ──
         User::create([
             'name' => 'Admin Mawkost',
