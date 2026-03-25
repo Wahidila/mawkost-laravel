@@ -205,6 +205,35 @@
                         </div>
                     </div>
 
+                    <!-- CONTACT INFO SECTION -->
+                    @if($isUnlocked)
+                    <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 20px; border-radius: var(--radius-sm); margin-bottom: 24px;">
+                        <h4 style="color: #166534; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 16px; margin-top: 0;">
+                            <i class="fa-solid fa-unlock-keyhole"></i> Info Kontak Terbuka
+                        </h4>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <strong style="display: block; font-size: 13px; color: #166534; opacity: 0.9; margin-bottom: 4px;">Alamat Lengkap:</strong>
+                            <p style="margin:0; color: #15803D; font-size: 14px; line-height: 1.5;">{{ $kost->address ?? '-' }}</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <strong style="display: block; font-size: 13px; color: #166534; opacity: 0.9; margin-bottom: 6px;">Kontak Pemilik (Bpk/Ibu {{ $kost->owner_name ?? 'Kost' }}):</strong>
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $kost->owner_contact)) }}" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; color: #16A34A; font-weight: 600; text-decoration: none; padding: 10px 14px; background: white; border-radius: 8px; border: 1px solid #BBF7D0; font-size: 14px; transition: all 0.2s;" onmouseover="this.style.background='#DCFCE7'" onmouseout="this.style.background='white'">
+                                <i class="fab fa-whatsapp" style="font-size: 18px;"></i> {{ $kost->owner_contact ?? '-' }}
+                            </a>
+                        </div>
+                        
+                        @if($kost->maps_link)
+                        <div>
+                            <strong style="display: block; font-size: 13px; color: #166534; opacity: 0.9; margin-bottom: 4px;">Google Maps:</strong>
+                            <a href="{{ $kost->maps_link }}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; color: #2563EB; text-decoration: none; font-size: 14px; font-weight: 500;">
+                                <i class="fa-solid fa-map-location-dot"></i> Buka Titik Lokasi
+                            </a>
+                        </div>
+                        @endif
+                    </div>
+                    @else
                     <!-- THE BLUR SECTION (PAY TO UNLOCK) -->
                     <div class="blur-section">
                         <div class="blur-content">
@@ -240,6 +269,7 @@
                         </div>
                     </div>
                     <!-- END BLUR SECTION -->
+                    @endif
 
                 </div>
             </div>

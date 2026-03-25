@@ -62,7 +62,15 @@ class KostController extends Controller
             ->take(3)
             ->get();
 
-        return view('kost.show', compact('kost', 'otherKosts'));
+        $isUnlocked = false;
+        if (auth()->check()) {
+            $isUnlocked = auth()->user()->orders()
+                ->where('kost_id', $kost->id)
+                ->where('status', 'paid')
+                ->exists();
+        }
+
+        return view('kost.show', compact('kost', 'otherKosts', 'isUnlocked'));
     }
 
     public function searchByCode(Request $request)
