@@ -1,0 +1,117 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Mail\WelcomeUserMail;
+use App\Models\Kost;
+use App\Models\Order;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+
+class CheckoutController extends Controller
+{
+    public function show($kostSlug)
+    {
+        $kost = Kost::where('slug', $kostSlug)->firstOrFail();
+        return view('checkout.show', compact('kost'));
+    }
+
+    public function process(Request $request, $kostSlug)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'whatsapp' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
+            'payment' => 'required|in:qris,gopay,va',
+        ]);
+
+        $kost = Kost::where('slug', $kostSlug)->firstOrFail();
+
+        // Auto-register or find existing user
+        $isNewUser = false;
+        $plainPassword = null;
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            // Generate a strong random password
+            $plainPassword = $this->generateStrongPassword();
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'whatsapp' => $request->whatsapp,
+                'password' => Hash::make($plainPassword),
+                'role' => 'user',
+            ]);
+            $isNewUser = true;
+        }
+
+        $order = Order::create([
+            'invoice_no' => Order::generateInvoiceNo(),
+            'kost_id' => $kost->id,
+            'user_id' => $user->id,
+            'customer_name' => $request->name,
+            'customer_whatsapp' => $request->whatsapp,
+            'customer_email' => $request->email,
+            'amount' => $kost->unlock_price,
+            'payment_method' => $request->payment,
+            'status' => 'paid', // Simulasi langsung lunas
+            'paid_at' => now(),
+        ]);
+
+        // Send welcome email with credentials (only for new users)
+        if ($isNewUser && $plainPassword) {
+            try {
+                Mail::to($user->email)->send(new WelcomeUserMail($user, $plainPassword, $order));
+            }
+            catch (\Exception $e) {
+                // Log error but don't block the checkout flow
+                \Illuminate\Support\Facades\Log::error('Failed to send welcome email: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->route('checkout.success', ['invoiceNo' => $order->invoice_no])
+            ->with('is_new_user', $isNewUser);
+    }
+
+    public function callback(Request $request)
+    {
+        // Placeholder webhook untuk integrasi payment gateway nanti
+        return response()->json(['status' => 'ok']);
+    }
+
+    public function success($invoiceNo)
+    {
+        $order = Order::with('kost')->where('invoice_no', $invoiceNo)->firstOrFail();
+        return view('checkout.success', compact('order'));
+    }
+
+    /**
+     * Generate a strong password with uppercase, lowercase, numbers, and symbols.
+     */
+    private function generateStrongPassword(int $length = 12): string
+    {
+        $upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $lower = 'abcdefghjkmnpqrstuvwxyz';
+        $numbers = '23456789';
+        $symbols = '!@#$%&*';
+
+        // Ensure at least one of each type
+        $password = $upper[random_int(0, strlen($upper) - 1)]
+            . $lower[random_int(0, strlen($lower) - 1)]
+            . $numbers[random_int(0, strlen($numbers) - 1)]
+            . $symbols[random_int(0, strlen($symbols) - 1)];
+
+        // Fill the rest randomly
+        $all = $upper . $lower . $numbers . $symbols;
+        for ($i = 4; $i < $length; $i++) {
+            $password .= $all[random_int(0, strlen($all) - 1)];
+        }
+
+        // Shuffle the password characters
+        return str_shuffle($password);
+    }
+}

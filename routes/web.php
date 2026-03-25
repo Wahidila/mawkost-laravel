@@ -1,0 +1,59 @@
+<?php
+
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KostController;
+use App\Http\Controllers\PageController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\KostController as AdminKostController;
+use App\Http\Controllers\Admin\CityController as AdminCityController;
+use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\User\UserDashboardController;
+
+// Public Pages
+Route::get('/', [HomeController::class , 'index'])->name('home');
+Route::get('/cari-kost', [KostController::class , 'search'])->name('kost.search');
+Route::post('/kost/cari-kode', [KostController::class , 'searchByCode'])->name('kost.searchByCode');
+Route::get('/kost/{citySlug}', [KostController::class , 'byCity'])->name('kost.byCity');
+Route::get('/kost/{citySlug}/{slug}', [KostController::class , 'show'])->name('kost.show');
+
+// Checkout
+Route::get('/checkout/{kostSlug}', [CheckoutController::class , 'show'])->name('checkout.show');
+Route::post('/checkout/{kostSlug}', [CheckoutController::class , 'process'])->name('checkout.process');
+Route::post('/payment/callback', [CheckoutController::class , 'callback'])->name('payment.callback');
+Route::get('/success/{invoiceNo}', [CheckoutController::class , 'success'])->name('checkout.success');
+
+// Static Pages & Forms
+Route::get('/kontak', [ContactController::class , 'index'])->name('contact.index');
+Route::post('/kontak', [ContactController::class , 'store'])->name('contact.store');
+Route::get('/tentang', [PageController::class , 'tentang'])->name('tentang');
+
+// Auth Routes
+Route::get('/login', [LoginController::class , 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class , 'login']);
+Route::post('/logout', [LoginController::class , 'logout'])->name('logout');
+
+// User Dashboard
+Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], function () {
+    Route::get('/dashboard', [UserDashboardController::class , 'index'])->name('dashboard');
+    Route::get('/orders', [UserDashboardController::class , 'orders'])->name('orders');
+    Route::get('/orders/{id}', [UserDashboardController::class , 'showOrder'])->name('orders.show');
+});
+
+// Admin Panel
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'admin.'], function () {
+    Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
+    Route::resource('kosts', AdminKostController::class);
+    Route::resource('cities', AdminCityController::class);
+    Route::resource('facilities', AdminFacilityController::class);
+    Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
+    Route::resource('contacts', AdminContactController::class)->only(['index', 'show']);
+    Route::resource('users', AdminUserController::class);
+    Route::post('users/{user}/send-credentials', [AdminUserController::class , 'sendCredentials'])->name('users.sendCredentials');
+});
