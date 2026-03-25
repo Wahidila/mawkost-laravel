@@ -28,9 +28,15 @@
                 </div>
                 <div class="info-row">
                     <span class="label">Status Email:</span>
+                    @if(session('email_error'))
+                    <span style="color: #ef4444; font-weight: 600; display:flex; align-items:center; gap:4px;">
+                        <i class="fa-solid fa-xmark"></i> Gagal
+                    </span>
+                    @else
                     <span style="color: var(--success); font-weight: 600; display:flex; align-items:center; gap:4px;">
                         <i class="fa-solid fa-check"></i> Terkirim
                     </span>
+                    @endif
                 </div>
                 <div class="info-row">
                     <span class="label">Item:</span>
@@ -41,6 +47,16 @@
                     <span style="font-family: monospace;">{{ $order->invoice_no }}</span>
                 </div>
             </div>
+
+            @if(session('email_error'))
+            <div class="success-info" style="margin-top: 16px; background-color: #fef2f2; border: 1px solid #fecaca;">
+                <h4 style="color: #b91c1c;"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> Gagal Mengirim Email</h4>
+                <p style="font-size: 0.85rem; color: #7f1d1d; margin-bottom: 0;">
+                    Pesan Error: <code>{{ session('email_error') }}</code><br><br>
+                    Tenang saja, <strong>pembayaran Anda tetap berhasil tercatat</strong> dan Anda bisa melihat detail info kost di kotak info bawah ini atau lewat Dashboard.
+                </p>
+            </div>
+            @endif
 
             <!-- Account Info for New Users -->
             @if(session('is_new_user'))
@@ -60,7 +76,7 @@
             <div class="success-info" style="margin-top: 16px; background-color: var(--surface);">
                 <h4>Info Kontak & Alamat (Unlocked)</h4>
                 <p style="margin-bottom: 8px;"><strong>Nama Pemilik:</strong> {{ $order->kost->owner_name ?? 'Bapak/Ibu Kost' }}</p>
-                <p style="margin-bottom: 8px;"><strong>WhatsApp:</strong> <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact)) }}" target="_blank" style="color: var(--cta); text-decoration: none; font-weight: 600;">{{ $order->kost->owner_contact ?? '+62 812-XXXX-XXXX' }} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 12px; margin-left:4px;"></i></a></p>
+                <p style="margin-bottom: 8px;"><strong>WhatsApp:</strong> <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact ?? '')) }}" target="_blank" style="color: var(--cta); text-decoration: none; font-weight: 600;">{{ $order->kost->owner_contact ?? '-' }} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 12px; margin-left:4px;"></i></a></p>
                 <p style="margin-bottom: 8px;"><strong>Alamat Pas:</strong> {{ $order->kost->address ?? 'Jl. Placeholder No XXX' }}</p>
                 @if($order->kost->maps_link)
                 <p style="margin-bottom: 0;"><strong>Link Maps:</strong> <a href="{{ $order->kost->maps_link }}" target="_blank" style="color: var(--cta); text-decoration: none;">Buka di Google Maps</a></p>

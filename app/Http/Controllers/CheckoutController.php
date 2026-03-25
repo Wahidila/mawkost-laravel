@@ -81,6 +81,7 @@ class CheckoutController extends Controller
         ]);
 
         // Send emails
+        $emailError = null;
         try {
             if ($isNewUser && $plainPassword) {
                 // Send welcome email with credentials
@@ -93,11 +94,15 @@ class CheckoutController extends Controller
         }
         catch (\Exception $e) {
             // Log error but don't block the checkout flow
-            \Illuminate\Support\Facades\Log::error('Failed to send emails: ' . $e->getMessage());
+            $emailError = $e->getMessage();
+            \Illuminate\Support\Facades\Log::error('Failed to send emails: ' . $emailError);
         }
 
         return redirect()->route('checkout.success', ['invoiceNo' => $order->invoice_no])
-            ->with('is_new_user', $isNewUser);
+            ->with([
+            'is_new_user' => $isNewUser,
+            'email_error' => $emailError
+        ]);
     }
 
     public function callback(Request $request)
