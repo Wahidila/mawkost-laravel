@@ -21,7 +21,7 @@
             <div class="flex flex-col sm:flex-row items-center gap-4 mb-6 pb-6 border-b">
                 <div class="relative group">
                     @if($user->avatar)
-                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="Avatar" class="w-24 h-24 rounded-full object-cover border-4 border-blue-100 shadow-md">
+                        <img src="{{ asset($user->avatar) }}" alt="Avatar" class="w-24 h-24 rounded-full object-cover border-4 border-blue-100 shadow-md">
                     @else
                         <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&size=96&background=3B82F6&color=fff&font-size=0.4" alt="Avatar" class="w-24 h-24 rounded-full border-4 border-blue-100 shadow-md">
                     @endif

@@ -113,7 +113,7 @@
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <span class="text-sm text-gray-500 hidden sm:inline">Selamat datang,</span>
                     <span class="font-bold text-gray-700 text-sm sm:text-base truncate max-w-[100px] sm:max-w-none">{{ auth()->user()->name }}</span>
-                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3B82F6&color=fff' }}" alt="Avatar" class="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-2 border-blue-100 shadow-sm object-cover">
+                    <img src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3B82F6&color=fff' }}" alt="Avatar" class="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-2 border-blue-100 shadow-sm object-cover">
                 </div>
             </header>
 

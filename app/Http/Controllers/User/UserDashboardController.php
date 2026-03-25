@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 
 class UserDashboardController extends Controller
@@ -52,13 +52,16 @@ class UserDashboardController extends Controller
 
         $data = $request->only('name', 'email', 'whatsapp');
 
-        // Handle avatar upload
+        // Handle avatar upload (direct to public/avatars, no symlink needed)
         if ($request->hasFile('avatar')) {
             // Delete old avatar if exists
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
+            if ($user->avatar && File::exists(public_path($user->avatar))) {
+                File::delete(public_path($user->avatar));
             }
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $file = $request->file('avatar');
+            $filename = 'avatar-' . $user->id . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('avatars'), $filename);
+            $data['avatar'] = 'avatars/' . $filename;
         }
 
         $user->update($data);
@@ -88,8 +91,8 @@ class UserDashboardController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-            Storage::disk('public')->delete($user->avatar);
+        if ($user->avatar && File::exists(public_path($user->avatar))) {
+            File::delete(public_path($user->avatar));
         }
 
         $user->update(['avatar' => null]);
