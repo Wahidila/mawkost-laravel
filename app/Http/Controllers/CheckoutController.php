@@ -80,15 +80,20 @@ class CheckoutController extends Controller
             'paid_at' => now(),
         ]);
 
-        // Send welcome email with credentials (only for new users)
-        if ($isNewUser && $plainPassword) {
-            try {
+        // Send emails
+        try {
+            if ($isNewUser && $plainPassword) {
+                // Send welcome email with credentials
                 Mail::to($user->email)->send(new WelcomeUserMail($user, $plainPassword, $order));
             }
-            catch (\Exception $e) {
-                // Log error but don't block the checkout flow
-                \Illuminate\Support\Facades\Log::error('Failed to send welcome email: ' . $e->getMessage());
+            else {
+                // Send standard unlocked notification for existing users
+                Mail::to($user->email)->send(new \App\Mail\KostUnlockedMail($user, $order));
             }
+        }
+        catch (\Exception $e) {
+            // Log error but don't block the checkout flow
+            \Illuminate\Support\Facades\Log::error('Failed to send emails: ' . $e->getMessage());
         }
 
         return redirect()->route('checkout.success', ['invoiceNo' => $order->invoice_no])

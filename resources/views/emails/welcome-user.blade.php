@@ -54,6 +54,19 @@
                 </table>
             </div>
 
+            <!-- Unlocked Contact Info -->
+            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px;margin-bottom:24px;">
+                <h3 style="color:#166534;margin:0 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:0.05em;">🔓 Info Kontak Kost (Unlocked)</h3>
+                <div style="font-size:13px;color:#374151;line-height:1.6;">
+                    <p style="margin:0 0 8px;"><strong>📱 Nama Pemilik:</strong><br>{{ $order->kost->owner_name ?? 'Bapak/Ibu Kost' }}</p>
+                    <p style="margin:0 0 8px;"><strong>📞 WhatsApp Pemilik:</strong><br><a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact)) }}" style="color:#16a34a;font-weight:600;text-decoration:none;">{{ $order->kost->owner_contact ?? '-' }}</a></p>
+                    <p style="margin:0 0 8px;"><strong>📍 Alamat Lengkap:</strong><br>{{ $order->kost->address ?? '-' }}</p>
+                    @if($order->kost->maps_link)
+                    <p style="margin:0;"><strong>🗺️ Google Maps:</strong><br><a href="{{ $order->kost->maps_link }}" style="color:#2563eb;text-decoration:none;">Buka Titik Lokasi di Maps</a></p>
+                    @endif
+                </div>
+            </div>
+
             <!-- CTA -->
             <div style="text-align:center;margin:28px 0 16px;">
                 <a href="{{ url('/login') }}" style="display:inline-block;background:#1E40AF;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;">
