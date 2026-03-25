@@ -19,13 +19,26 @@
             }
         }
     </script>
+    <style>
+        /* Mobile sidebar overlay */
+        .sidebar-overlay { display: none; }
+        .sidebar-overlay.active { display: block; }
+    </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 antialiased overflow-x-hidden">
     <div class="flex h-screen overflow-y-hidden">
-        <!-- Sidebar -->
-        <aside class="flex flex-col w-64 bg-white shadow-xl border-r border-gray-100">
-            <div class="flex items-center justify-center p-6 border-b border-gray-100">
+
+        {{-- Mobile overlay --}}
+        <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-40 lg:hidden" onclick="toggleSidebar()"></div>
+
+        {{-- Sidebar --}}
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col w-64 bg-white shadow-xl border-r border-gray-100 transform -translate-x-full transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0">
+            <div class="flex items-center justify-between p-6 border-b border-gray-100">
                 <a href="{{ route('user.dashboard') }}" class="text-2xl font-bold text-primary">maw<span class="text-blue-400">.kost</span></a>
+                {{-- Close button (mobile only) --}}
+                <button onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
             </div>
 
             <div class="overflow-y-auto overflow-x-hidden flex-grow">
@@ -67,7 +80,7 @@
                 </ul>
             </div>
 
-            <!-- Logout -->
+            {{-- Logout --}}
             <div class="p-4 border-t border-gray-100">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -78,22 +91,26 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
-        <main class="flex-1 flex flex-col h-screen overflow-hidden">
-            <!-- Topbar -->
-            <header class="bg-white shadow-sm pr-6 pl-4 py-4 flex justify-between items-center z-10 sticky top-0 border-b border-gray-100">
-                <div class="flex items-center">
+        {{-- Main Content --}}
+        <main class="flex-1 flex flex-col h-screen overflow-hidden w-full">
+            {{-- Topbar --}}
+            <header class="bg-white shadow-sm px-4 lg:px-6 py-4 flex justify-between items-center z-10 sticky top-0 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    {{-- Hamburger button (mobile only) --}}
+                    <button onclick="toggleSidebar()" class="lg:hidden text-gray-600 hover:text-blue-600 p-1">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
                     <h2 class="text-lg font-semibold text-gray-800">@yield('header', 'Dashboard')</h2>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-500">Selamat datang,</span>
-                    <span class="font-bold text-gray-700">{{ auth()->user()->name }}</span>
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=3B82F6&color=fff" alt="Avatar" class="h-9 w-9 rounded-full border-2 border-blue-100 shadow-sm">
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <span class="text-sm text-gray-500 hidden sm:inline">Selamat datang,</span>
+                    <span class="font-bold text-gray-700 text-sm sm:text-base truncate max-w-[100px] sm:max-w-none">{{ auth()->user()->name }}</span>
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=3B82F6&color=fff" alt="Avatar" class="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-2 border-blue-100 shadow-sm">
                 </div>
             </header>
 
-            <!-- Scrollable Content -->
-            <div class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+            {{-- Scrollable Content --}}
+            <div class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 sm:p-6">
                 @if (session('success'))
                     <div class="mb-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded" role="alert">
                         <p>{{ session('success') }}</p>
@@ -104,5 +121,14 @@
             </div>
         </main>
     </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

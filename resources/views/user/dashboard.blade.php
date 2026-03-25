@@ -6,13 +6,13 @@
 @section('content')
 <!-- Greeting -->
 <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-800">Halo, {{ $user->name }}! 👋</h1>
-    <p class="text-gray-500 mt-1">Berikut ringkasan akun dan kost yang sudah Anda unlock.</p>
+    <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Halo, {{ $user->name }}! 👋</h1>
+    <p class="text-gray-500 mt-1 text-sm sm:text-base">Berikut ringkasan akun dan kost yang sudah Anda unlock.</p>
 </div>
 
 <!-- Stats -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
         <div class="flex items-center">
             <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
                 <i class="fas fa-key fa-lg"></i>
@@ -24,19 +24,19 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
         <div class="flex items-center">
             <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
                 <i class="fas fa-wallet fa-lg"></i>
             </div>
             <div>
                 <p class="text-sm text-gray-500 font-medium">Total Pengeluaran</p>
-                <p class="text-2xl font-bold text-gray-800">Rp {{ number_format($totalSpent, 0, ',', '.') }}</p>
+                <p class="text-xl sm:text-2xl font-bold text-gray-800">Rp {{ number_format($totalSpent, 0, ',', '.') }}</p>
             </div>
         </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 sm:col-span-2 md:col-span-1">
         <div class="flex items-center">
             <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
                 <i class="fas fa-user-check fa-lg"></i>
@@ -50,9 +50,9 @@
 </div>
 
 <!-- Recent Unlocked Kost -->
-<div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+<div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
     <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-semibold text-gray-800">Kost yang Sudah Di-unlock</h3>
+        <h3 class="text-base sm:text-lg font-semibold text-gray-800">Kost yang Sudah Di-unlock</h3>
         @if($recentOrders->count() > 0)
             <a href="{{ route('user.orders') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Lihat Semua →</a>
         @endif
@@ -68,7 +68,8 @@
             </a>
         </div>
     @else
-        <div class="overflow-x-auto">
+        {{-- Desktop: Table --}}
+        <div class="hidden md:block overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -95,6 +96,27 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        {{-- Mobile: Cards --}}
+        <div class="md:hidden space-y-3">
+            @foreach($recentOrders as $order)
+            <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition">
+                <div class="flex justify-between items-start mb-2">
+                    <h4 class="font-medium text-gray-900 text-sm">{{ $order->kost->name ?? '-' }}</h4>
+                    <span class="text-xs text-gray-400">{{ $order->created_at->format('d M Y') }}</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                    <i class="fas fa-location-dot"></i>
+                    <span>{{ $order->kost->city->name ?? '-' }}</span>
+                    <span class="text-gray-300">|</span>
+                    <span class="font-mono">{{ $order->invoice_no }}</span>
+                </div>
+                <a href="{{ route('user.orders.show', $order->id) }}" class="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition w-full justify-center">
+                    <i class="fas fa-eye"></i> Lihat Info Kontak
+                </a>
+            </div>
+            @endforeach
         </div>
     @endif
 </div>

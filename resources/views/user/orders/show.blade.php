@@ -10,24 +10,24 @@
     </a>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
     <!-- Main Info -->
-    <div class="lg:col-span-2 space-y-6">
+    <div class="lg:col-span-2 space-y-4 sm:space-y-6">
         <!-- Kost Header -->
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <div class="flex items-start justify-between mb-3">
+        <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
                 <div>
-                    <h2 class="text-xl font-bold text-gray-800">{{ $order->kost->name }}</h2>
+                    <h2 class="text-lg sm:text-xl font-bold text-gray-800">{{ $order->kost->name }}</h2>
                     <p class="text-gray-500 text-sm mt-1">
                         <i class="fas fa-location-dot mr-1"></i> {{ $order->kost->area_label ?? $order->kost->city->name }}
                     </p>
                 </div>
-                <span class="px-3 py-1 rounded-full text-xs font-bold 
+                <span class="self-start px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap
                     {{ $order->kost->type === 'putri' ? 'bg-pink-100 text-pink-700' : ($order->kost->type === 'putra' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700') }}">
                     Kost {{ ucfirst($order->kost->type) }}
                 </span>
             </div>
-            <div class="flex flex-wrap gap-4 text-sm text-gray-600 mt-4 pt-4 border-t">
+            <div class="flex flex-wrap gap-3 sm:gap-4 text-sm text-gray-600 mt-4 pt-4 border-t">
                 <span><i class="fas fa-ticket text-blue-500 mr-1"></i> Kode: <strong>{{ $order->kost->kode }}</strong></span>
                 <span><i class="fas fa-money-bill text-green-500 mr-1"></i> {{ $order->kost->formatted_price }}/bln</span>
                 <span><i class="fas fa-door-open text-orange-500 mr-1"></i> {{ $order->kost->total_rooms ?? '-' }} Kamar</span>
@@ -36,47 +36,47 @@
 
         <!-- Unlocked Contact Info -->
         <div class="bg-white rounded-xl shadow-sm border border-green-200 overflow-hidden">
-            <div class="bg-green-50 px-6 py-3 border-b border-green-200">
-                <h3 class="text-green-800 font-bold flex items-center gap-2">
+            <div class="bg-green-50 px-4 sm:px-6 py-3 border-b border-green-200">
+                <h3 class="text-green-800 font-bold flex items-center gap-2 text-sm sm:text-base">
                     <i class="fas fa-lock-open"></i> Info Kontak & Alamat (Unlocked)
                 </h3>
             </div>
-            <div class="p-6 space-y-4">
+            <div class="p-4 sm:p-6 space-y-4">
                 <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-user text-green-600"></i>
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-user text-green-600 text-sm"></i>
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <p class="text-sm text-gray-500">Nama Pemilik</p>
                         <p class="font-semibold text-gray-800">{{ $order->kost->owner_name ?? 'Bapak/Ibu Kost' }}</p>
                     </div>
                 </div>
                 <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fab fa-whatsapp text-green-600"></i>
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fab fa-whatsapp text-green-600 text-sm"></i>
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <p class="text-sm text-gray-500">WhatsApp</p>
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact)) }}" target="_blank" class="font-semibold text-green-700 hover:text-green-900">
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact)) }}" target="_blank" class="font-semibold text-green-700 hover:text-green-900 break-all">
                             {{ $order->kost->owner_contact ?? '-' }} <i class="fas fa-external-link-alt text-xs ml-1"></i>
                         </a>
                     </div>
                 </div>
                 <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-map-marker-alt text-green-600"></i>
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-map-marker-alt text-green-600 text-sm"></i>
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <p class="text-sm text-gray-500">Alamat Lengkap</p>
-                        <p class="font-semibold text-gray-800">{{ $order->kost->address ?? '-' }}</p>
+                        <p class="font-semibold text-gray-800 break-words">{{ $order->kost->address ?? '-' }}</p>
                     </div>
                 </div>
                 @if($order->kost->maps_link)
                 <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-map text-green-600"></i>
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-map text-green-600 text-sm"></i>
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <p class="text-sm text-gray-500">Google Maps</p>
                         <a href="{{ $order->kost->maps_link }}" target="_blank" class="font-semibold text-blue-600 hover:text-blue-800">
                             Buka di Maps <i class="fas fa-external-link-alt text-xs ml-1"></i>
@@ -98,13 +98,13 @@
     </div>
 
     <!-- Sidebar: Order Details -->
-    <div class="space-y-6">
-        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+    <div class="space-y-4 sm:space-y-6">
+        <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
             <h3 class="font-bold text-gray-800 mb-4">Detail Transaksi</h3>
             <div class="space-y-3 text-sm">
-                <div class="flex justify-between">
+                <div class="flex justify-between gap-2">
                     <span class="text-gray-500">No. Invoice</span>
-                    <span class="font-mono text-gray-700">{{ $order->invoice_no }}</span>
+                    <span class="font-mono text-gray-700 text-right break-all">{{ $order->invoice_no }}</span>
                 </div>
                 <div class="flex justify-between">
                     <span class="text-gray-500">Tanggal Beli</span>
