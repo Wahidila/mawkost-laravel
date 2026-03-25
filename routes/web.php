@@ -44,6 +44,10 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], func
     Route::get('/dashboard', [UserDashboardController::class , 'index'])->name('dashboard');
     Route::get('/orders', [UserDashboardController::class , 'orders'])->name('orders');
     Route::get('/orders/{id}', [UserDashboardController::class , 'showOrder'])->name('orders.show');
+    Route::get('/profile', [UserDashboardController::class , 'profile'])->name('profile');
+    Route::put('/profile', [UserDashboardController::class , 'updateProfile'])->name('profile.update');
+    Route::put('/profile/password', [UserDashboardController::class , 'updatePassword'])->name('profile.password');
+    Route::delete('/profile/avatar', [UserDashboardController::class , 'deleteAvatar'])->name('profile.avatar.delete');
 });
 
 // Admin Panel

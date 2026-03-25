@@ -64,6 +64,14 @@
                             <span class="ml-2 text-sm tracking-wide truncate">Kost Saya</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('user.profile') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-50 text-gray-600 hover:text-blue-800 border-l-4 {{ request()->routeIs('user.profile*') ? 'border-primary text-blue-800 bg-blue-50' : 'border-transparent' }} pr-6">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <i class="fas fa-user-pen"></i>
+                            </span>
+                            <span class="ml-2 text-sm tracking-wide truncate">Edit Profil</span>
+                        </a>
+                    </li>
                     <li class="px-5 mt-4">
                         <div class="flex flex-row items-center h-8">
                             <div class="text-sm font-light tracking-wide text-gray-400 uppercase border-b border-gray-200 pb-1 mb-2 w-full">Lainnya</div>
@@ -105,7 +113,7 @@
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <span class="text-sm text-gray-500 hidden sm:inline">Selamat datang,</span>
                     <span class="font-bold text-gray-700 text-sm sm:text-base truncate max-w-[100px] sm:max-w-none">{{ auth()->user()->name }}</span>
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=3B82F6&color=fff" alt="Avatar" class="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-2 border-blue-100 shadow-sm">
+                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3B82F6&color=fff' }}" alt="Avatar" class="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-2 border-blue-100 shadow-sm object-cover">
                 </div>
             </header>
 
