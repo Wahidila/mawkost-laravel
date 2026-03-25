@@ -21,41 +21,59 @@ class CheckoutController extends Controller
 
     public function process(Request $request, $kostSlug)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'whatsapp' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
+        $rules = [
             'payment' => 'required|in:qris,gopay,va',
-        ]);
+        ];
+
+        if (!auth()->check()) {
+            $rules['name'] = 'required|string|max:255';
+            $rules['whatsapp'] = 'required|string|max:20';
+            $rules['email'] = 'required|email|max:255';
+        }
+
+        $request->validate($rules);
 
         $kost = Kost::where('slug', $kostSlug)->firstOrFail();
 
-        // Auto-register or find existing user
+        // Handle user (auth or guest)
         $isNewUser = false;
         $plainPassword = null;
-        $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
-            // Generate a strong random password
-            $plainPassword = $this->generateStrongPassword();
+        if (auth()->check()) {
+            $user = auth()->user();
+            // Data order menggunakan data auth user
+            $customerName = $user->name;
+            $customerWhatsapp = $user->whatsapp;
+            $customerEmail = $user->email;
+        }
+        else {
+            $user = User::where('email', $request->email)->first();
+            $customerName = $request->name;
+            $customerWhatsapp = $request->whatsapp;
+            $customerEmail = $request->email;
 
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'whatsapp' => $request->whatsapp,
-                'password' => Hash::make($plainPassword),
-                'role' => 'user',
-            ]);
-            $isNewUser = true;
+            if (!$user) {
+                // Generate a strong random password
+                $plainPassword = $this->generateStrongPassword();
+
+                $user = User::create([
+                    'name' => $customerName,
+                    'email' => $customerEmail,
+                    'whatsapp' => $customerWhatsapp,
+                    'password' => Hash::make($plainPassword),
+                    'role' => 'user',
+                ]);
+                $isNewUser = true;
+            }
         }
 
         $order = Order::create([
             'invoice_no' => Order::generateInvoiceNo(),
             'kost_id' => $kost->id,
             'user_id' => $user->id,
-            'customer_name' => $request->name,
-            'customer_whatsapp' => $request->whatsapp,
-            'customer_email' => $request->email,
+            'customer_name' => $customerName,
+            'customer_whatsapp' => $customerWhatsapp,
+            'customer_email' => $customerEmail,
             'amount' => $kost->unlock_price,
             'payment_method' => $request->payment,
             'status' => 'paid', // Simulasi langsung lunas
