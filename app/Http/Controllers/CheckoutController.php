@@ -85,8 +85,8 @@ class CheckoutController extends Controller
                 Mail::to($user->email)->send(new WelcomeUserMail($user, $plainPassword, $order));
             }
             else {
-                // Send standard unlocked notification for existing users, passing email
-                Mail::to($customerEmail)->send(new \App\Mail\KostUnlockedMail($customerEmail, $order));
+                // Send standard unlocked notification for existing users, passing user object
+                Mail::to($customerEmail)->send(new \App\Mail\KostUnlockedMail($user, $order));
             }
         }
         catch (\Exception $e) {
