@@ -13,10 +13,21 @@ class KostUnlockedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $email;
+    public $user;
+    public $order;
+    public $kost;
+
     /**
      * Create a new message instance.
      */
-    public $email;\n    public $user;\n    public $order;\n    public $kost;\n\n    public function __construct($user, $order)\n    {\n        $this->user = $user;\n        $this->email = $user->email ?? $user;\n        $this->order = $order;\n        $this->kost = $order->kost;\n    }
+    public function __construct($user, $order)
+    {
+        $this->user = $user;
+        $this->email = $user->email ?? $user;
+        $this->order = $order;
+        $this->kost = $order->kost;
+    }
 
     /**
      * Get the message envelope.
@@ -24,7 +35,7 @@ class KostUnlockedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Kost Unlocked Mail',
+            subject: 'Info Kontak Kost Berhasil Terbuka',
         );
     }
 
@@ -35,6 +46,12 @@ class KostUnlockedMail extends Mailable
     {
         return new Content(
             markdown: 'emails.kost-unlocked',
+            with: [
+                'email' => $this->email,
+                'user' => $this->user,
+                'order' => $this->order,
+                'kost' => $this->kost,
+            ],
         );
     }
 
@@ -48,4 +65,3 @@ class KostUnlockedMail extends Mailable
         return [];
     }
 }
-
