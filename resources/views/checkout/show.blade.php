@@ -31,6 +31,14 @@
             <div class="xendit-body">
                 <form class="checkout-form" action="{{ route('checkout.process', $kost->slug) }}" method="POST">
                     @csrf
+
+                    @if(session('error'))
+                    <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; color: #991b1b; font-size: 0.9rem;">
+                        <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i>
+                        {{ session('error') }}
+                    </div>
+                    @endif
+
                     <div class="xendit-section-title">Detail Kontak (Tujuan Pengiriman Info)</div>
 
                         <div class="form-group">

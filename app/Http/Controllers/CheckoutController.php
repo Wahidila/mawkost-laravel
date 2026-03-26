@@ -81,9 +81,19 @@ class CheckoutController extends Controller
         // Check if Xendit is enabled
         $xendit = new XenditService();
 
+        Log::info('Checkout process', [
+            'order' => $order->invoice_no,
+            'xendit_enabled' => $xendit->isEnabled(),
+        ]);
+
         if ($xendit->isEnabled()) {
             // — XENDIT MODE: Create invoice & redirect to Xendit payment page —
             $result = $xendit->createInvoice($order);
+
+            Log::info('Xendit createInvoice result', [
+                'order' => $order->invoice_no,
+                'result' => $result,
+            ]);
 
             if ($result['ok']) {
                 $order->update([
@@ -103,14 +113,21 @@ class CheckoutController extends Controller
                 return redirect()->away($result['invoice_url']);
             }
 
-            // Xendit failed — fall through to simulation mode
-            Log::error('Xendit invoice creation failed, falling back to simulation', [
+            // Xendit failed — show error to user, NOT silent fallback
+            Log::error('Xendit invoice creation failed', [
                 'order' => $order->invoice_no,
                 'error' => $result['error'] ?? 'unknown',
             ]);
+
+            // Delete the pending order since payment failed to initialize
+            $order->delete();
+
+            return redirect()->route('checkout.show', $kostSlug)
+                ->with('error', 'Gagal membuat invoice pembayaran: ' . ($result['error'] ?? 'Unknown error'))
+                ->withInput();
         }
 
-        // — SIMULATION MODE: Mark as paid immediately (Xendit disabled or failed) —
+        // — SIMULATION MODE: Mark as paid immediately (Xendit NOT enabled) —
         $order->update([
             'status' => 'paid',
             'paid_at' => now(),
