@@ -5,91 +5,93 @@
 
 @section('content')
 <!-- Greeting -->
-<div class="mb-6">
-    <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Halo, {{ $user->name }}! 👋</h1>
-    <p class="text-gray-500 mt-1 text-sm sm:text-base">Berikut ringkasan akun dan kost yang sudah Anda unlock.</p>
+<div class="mb-8">
+    <h1 class="text-2xl sm:text-3xl font-bold font-display text-primary-dark">Halo, {{ $user->name }}! 👋</h1>
+    <p class="text-text-muted mt-2 text-sm sm:text-base">Berikut ringkasan akun dan kost yang sudah Anda unlock.</p>
 </div>
 
 <!-- Stats -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
-    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-10">
+    <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-[0_4px_12px_rgba(92,61,46,0.08)] border border-primary-lighter/50 p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(92,61,46,0.12)]">
         <div class="flex items-center">
-            <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
-                <i class="fas fa-key fa-lg"></i>
+            <div class="w-14 h-14 flex items-center justify-center rounded-full bg-primary-lighter/80 text-primary-dark mr-4">
+                <i class="fas fa-key text-2xl"></i>
             </div>
             <div>
-                <p class="text-sm text-gray-500 font-medium">Total Unlock</p>
-                <p class="text-2xl font-bold text-gray-800">{{ $totalOrders }}</p>
+                <p class="text-sm text-text-muted font-medium mb-1">Total Unlock</p>
+                <p class="text-3xl font-bold font-display text-primary-dark">{{ $totalOrders }}</p>
             </div>
         </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
+    <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-[0_4px_12px_rgba(92,61,46,0.08)] border border-primary-lighter/50 p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(92,61,46,0.12)]">
         <div class="flex items-center">
-            <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
-                <i class="fas fa-wallet fa-lg"></i>
+            <div class="w-14 h-14 flex items-center justify-center rounded-full bg-[rgba(232,115,74,0.15)] text-cta mr-4">
+                <i class="fas fa-wallet text-2xl"></i>
             </div>
             <div>
-                <p class="text-sm text-gray-500 font-medium">Total Pengeluaran</p>
-                <p class="text-xl sm:text-2xl font-bold text-gray-800">Rp {{ number_format($totalSpent, 0, ',', '.') }}</p>
+                <p class="text-sm text-text-muted font-medium mb-1">Pengeluaran</p>
+                <p class="text-2xl sm:text-3xl font-bold font-display text-primary-dark tracking-tight">Rp {{ number_format($totalSpent, 0, ',', '.') }}</p>
             </div>
         </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 sm:col-span-2 md:col-span-1">
+    <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-[0_4px_12px_rgba(92,61,46,0.08)] border border-primary-lighter/50 p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(92,61,46,0.12)] sm:col-span-2 md:col-span-1">
         <div class="flex items-center">
-            <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
-                <i class="fas fa-user-check fa-lg"></i>
+            <div class="w-14 h-14 flex items-center justify-center rounded-full bg-primary-lighter/80 text-primary-dark mr-4">
+                <i class="fas fa-user-check text-2xl"></i>
             </div>
             <div>
-                <p class="text-sm text-gray-500 font-medium">Member Sejak</p>
-                <p class="text-lg font-bold text-gray-800">{{ $user->created_at->format('d M Y') }}</p>
+                <p class="text-sm text-text-muted font-medium mb-1">Member Sejak</p>
+                <p class="text-lg font-bold font-display text-primary-dark">{{ $user->created_at->format('d M Y') }}</p>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Recent Unlocked Kost -->
-<div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
-    <div class="flex justify-between items-center mb-4">
-        <h3 class="text-base sm:text-lg font-semibold text-gray-800">Kost yang Sudah Di-unlock</h3>
+<div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_12px_rgba(92,61,46,0.08)] border border-primary-lighter/30 overflow-hidden">
+    <div class="p-5 sm:p-6 border-b border-primary-lighter/40 bg-white/50 flex justify-between items-center">
+        <h3 class="text-lg sm:text-xl font-bold font-display text-primary-dark tracking-tight">Kost yang Sudah Di-unlock</h3>
         @if($recentOrders->count() > 0)
-            <a href="{{ route('user.orders') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Lihat Semua →</a>
+            <a href="{{ route('user.orders') }}" class="text-sm font-semibold text-primary hover:text-cta transition-colors">Lihat Semua <i class="fa-solid fa-arrow-right text-xs ml-1"></i></a>
         @endif
     </div>
 
     @if($recentOrders->isEmpty())
-        <div class="text-center py-12">
-            <i class="fas fa-box-open text-4xl text-gray-300 mb-4"></i>
-            <h4 class="text-gray-500 font-medium">Belum ada kost yang di-unlock</h4>
-            <p class="text-gray-400 text-sm mt-1">Cari kost impianmu dan unlock info kontaknya!</p>
-            <a href="{{ route('kost.search') }}" class="inline-block mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-bold transition">
-                <i class="fas fa-search mr-1"></i> Cari Kost
+        <div class="text-center py-16 px-4">
+            <div class="w-20 h-20 bg-primary-lighter rounded-full flex items-center justify-center mx-auto mb-5">
+                <i class="fas fa-box-open text-3xl text-primary-light"></i>
+            </div>
+            <h4 class="text-lg font-bold font-display text-primary-dark mb-2">Belum ada kost yang di-unlock</h4>
+            <p class="text-text-muted text-sm sm:text-base max-w-sm mx-auto">Cari kost impianmu dan unlock info kontaknya untuk mulai berkomunikasi dengan pemilik!</p>
+            <a href="{{ route('kost.search') }}" class="inline-flex mt-6 bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-full text-sm font-bold font-display transition-all duration-200 shadow-md hover:shadow-[0_8px_24px_rgba(139,94,60,0.25)] hover:-translate-y-1">
+                <i class="fas fa-search mr-2 mt-[2px]"></i> Mulai Cari Kost
             </a>
         </div>
     @else
         {{-- Desktop: Table --}}
         <div class="hidden md:block overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-primary-lighter/50">
+                <thead class="bg-primary-lighter/20">
                     <tr>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Invoice</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Kost</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kota</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Invoice</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Nama Kost</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Kota</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Tanggal</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="divide-y divide-primary-lighter/30">
                     @foreach($recentOrders as $order)
-                    <tr>
-                        <td class="px-4 py-3 text-sm font-mono text-gray-600">{{ $order->invoice_no }}</td>
-                        <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ $order->kost->name ?? '-' }}</td>
-                        <td class="px-4 py-3 text-sm text-gray-500">{{ $order->kost->city->name ?? '-' }}</td>
-                        <td class="px-4 py-3 text-sm text-gray-500">{{ $order->created_at->format('d M Y') }}</td>
-                        <td class="px-4 py-3 text-sm">
-                            <a href="{{ route('user.orders.show', $order->id) }}" class="text-blue-600 hover:text-blue-800 font-medium">
-                                <i class="fas fa-eye mr-1"></i> Lihat Info
+                    <tr class="hover:bg-primary-lighter/10 transition-colors duration-150">
+                        <td class="px-6 py-5 text-sm font-semibold text-primary-dark">{{ $order->invoice_no }}</td>
+                        <td class="px-6 py-5 text-sm font-medium text-gray-700">{{ $order->kost->name ?? '-' }}</td>
+                        <td class="px-6 py-5 text-sm text-text-muted">{{ $order->kost->city->name ?? '-' }}</td>
+                        <td class="px-6 py-5 text-sm text-text-muted">{{ $order->created_at->format('d M Y') }}</td>
+                        <td class="px-6 py-5 text-sm">
+                            <a href="{{ route('user.orders.show', $order->id) }}" class="inline-flex items-center text-primary font-bold bg-primary-lighter px-4 py-2 rounded-full hover:bg-primary hover:text-white transition-colors duration-200">
+                                <i class="fas fa-eye mr-2"></i> Info
                             </a>
                         </td>
                     </tr>
@@ -99,20 +101,20 @@
         </div>
 
         {{-- Mobile: Cards --}}
-        <div class="md:hidden space-y-3">
+        <div class="md:hidden p-4 space-y-4">
             @foreach($recentOrders as $order)
-            <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition">
-                <div class="flex justify-between items-start mb-2">
-                    <h4 class="font-medium text-gray-900 text-sm">{{ $order->kost->name ?? '-' }}</h4>
-                    <span class="text-xs text-gray-400">{{ $order->created_at->format('d M Y') }}</span>
+            <div class="border border-primary-lighter/50 bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start mb-3">
+                    <h4 class="font-bold font-display text-primary-dark text-base">{{ $order->kost->name ?? '-' }}</h4>
+                    <span class="text-xs font-medium bg-primary-lighter text-primary-dark px-2 py-1 rounded-full">{{ $order->created_at->format('d M') }}</span>
                 </div>
-                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
-                    <i class="fas fa-location-dot"></i>
+                <div class="flex items-center gap-2 text-xs text-text-muted mb-4">
+                    <i class="fas fa-location-dot text-primary-light"></i>
                     <span>{{ $order->kost->city->name ?? '-' }}</span>
-                    <span class="text-gray-300">|</span>
-                    <span class="font-mono">{{ $order->invoice_no }}</span>
+                    <span class="text-border mx-1">|</span>
+                    <span class="font-medium">{{ $order->invoice_no }}</span>
                 </div>
-                <a href="{{ route('user.orders.show', $order->id) }}" class="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition w-full justify-center">
+                <a href="{{ route('user.orders.show', $order->id) }}" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2.5 rounded-full text-sm font-bold font-display transition-colors w-full">
                     <i class="fas fa-eye"></i> Lihat Info Kontak
                 </a>
             </div>
