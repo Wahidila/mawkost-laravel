@@ -16,10 +16,7 @@ class KostUnlockedMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
-    {
-        //
-    }
+    public $email;\n    public $user;\n    public $order;\n    public $kost;\n\n    public function __construct($user, $order)\n    {\n        $this->user = $user;\n        $this->email = $user->email ?? $user;\n        $this->order = $order;\n        $this->kost = $order->kost;\n    }
 
     /**
      * Get the message envelope.
@@ -51,3 +48,4 @@ class KostUnlockedMail extends Mailable
         return [];
     }
 }
+
