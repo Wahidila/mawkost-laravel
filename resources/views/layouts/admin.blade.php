@@ -106,6 +106,14 @@
                             <span class="ml-2 text-sm tracking-wide truncate">Pengaturan WA</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.settings.xendit') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-50 text-gray-600 hover:text-blue-800 border-l-4 {{ request()->routeIs('admin.settings.xendit*') ? 'border-blue-500 text-blue-800 bg-blue-50' : 'border-transparent' }} pr-6">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <i class="fas fa-credit-card text-blue-500"></i>
+                            </span>
+                            <span class="ml-2 text-sm tracking-wide truncate">Pengaturan Xendit</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- Logout Button -->

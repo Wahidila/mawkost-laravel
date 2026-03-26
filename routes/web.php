@@ -33,6 +33,7 @@ Route::get('/checkout/{kostSlug}', [CheckoutController::class , 'show'])->name('
 Route::post('/checkout/{kostSlug}', [CheckoutController::class , 'process'])->name('checkout.process');
 Route::post('/payment/callback', [CheckoutController::class , 'callback'])->name('payment.callback');
 Route::get('/success/{invoiceNo}', [CheckoutController::class , 'success'])->name('checkout.success');
+Route::get('/checkout/status/{invoiceNo}', [CheckoutController::class , 'checkStatus'])->name('checkout.status');
 
 // Static Pages & Forms
 Route::get('/kontak', [ContactController::class , 'index'])->name('contact.index');
@@ -71,4 +72,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::get('settings/whatsapp', [AdminSettingController::class , 'whatsapp'])->name('settings.whatsapp');
     Route::put('settings/whatsapp', [AdminSettingController::class , 'updateWhatsapp'])->name('settings.whatsapp.update');
     Route::post('settings/whatsapp/test', [AdminSettingController::class , 'testWhatsapp'])->name('settings.whatsapp.test');
+
+    // Xendit Settings
+    Route::get('settings/xendit', [AdminSettingController::class , 'xendit'])->name('settings.xendit');
+    Route::put('settings/xendit', [AdminSettingController::class , 'updateXendit'])->name('settings.xendit.update');
+    Route::post('settings/xendit/test', [AdminSettingController::class , 'testXendit'])->name('settings.xendit.test');
 });

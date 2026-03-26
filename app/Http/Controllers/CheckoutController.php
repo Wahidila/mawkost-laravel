@@ -6,9 +6,11 @@ use App\Mail\WelcomeUserMail;
 use App\Models\Kost;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\XenditService;
 use App\Services\XSenderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -39,7 +41,6 @@ class CheckoutController extends Controller
 
         if (auth()->check()) {
             $user = auth()->user();
-            // Use form data for order, but link to auth user
             $customerName = $request->name;
             $customerWhatsapp = $request->whatsapp;
             $customerEmail = $request->email;
@@ -51,7 +52,6 @@ class CheckoutController extends Controller
             $customerEmail = $request->email;
 
             if (!$user) {
-                // Generate a strong random password
                 $plainPassword = $this->generateStrongPassword();
 
                 $user = User::create([
@@ -65,6 +65,7 @@ class CheckoutController extends Controller
             }
         }
 
+        // Create order (initially pending)
         $order = Order::create([
             'invoice_no' => Order::generateInvoiceNo(),
             'kost_id' => $kost->id,
@@ -74,63 +75,178 @@ class CheckoutController extends Controller
             'customer_email' => $customerEmail,
             'amount' => $kost->unlock_price,
             'payment_method' => $request->payment,
-            'status' => 'paid', // Simulasi langsung lunas
+            'status' => 'pending',
+        ]);
+
+        // Check if Xendit is enabled
+        $xendit = new XenditService();
+
+        if ($xendit->isEnabled()) {
+            // — XENDIT MODE: Create invoice & redirect to Xendit payment page —
+            $result = $xendit->createInvoice($order);
+
+            if ($result['ok']) {
+                $order->update([
+                    'xendit_invoice_id' => $result['invoice_id'],
+                    'xendit_invoice_url' => $result['invoice_url'],
+                ]);
+
+                // Store new user info in session (for webhook to pick up later)
+                if ($isNewUser && $plainPassword) {
+                    session([
+                        'checkout_new_user_' . $order->invoice_no => true,
+                        'checkout_password_' . $order->invoice_no => $plainPassword,
+                    ]);
+                }
+
+                // Redirect to Xendit payment page
+                return redirect()->away($result['invoice_url']);
+            }
+
+            // Xendit failed — fall through to simulation mode
+            Log::error('Xendit invoice creation failed, falling back to simulation', [
+                'order' => $order->invoice_no,
+                'error' => $result['error'] ?? 'unknown',
+            ]);
+        }
+
+        // — SIMULATION MODE: Mark as paid immediately (Xendit disabled or failed) —
+        $order->update([
+            'status' => 'paid',
             'paid_at' => now(),
         ]);
 
-        // Send emails
-        $emailError = null;
+        // Send notifications in simulation mode
+        $this->sendNotifications($order, $user, $isNewUser, $plainPassword);
+
+        return redirect()->route('checkout.success', ['invoiceNo' => $order->invoice_no])
+            ->with([
+            'is_new_user' => $isNewUser,
+        ]);
+    }
+
+    /**
+     * Xendit webhook callback handler.
+     */
+    public function callback(Request $request)
+    {
+        $xendit = new XenditService();
+
+        // Verify webhook token
+        if (!$xendit->verifyWebhookToken($request)) {
+            Log::warning('Xendit webhook: invalid callback token', [
+                'ip' => $request->ip(),
+            ]);
+            return response()->json(['error' => 'Invalid token'], 403);
+        }
+
+        $externalId = $request->input('external_id');
+        $status = $request->input('status');
+
+        $order = Order::where('invoice_no', $externalId)->first();
+
+        if (!$order) {
+            Log::warning('Xendit webhook: order not found', ['external_id' => $externalId]);
+            return response()->json(['error' => 'Order not found'], 404);
+        }
+
+        // Prevent duplicate processing
+        if ($order->status === 'paid') {
+            return response()->json(['status' => 'already_processed']);
+        }
+
+        if ($status === 'PAID') {
+            $order->update([
+                'status' => 'paid',
+                'paid_at' => now(),
+                'xendit_payment_method' => $request->input('payment_method'),
+                'xendit_payment_channel' => $request->input('payment_channel'),
+            ]);
+
+            // Determine if this was a new user registration
+            $isNewUser = session('checkout_new_user_' . $order->invoice_no, false);
+            $plainPassword = session('checkout_password_' . $order->invoice_no);
+
+            // Send notifications
+            $this->sendNotifications($order, $order->user, $isNewUser, $plainPassword);
+
+            // Clear session data
+            session()->forget([
+                'checkout_new_user_' . $order->invoice_no,
+                'checkout_password_' . $order->invoice_no,
+            ]);
+
+            Log::info('Xendit payment confirmed', [
+                'invoice' => $order->invoice_no,
+                'method' => $request->input('payment_method'),
+            ]);
+        }
+        elseif ($status === 'EXPIRED') {
+            $order->update(['status' => 'expired']);
+            Log::info('Xendit invoice expired', ['invoice' => $order->invoice_no]);
+        }
+
+        return response()->json(['status' => 'ok']);
+    }
+
+    /**
+     * Success page — handles both paid and pending states.
+     */
+    public function success($invoiceNo)
+    {
+        $order = Order::with('kost.city')->where('invoice_no', $invoiceNo)->firstOrFail();
+
+        if ($order->status === 'pending' && $order->xendit_invoice_url) {
+            // Show pending page with link to pay
+            return view('checkout.pending', compact('order'));
+        }
+
+        return view('checkout.success', compact('order'));
+    }
+
+    /**
+     * AJAX endpoint to check order payment status.
+     */
+    public function checkStatus($invoiceNo)
+    {
+        $order = Order::where('invoice_no', $invoiceNo)->firstOrFail();
+        return response()->json([
+            'status' => $order->status,
+            'paid' => $order->status === 'paid',
+        ]);
+    }
+
+    /**
+     * Send email and WhatsApp notifications after payment.
+     */
+    private function sendNotifications(Order $order, $user, bool $isNewUser, ?string $plainPassword): void
+    {
+        // Send email
         try {
             if ($isNewUser && $plainPassword) {
-                // Send welcome email with credentials
                 Mail::to($user->email)->send(new WelcomeUserMail($user, $plainPassword, $order));
             }
             else {
-                // Send standard unlocked notification for existing users, passing user object
-                Mail::to($customerEmail)->send(new \App\Mail\KostUnlockedMail($user, $order));
+                Mail::to($order->customer_email)->send(new \App\Mail\KostUnlockedMail($user, $order));
             }
         }
         catch (\Exception $e) {
-            // Log error but don't block the checkout flow
-            $emailError = $e->getMessage();
-            \Illuminate\Support\Facades\Log::error('Failed to send emails: ' . $emailError);
+            Log::error('Failed to send email: ' . $e->getMessage());
         }
 
-        // Send WhatsApp notification via XSender
-        $waError = null;
+        // Send WhatsApp
         try {
             $xsender = new XSenderService();
             if ($xsender->isEnabled()) {
                 $waResult = $xsender->sendKostNotification($order);
                 if (!$waResult['ok']) {
-                    $waError = $waResult['body'] ?? 'Unknown WA error';
-                    \Illuminate\Support\Facades\Log::warning('WhatsApp notification failed: ' . $waError);
+                    Log::warning('WhatsApp notification failed: ' . ($waResult['body'] ?? 'Unknown'));
                 }
             }
         }
         catch (\Exception $e) {
-            $waError = $e->getMessage();
-            \Illuminate\Support\Facades\Log::error('WhatsApp send error: ' . $waError);
+            Log::error('WhatsApp send error: ' . $e->getMessage());
         }
-
-        return redirect()->route('checkout.success', ['invoiceNo' => $order->invoice_no])
-            ->with([
-            'is_new_user' => $isNewUser,
-            'email_error' => $emailError,
-            'wa_error' => $waError,
-        ]);
-    }
-
-    public function callback(Request $request)
-    {
-        // Placeholder webhook untuk integrasi payment gateway nanti
-        return response()->json(['status' => 'ok']);
-    }
-
-    public function success($invoiceNo)
-    {
-        $order = Order::with('kost')->where('invoice_no', $invoiceNo)->firstOrFail();
-        return view('checkout.success', compact('order'));
     }
 
     /**
@@ -143,19 +259,16 @@ class CheckoutController extends Controller
         $numbers = '23456789';
         $symbols = '!@#$%&*';
 
-        // Ensure at least one of each type
         $password = $upper[random_int(0, strlen($upper) - 1)]
             . $lower[random_int(0, strlen($lower) - 1)]
             . $numbers[random_int(0, strlen($numbers) - 1)]
             . $symbols[random_int(0, strlen($symbols) - 1)];
 
-        // Fill the rest randomly
         $all = $upper . $lower . $numbers . $symbols;
         for ($i = 4; $i < $length; $i++) {
             $password .= $all[random_int(0, strlen($all) - 1)];
         }
 
-        // Shuffle the password characters
         return str_shuffle($password);
     }
 }

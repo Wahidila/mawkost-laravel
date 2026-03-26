@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Services\XSenderService;
+use App\Services\XenditService;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -77,5 +78,71 @@ class SettingController extends Controller
 
         return redirect()->route('admin.settings.whatsapp')
             ->with('error', 'Gagal mengirim pesan test: ' . ($result['body'] ?? 'Unknown error'));
+    }
+
+    // =========================================================================
+    // Xendit Payment Gateway Settings
+    // =========================================================================
+
+    /**
+     * Show Xendit payment gateway settings form.
+     */
+    public function xendit()
+    {
+        $settings = [
+            'xendit_enabled' => Setting::get('xendit_enabled', '0'),
+            'xendit_secret_key' => Setting::get('xendit_secret_key', ''),
+            'xendit_webhook_token' => Setting::get('xendit_webhook_token', ''),
+            'xendit_is_production' => Setting::get('xendit_is_production', '0'),
+            'xendit_invoice_duration' => Setting::get('xendit_invoice_duration', '24'),
+        ];
+
+        return view('admin.settings.xendit', compact('settings'));
+    }
+
+    /**
+     * Save Xendit payment gateway settings.
+     */
+    public function updateXendit(Request $request)
+    {
+        $request->validate([
+            'xendit_secret_key' => 'nullable|string|max:500',
+            'xendit_webhook_token' => 'nullable|string|max:500',
+            'xendit_is_production' => 'required|in:0,1',
+            'xendit_invoice_duration' => 'nullable|integer|min:1|max:720',
+        ]);
+
+        Setting::set('xendit_enabled', $request->has('xendit_enabled') ? '1' : '0');
+        Setting::set('xendit_secret_key', $request->xendit_secret_key);
+        Setting::set('xendit_webhook_token', $request->xendit_webhook_token);
+        Setting::set('xendit_is_production', $request->xendit_is_production);
+        Setting::set('xendit_invoice_duration', $request->xendit_invoice_duration ?: '24');
+
+        return redirect()->route('admin.settings.xendit')
+            ->with('success', 'Pengaturan Xendit berhasil disimpan.');
+    }
+
+    /**
+     * Test Xendit API connection.
+     */
+    public function testXendit()
+    {
+        $xendit = new XenditService();
+
+        if (empty(Setting::get('xendit_secret_key'))) {
+            return redirect()->route('admin.settings.xendit')
+                ->with('error', 'Secret API Key belum diisi.');
+        }
+
+        $result = $xendit->testConnection();
+
+        if ($result['ok']) {
+            $balance = number_format($result['balance'], 0, ',', '.');
+            return redirect()->route('admin.settings.xendit')
+                ->with('success', '✅ Koneksi berhasil! Saldo akun Xendit: Rp ' . $balance);
+        }
+
+        return redirect()->route('admin.settings.xendit')
+            ->with('error', 'Gagal terhubung ke Xendit: ' . ($result['error'] ?? 'Unknown error'));
     }
 }

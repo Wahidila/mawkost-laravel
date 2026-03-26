@@ -12,6 +12,7 @@ class Order extends Model
     protected $fillable = [
         'invoice_no', 'kost_id', 'user_id', 'customer_name', 'customer_whatsapp',
         'customer_email', 'amount', 'payment_method', 'status', 'paid_at',
+        'xendit_invoice_id', 'xendit_invoice_url', 'xendit_payment_method', 'xendit_payment_channel',
     ];
 
     protected $casts = [
@@ -38,5 +39,15 @@ class Order extends Model
     public function getFormattedAmountAttribute()
     {
         return 'Rp ' . number_format($this->amount, 0, ',', '.');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    public function scopeExpired($query)
+    {
+        return $query->where('status', 'expired');
     }
 }
