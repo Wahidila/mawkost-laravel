@@ -15,7 +15,7 @@
 
         <!-- Body -->
         <div style="padding:32px;">
-            <h2 style="color:#1e293b;margin:0 0 8px;font-size:20px;">Halo, {{ $email }}! 👋</h2>
+            <h2 style="color:#1e293b;margin:0 0 8px;font-size:20px;">Halo, {{ $user->name }}! 👋</h2>
             <p style="color:#64748b;margin:0 0 24px;font-size:14px;line-height:1.6;">
                 Terima kasih telah menggunakan mawkost! Pembelian tiket info kontak untuk kost <strong>{{ $kost->name }}</strong> telah berhasil diproses (Invoice: {{ $order->invoice_no }}).
             </p>
