@@ -49,6 +49,7 @@ class KostController extends Controller
             'maps_link' => 'nullable|string',
             'facilities' => 'array',
             'facilities.*' => 'exists:facilities,id',
+            'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
             'nearby_places' => 'nullable|string', // separated by newline
         ]);
@@ -134,6 +135,7 @@ class KostController extends Controller
             'owner_name' => 'nullable|string',
             'maps_link' => 'nullable|string',
             'facilities' => 'array',
+            'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
             'nearby_places' => 'nullable|string',
         ]);
@@ -202,9 +204,9 @@ class KostController extends Controller
     }
 
     // Custom method to delete single image via ajax/form
-    public function destroyImage($kost_id, $image_id)
+    public function destroyImage($kost, $image)
     {
-        $image = KostImage::where('kost_id', $kost_id)->findOrFail($image_id);
+        $image = KostImage::where('kost_id', $kost)->findOrFail($image);
         if (Str::startsWith($image->image_path, 'storage/')) {
             Storage::disk('public')->delete(str_replace('storage/', '', $image->image_path));
         }

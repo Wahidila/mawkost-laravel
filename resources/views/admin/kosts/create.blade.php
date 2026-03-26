@@ -151,7 +151,15 @@
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Upload Foto (Bisa pilih banyak)</label>
-                    <input type="file" name="images[]" multiple class="shadow border rounded w-full py-2 px-3 text-gray-700" accept="image/*">
+                    <input type="file" name="images[]" multiple id="imageInput" class="shadow border rounded w-full py-2 px-3 text-gray-700" accept="image/jpeg,image/png,image/jpg,image/webp">
+                    <p class="text-xs text-gray-400 mt-1">Format: JPEG, PNG, JPG, WEBP. Maks: 2MB per gambar.</p>
+                    @error('images')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                    @error('images.*')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                    <div id="imagePreview" class="flex flex-wrap gap-2 mt-3"></div>
                 </div>
                 <div class="mb-4 mt-6">
                     <label class="inline-flex items-center mr-4 mt-2">
@@ -176,4 +184,26 @@
 </div>
 
 @include('admin.kosts._facility_modal')
+
+@push('scripts')
+<script>
+document.getElementById('imageInput').addEventListener('change', function(e) {
+    const preview = document.getElementById('imagePreview');
+    preview.innerHTML = '';
+    if (this.files) {
+        Array.from(this.files).forEach(file => {
+            if (!file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'w-24 h-24 border rounded overflow-hidden';
+                div.innerHTML = '<img src="' + e.target.result + '" class="w-full h-full object-cover" alt="Preview">';
+                preview.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+});
+</script>
+@endpush
 @endsection

@@ -155,19 +155,38 @@
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Upload Foto Tambahan (Akan ditambahkan ke koleksi)</label>
-                    <input type="file" name="images[]" multiple class="shadow border rounded w-full py-2 px-3 text-gray-700" accept="image/*">
+                    <input type="file" name="images[]" multiple id="imageInput" class="shadow border rounded w-full py-2 px-3 text-gray-700" accept="image/jpeg,image/png,image/jpg,image/webp">
+                    <p class="text-xs text-gray-400 mt-1">Format: JPEG, PNG, JPG, WEBP. Maks: 2MB per gambar.</p>
+                    @error('images')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                    @error('images.*')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                    <div id="imagePreview" class="flex flex-wrap gap-2 mt-3"></div>
                 </div>
                 <!-- Foto Saat ini -->
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Foto Saat Ini</label>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach($kost->images as $img)
-                            <div class="relative group w-24 h-24 border rounded overflow-hidden">
-                                <img src="{{ asset($img->image_path) }}" alt="Foto" class="w-full h-full object-cover">
-                                <!-- Warning: Image deletion requires AJAX or separate form, skipped for brevity in this simple form -->
-                            </div>
-                        @endforeach
-                    </div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Foto Saat Ini ({{ $kost->images->count() }} foto)</label>
+                    @if($kost->images->count() > 0)
+                        <div class="flex flex-wrap gap-3">
+                            @foreach($kost->images as $img)
+                                <div class="relative group w-28 h-28 border rounded overflow-hidden shadow-sm">
+                                    <img src="{{ asset($img->image_path) }}" alt="Foto" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-200 flex items-center justify-center">
+                                        <button type="button"
+                                            onclick="confirmDeleteImage({{ $img->id }}, '{{ $img->image_path }}')"
+                                            class="opacity-0 group-hover:opacity-100 bg-red-600 hover:bg-red-700 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition-all duration-200"
+                                            title="Hapus gambar ini">
+                                            <i class="fas fa-trash text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-gray-400 text-sm italic">Belum ada foto.</p>
+                    @endif
                 </div>
 
                 <div class="mb-4 mt-6">
@@ -193,4 +212,72 @@
 </div>
 
 @include('admin.kosts._facility_modal')
+
+@push('modals')
+<!-- Delete Image Confirmation Modal -->
+<div id="deleteImageModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-50" onclick="closeDeleteImageModal()"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl p-6 w-96 max-w-[90vw]">
+        <div class="text-center">
+            <div class="mx-auto w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-trash-alt text-red-600 text-xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-800 mb-2">Hapus Gambar?</h3>
+            <p class="text-gray-500 text-sm mb-4">Gambar ini akan dihapus secara permanen dan tidak bisa dikembalikan.</p>
+            <div class="mb-4">
+                <img id="deleteImagePreview" src="" alt="Preview" class="w-20 h-20 object-cover rounded mx-auto border">
+            </div>
+            <form id="deleteImageForm" method="POST">
+                @csrf
+                @method('DELETE')
+                <div class="flex justify-center gap-3">
+                    <button type="button" onclick="closeDeleteImageModal()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded font-medium transition">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
+                        <i class="fas fa-trash mr-1"></i> Hapus
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endpush
+
+@push('scripts')
+<script>
+// Image preview for new uploads
+document.getElementById('imageInput').addEventListener('change', function(e) {
+    const preview = document.getElementById('imagePreview');
+    preview.innerHTML = '';
+    if (this.files) {
+        Array.from(this.files).forEach(file => {
+            if (!file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'w-24 h-24 border rounded overflow-hidden';
+                div.innerHTML = '<img src="' + e.target.result + '" class="w-full h-full object-cover" alt="Preview">';
+                preview.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+});
+
+// Delete image confirmation
+function confirmDeleteImage(imageId, imagePath) {
+    const modal = document.getElementById('deleteImageModal');
+    const form = document.getElementById('deleteImageForm');
+    const preview = document.getElementById('deleteImagePreview');
+
+    form.action = '{{ url("admin/kosts") }}/{{ $kost->id }}/images/' + imageId;
+    preview.src = '{{ asset("") }}' + imagePath;
+
+    modal.classList.remove('hidden');
+}
+
+function closeDeleteImageModal() {
+    document.getElementById('deleteImageModal').classList.add('hidden');
+}
+</script>
+@endpush
 @endsection

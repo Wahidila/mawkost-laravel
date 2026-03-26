@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KostController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\StorageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -18,6 +19,9 @@ use App\Http\Controllers\User\UserDashboardController;
 
 // Public Pages
 Route::get('/', [HomeController::class , 'index'])->name('home');
+
+// Storage fallback (for shared hosting where symlink doesn't work)
+Route::get('/storage/{path}', [StorageController::class , 'serve'])->where('path', '.*')->name('storage.serve');
 Route::get('/cari-kost', [KostController::class , 'search'])->name('kost.search');
 Route::post('/kost/cari-kode', [KostController::class , 'searchByCode'])->name('kost.searchByCode');
 Route::get('/kost/{citySlug}', [KostController::class , 'byCity'])->name('kost.byCity');
@@ -54,6 +58,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], func
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'admin.'], function () {
     Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
     Route::resource('kosts', AdminKostController::class);
+    Route::delete('kosts/{kost}/images/{image}', [AdminKostController::class , 'destroyImage'])->name('kosts.images.destroy');
     Route::resource('cities', AdminCityController::class);
     Route::resource('facilities', AdminFacilityController::class);
     Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
