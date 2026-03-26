@@ -23,13 +23,10 @@ class CheckoutController extends Controller
     {
         $rules = [
             'payment' => 'required|in:qris,gopay,va',
+            'name' => 'required|string|max:255',
+            'whatsapp' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
         ];
-
-        if (!auth()->check()) {
-            $rules['name'] = 'required|string|max:255';
-            $rules['whatsapp'] = 'required|string|max:20';
-            $rules['email'] = 'required|email|max:255';
-        }
 
         $request->validate($rules);
 
@@ -41,10 +38,10 @@ class CheckoutController extends Controller
 
         if (auth()->check()) {
             $user = auth()->user();
-            // Data order menggunakan data auth user
-            $customerName = $user->name;
-            $customerWhatsapp = $user->whatsapp;
-            $customerEmail = $user->email;
+            // Use form data for order, but link to auth user
+            $customerName = $request->name;
+            $customerWhatsapp = $request->whatsapp;
+            $customerEmail = $request->email;
         }
         else {
             $user = User::where('email', $request->email)->first();
@@ -88,8 +85,8 @@ class CheckoutController extends Controller
                 Mail::to($user->email)->send(new WelcomeUserMail($user, $plainPassword, $order));
             }
             else {
-                // Send standard unlocked notification for existing users
-                Mail::to($user->email)->send(new \App\Mail\KostUnlockedMail($user, $order));
+                // Send standard unlocked notification for existing users, passing email
+                Mail::to($customerEmail)->send(new \App\Mail\KostUnlockedMail($customerEmail, $order));
             }
         }
         catch (\Exception $e) {

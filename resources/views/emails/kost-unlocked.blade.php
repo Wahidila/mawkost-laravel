@@ -15,7 +15,7 @@
 
         <!-- Body -->
         <div style="padding:32px;">
-            <h2 style="color:#1e293b;margin:0 0 8px;font-size:20px;">Halo, {{ $user->name }}! 👋</h2>
+            <h2 style="color:#1e293b;margin:0 0 8px;font-size:20px;">Halo, {{ $email }}! 👋</h2>
             <p style="color:#64748b;margin:0 0 24px;font-size:14px;line-height:1.6;">
                 Terima kasih telah menggunakan mawkost! Pembelian tiket info kontak untuk kost <strong>{{ $kost->name }}</strong> telah berhasil diproses (Invoice: {{ $order->invoice_no }}).
             </p>
@@ -39,7 +39,7 @@
 
             <!-- CTA -->
             <div style="text-align:center;margin:28px 0 16px;display:flex;flex-direction:column;gap:12px;align-items:center;">
-                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $kost->owner_contact ?? '')) }}?text={{ urlencode('Halo, saya ' . $user->name . '. Saya tertarik dengan ' . $kost->name . ' (Kode: ' . $kost->kode . '). Apakah masih tersedia?') }}" style="display:inline-block;background:#16A34A;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;width:fit-content;">
+                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $kost->owner_contact ?? '')) }}?text={{ urlencode('Halo, saya ' . $email . '. Saya tertarik dengan ' . $kost->name . ' (Kode: ' . $kost->kode . '). Apakah masih tersedia?') }}" style="display:inline-block;background:#16A34A;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;width:fit-content;">
                     Hubungi via WhatsApp
                 </a>
                 

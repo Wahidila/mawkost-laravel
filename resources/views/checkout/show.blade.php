@@ -33,45 +33,20 @@
                     @csrf
                     <div class="xendit-section-title">Detail Kontak (Tujuan Pengiriman Info)</div>
 
-                    @if(auth()->check())
-                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-8" style="background-color: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px; padding: 16px; margin-bottom: 32px;">
-                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                                <img src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3B82F6&color=fff' }}" alt="Avatar" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                                <div>
-                                    <p style="font-weight: 600; color: #111827; margin: 0; font-size: 15px;">{{ auth()->user()->name }}</p>
-                                    <p style="color: #6B7280; margin: 0; font-size: 13px;">Login sebagai member</p>
-                                </div>
-                            </div>
-                            <div style="font-size: 14px; color: #374151;">
-                                <div style="display: flex; margin-bottom: 8px;">
-                                    <span style="width: 85px; color: #6B7280;">Email:</span>
-                                    <strong>{{ auth()->user()->email }}</strong>
-                                </div>
-                                <div style="display: flex;">
-                                    <span style="width: 85px; color: #6B7280;">WhatsApp:</span>
-                                    <strong>{{ auth()->user()->whatsapp ?? '-' }}</strong>
-                                </div>
-                            </div>
-                            <p style="margin-top: 12px; margin-bottom: 0; font-size: 12px; color: #6B7280;">
-                                <em>Ganti detail profil di Dashboard jika diperlukan.</em>
-                            </p>
-                        </div>
-                    @else
                         <div class="form-group">
                             <label for="name">Nama Lengkap</label>
-                            <input type="text" id="name" name="name" class="form-control xendit-input" placeholder="Budi Santoso" required value="{{ old('name') }}">
+                            <input type="text" id="name" name="name" class="form-control xendit-input" placeholder="Budi Santoso" required value="{{ old('name', auth()->user()->name ?? '') }}">
                         </div>
 
                         <div class="form-group">
                             <label for="whatsapp">WhatsApp / No. HP</label>
-                            <input type="tel" id="whatsapp" name="whatsapp" class="form-control xendit-input" placeholder="081234567890" pattern="[0-9]*" required value="{{ old('whatsapp') }}">
+                            <input type="tel" id="whatsapp" name="whatsapp" class="form-control xendit-input" placeholder="081234567890" pattern="[0-9]*" required value="{{ old('whatsapp', auth()->user()->whatsapp ?? '') }}">
                         </div>
 
                         <div class="form-group" style="margin-bottom: 32px;">
                             <label for="email">Alamat Email</label>
-                            <input type="email" id="email" name="email" class="form-control xendit-input" placeholder="budi@gmail.com" required value="{{ old('email') }}">
+                            <input type="email" id="email" name="email" class="form-control xendit-input" placeholder="budi@gmail.com" required value="{{ old('email', auth()->user()->email ?? '') }}">
                         </div>
-                    @endif
 
                     <div class="xendit-section-title">Pilih Metode Pembayaran</div>
 
