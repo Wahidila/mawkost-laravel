@@ -6,6 +6,7 @@ use App\Mail\WelcomeUserMail;
 use App\Models\Kost;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\XSenderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -95,10 +96,28 @@ class CheckoutController extends Controller
             \Illuminate\Support\Facades\Log::error('Failed to send emails: ' . $emailError);
         }
 
+        // Send WhatsApp notification via XSender
+        $waError = null;
+        try {
+            $xsender = new XSenderService();
+            if ($xsender->isEnabled()) {
+                $waResult = $xsender->sendKostNotification($order);
+                if (!$waResult['ok']) {
+                    $waError = $waResult['body'] ?? 'Unknown WA error';
+                    \Illuminate\Support\Facades\Log::warning('WhatsApp notification failed: ' . $waError);
+                }
+            }
+        }
+        catch (\Exception $e) {
+            $waError = $e->getMessage();
+            \Illuminate\Support\Facades\Log::error('WhatsApp send error: ' . $waError);
+        }
+
         return redirect()->route('checkout.success', ['invoiceNo' => $order->invoice_no])
             ->with([
             'is_new_user' => $isNewUser,
-            'email_error' => $emailError
+            'email_error' => $emailError,
+            'wa_error' => $waError,
         ]);
     }
 

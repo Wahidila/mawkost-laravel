@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\User\UserDashboardController;
 
 // Public Pages
@@ -65,4 +66,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::resource('contacts', AdminContactController::class)->only(['index', 'show']);
     Route::resource('users', AdminUserController::class);
     Route::post('users/{user}/send-credentials', [AdminUserController::class , 'sendCredentials'])->name('users.sendCredentials');
+
+    // WhatsApp Settings
+    Route::get('settings/whatsapp', [AdminSettingController::class , 'whatsapp'])->name('settings.whatsapp');
+    Route::put('settings/whatsapp', [AdminSettingController::class , 'updateWhatsapp'])->name('settings.whatsapp.update');
+    Route::post('settings/whatsapp/test', [AdminSettingController::class , 'testWhatsapp'])->name('settings.whatsapp.test');
 });

@@ -92,6 +92,20 @@
                             <span class="ml-2 text-sm tracking-wide truncate">Pengguna</span>
                         </a>
                     </li>
+
+                    <li class="px-5 mt-2">
+                        <div class="flex flex-row items-center h-8">
+                            <div class="text-sm font-light tracking-wide text-gray-400 uppercase border-b border-gray-200 pb-1 mb-2 w-full">Pengaturan</div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.settings.whatsapp') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-green-50 text-gray-600 hover:text-green-800 border-l-4 {{ request()->routeIs('admin.settings.whatsapp*') ? 'border-green-500 text-green-800 bg-green-50' : 'border-transparent' }} pr-6">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <i class="fab fa-whatsapp text-green-500"></i>
+                            </span>
+                            <span class="ml-2 text-sm tracking-wide truncate">Pengaturan WA</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- Logout Button -->
