@@ -64,11 +64,7 @@ class XenditService
             ],
         ];
 
-        // Map payment method preference
-        $paymentMethods = $this->mapPaymentMethods($order->payment_method);
-        if (!empty($paymentMethods)) {
-            $payload['payment_methods'] = $paymentMethods;
-        }
+        // Don't filter payment methods — let Xendit show all methods active on your account
 
         try {
             $response = Http::withBasicAuth($this->secretKey, '')
