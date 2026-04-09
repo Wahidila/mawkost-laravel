@@ -31,10 +31,11 @@
                     </div>
                     <div class="w-1/2">
                         <label class="block text-gray-700 text-sm font-bold mb-2">Tipe</label>
-                        <select name="type" class="shadow border rounded w-full py-2 px-3 text-gray-700" required>
-                            <option value="putra" {{ old('type', $kost->type) == 'putra' ? 'selected' : '' }}>Putra</option>
-                            <option value="putri" {{ old('type', $kost->type) == 'putri' ? 'selected' : '' }}>Putri</option>
-                            <option value="campur" {{ old('type', $kost->type) == 'campur' ? 'selected' : '' }}>Campur</option>
+                        <select name="kost_type_id" class="shadow border rounded w-full py-2 px-3 text-gray-700" required>
+                            <option value="">Pilih Tipe...</option>
+                            @foreach($kostTypes as $type)
+                                <option value="{{ $type->id }}" {{ old('kost_type_id', $kost->kost_type_id) == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>

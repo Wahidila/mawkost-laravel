@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Kost;
+use App\Models\KostType;
 use Illuminate\Http\Request;
 
 class KostController extends Controller
 {
     public function search(Request $request)
     {
-        $query = Kost::with('city', 'images', 'facilities')->available();
+        $query = Kost::with('city', 'images', 'facilities', 'kostType')->available();
 
         if ($request->filled('lokasi')) {
             $city = City::where('slug', $request->lokasi)->first();
@@ -20,7 +21,13 @@ class KostController extends Controller
         }
 
         if ($request->filled('tipe')) {
-            $query->where('type', $request->tipe);
+            $type = KostType::where('slug', $request->tipe)->first();
+            if ($type) {
+                $query->where('kost_type_id', $type->id);
+            }
+            else {
+                $query->where('type', $request->tipe);
+            }
         }
 
         if ($request->filled('min_harga')) {
@@ -33,14 +40,15 @@ class KostController extends Controller
 
         $kosts = $query->paginate(9)->withQueryString();
         $cities = City::orderBy('name')->get();
+        $kostTypes = KostType::orderBy('name')->get();
 
-        return view('kost.search', compact('kosts', 'cities'));
+        return view('kost.search', compact('kosts', 'cities', 'kostTypes'));
     }
 
     public function byCity($citySlug)
     {
         $city = City::where('slug', $citySlug)->firstOrFail();
-        $kosts = Kost::with('city', 'images', 'facilities')
+        $kosts = Kost::with('city', 'images', 'facilities', 'kostType')
             ->where('city_id', $city->id)
             ->available()
             ->paginate(9);
@@ -50,12 +58,12 @@ class KostController extends Controller
 
     public function show($citySlug, $slug)
     {
-        $kost = Kost::with(['city', 'images', 'roomFacilities', 'sharedFacilities', 'nearbyPlaces'])
+        $kost = Kost::with(['city', 'images', 'roomFacilities', 'sharedFacilities', 'nearbyPlaces', 'kostType'])
             ->where('slug', $slug)
             ->firstOrFail();
 
         // Rekomendasi kost lain di kota yang sama
-        $otherKosts = Kost::with('city', 'images', 'facilities')
+        $otherKosts = Kost::with('city', 'images', 'facilities', 'kostType')
             ->where('city_id', $kost->city_id)
             ->where('id', '!=', $kost->id)
             ->available()

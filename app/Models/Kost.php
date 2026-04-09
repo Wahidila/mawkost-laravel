@@ -10,6 +10,7 @@ class Kost extends Model
     use HasFactory;
 
     protected $fillable = [
+        'kost_type_id',
         'kode', 'name', 'slug', 'city_id', 'type', 'price', 'description',
         'area_label', 'available_rooms', 'total_rooms', 'total_bathrooms', 'status', 'floor_count', 'parking_type',
         'is_featured', 'is_recommended', 'unlock_price', 'address',
@@ -24,6 +25,11 @@ class Kost extends Model
     public function city()
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function kostType()
+    {
+        return $this->belongsTo(KostType::class);
     }
 
     public function images()
@@ -99,11 +105,12 @@ class Kost extends Model
 
     public function getBadgeClassAttribute()
     {
-        return match ($this->type) {
+        $slug = $this->kostType ? $this->kostType->slug : ($this->type ?? 'campur');
+        return match ($slug) {
                 'putri' => 'badge-putri',
                 'putra' => 'badge-putra',
                 'campur' => 'badge-campur',
-                default => '',
+                default => 'badge-' . $slug,
             };
     }
 

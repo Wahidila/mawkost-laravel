@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Facility;
 use App\Models\Kost;
+use App\Models\KostType;
 use App\Models\KostImage;
 use App\Models\NearbyPlace;
 use Illuminate\Http\Request;
@@ -24,7 +25,8 @@ class KostController extends Controller
     {
         $cities = City::all();
         $facilities = Facility::all();
-        return view('admin.kosts.create', compact('cities', 'facilities'));
+        $kostTypes = KostType::all();
+        return view('admin.kosts.create', compact('cities', 'facilities', 'kostTypes'));
     }
 
     public function store(Request $request)
@@ -32,7 +34,7 @@ class KostController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'city_id' => 'required|exists:cities,id',
-            'type' => 'required|in:putra,putri,campur',
+            'kost_type_id' => 'required|exists:kost_types,id',
             'price' => 'required|integer',
             'description' => 'required|string',
             'area_label' => 'required|string|max:255',
@@ -60,6 +62,16 @@ class KostController extends Controller
         $validated['kode'] = 'MK-' . str_pad($lastId, 3, '0', STR_PAD_LEFT);
 
         $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
+
+        // Backward compatibility for 'type' enum column
+        $kostType = KostType::find($validated['kost_type_id']);
+        if ($kostType && in_array($kostType->slug, ['putra', 'putri', 'campur'])) {
+            $validated['type'] = $kostType->slug;
+        }
+        else {
+            $validated['type'] = 'campur'; // Fallback
+        }
+
         $validated['is_featured'] = $request->has('is_featured');
         $validated['is_recommended'] = $request->has('is_recommended');
         $validated['purchase_count'] = 0;
@@ -105,10 +117,11 @@ class KostController extends Controller
         $kost = Kost::with(['facilities', 'images', 'nearbyPlaces'])->findOrFail($id);
         $cities = City::all();
         $facilities = Facility::all();
+        $kostTypes = KostType::all();
 
         $nearbyPlacesStr = $kost->nearbyPlaces->pluck('description')->join("\n");
 
-        return view('admin.kosts.edit', compact('kost', 'cities', 'facilities', 'nearbyPlacesStr'));
+        return view('admin.kosts.edit', compact('kost', 'cities', 'facilities', 'kostTypes', 'nearbyPlacesStr'));
     }
 
     public function update(Request $request, $id)
@@ -119,7 +132,7 @@ class KostController extends Controller
             'kode' => 'required|unique:kosts,kode,' . $kost->id,
             'name' => 'required|string|max:255',
             'city_id' => 'required|exists:cities,id',
-            'type' => 'required|in:putra,putri,campur',
+            'kost_type_id' => 'required|exists:kost_types,id',
             'price' => 'required|integer',
             'description' => 'required|string',
             'area_label' => 'required|string|max:255',
@@ -142,6 +155,15 @@ class KostController extends Controller
 
         if ($request->name != $kost->name) {
             $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
+        }
+
+        // Backward compatibility for 'type' enum column
+        $kostType = KostType::find($validated['kost_type_id']);
+        if ($kostType && in_array($kostType->slug, ['putra', 'putri', 'campur'])) {
+            $validated['type'] = $kostType->slug;
+        }
+        else {
+            $validated['type'] = 'campur'; // Fallback
         }
 
         $validated['is_featured'] = $request->has('is_featured');

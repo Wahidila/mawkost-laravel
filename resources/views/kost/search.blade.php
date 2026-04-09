@@ -36,9 +36,9 @@
                 <label>Tipe Kost</label>
                 <select name="tipe">
                     <option value="">Semua Tipe</option>
-                    <option value="putra" {{ request('tipe') == 'putra' ? 'selected' : '' }}>Putra</option>
-                    <option value="putri" {{ request('tipe') == 'putri' ? 'selected' : '' }}>Putri</option>
-                    <option value="campur" {{ request('tipe') == 'campur' ? 'selected' : '' }}>Campur</option>
+                    @foreach($kostTypes as $type)
+                        <option value="{{ $type->slug }}" {{ request('tipe') == $type->slug ? 'selected' : '' }}>{{ $type->name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="filter-group price-range-wrapper">

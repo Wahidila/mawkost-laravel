@@ -101,7 +101,11 @@
                 <!-- Header Info -->
                 <div>
                     <div style="display:flex;gap:8px;margin-bottom:12px;">
-                        <span class="badge {{ $kost->badge_class }}">Kost {{ ucfirst($kost->type) }}</span>
+                        @php
+                            $typeBadgeClass = 'badge-' . ($kost->kostType ? $kost->kostType->slug : ($kost->type ?? 'campur'));
+                            $typeName = $kost->kostType ? $kost->kostType->name : ucfirst($kost->type ?? 'Campur');
+                        @endphp
+                        <span class="badge {{ $typeBadgeClass }}">Kost {{ $typeName }}</span>
                         <span class="badge {{ $kost->statusBadge['class'] }}" {!! isset($kost->statusBadge['style']) ? 'style="'.$kost->statusBadge['style'].'"' : '' !!}>{{ $kost->statusBadge['text'] }}</span>
                     </div>
                     <h1 class="kost-title">{{ $kost->name }}</h1>

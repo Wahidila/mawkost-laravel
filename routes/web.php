@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KostController as AdminKostController;
+use App\Http\Controllers\Admin\KostTypeController as AdminKostTypeController;
 use App\Http\Controllers\Admin\CityController as AdminCityController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
     Route::resource('kosts', AdminKostController::class);
     Route::delete('kosts/{kost}/images/{image}', [AdminKostController::class , 'destroyImage'])->name('kosts.images.destroy');
+    Route::resource('kost_types', AdminKostTypeController::class)->except(['show', 'create']);
     Route::resource('cities', AdminCityController::class);
     Route::resource('facilities', AdminFacilityController::class);
     Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);

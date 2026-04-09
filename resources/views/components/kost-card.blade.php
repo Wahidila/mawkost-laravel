@@ -3,14 +3,15 @@
 @php
     $firstImage = $kost->images->first();
     $imagePath = $firstImage ? $firstImage->image_path : 'assets/img/kost-1.png';
-    $typeBadge = 'badge-' . ($kost->type ?? 'campur');
+    $typeBadge = 'badge-' . ($kost->kostType ? $kost->kostType->slug : ($kost->type ?? 'campur'));
+    $typeName = $kost->kostType ? $kost->kostType->name : ucfirst($kost->type ?? 'Campur');
 @endphp
 
 <a href="{{ route('kost.show', ['citySlug' => $kost->city->slug, 'slug' => $kost->slug]) }}" class="listing-card card fade-in">
     <div style="position:relative;">
         <img src="{{ asset($imagePath) }}" alt="{{ $kost->name }}" class="card-img">
         <div class="card-badges">
-            <span class="badge {{ $typeBadge }}">{{ ucfirst($kost->type ?? 'Campur') }}</span>
+            <span class="badge {{ $typeBadge }}">{{ $typeName }}</span>
             @if($kost->status === 'tersedia')
                 <span class="badge badge-success">Tersedia</span>
             @elseif($kost->status === 'penuh')

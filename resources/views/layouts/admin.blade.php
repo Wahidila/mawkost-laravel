@@ -70,6 +70,14 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.kost_types.index') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.kost_types.*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <i class="fas fa-layer-group {{ request()->routeIs('admin.kost_types.*') ? 'text-cta' : '' }}"></i>
+                            </span>
+                            <span class="ml-3 text-sm tracking-wide truncate">Tipe Kost</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.cities.index') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.cities.*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
                             <span class="inline-flex justify-center items-center ml-4">
                                 <i class="fas fa-city {{ request()->routeIs('admin.cities.*') ? 'text-cta' : '' }}"></i>
