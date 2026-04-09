@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactMessageNotification;
 
 class ContactController extends Controller
 {
@@ -22,7 +24,14 @@ class ContactController extends Controller
             'message' => 'required|string',
         ]);
 
-        Contact::create($validated);
+        $contact = Contact::create($validated);
+
+        try {
+            Mail::mailer('smtp')->to('admin@mawkost.id')->send(new ContactMessageNotification($contact));
+        }
+        catch (\Exception $e) {
+            \Log::error('Could not send contact email: ' . $e->getMessage());
+        }
 
         return redirect()->back()->with('success', 'Pesan Anda telah berhasil dikirim. Kami akan membalas secepatnya.');
     }

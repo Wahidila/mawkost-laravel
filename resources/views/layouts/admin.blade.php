@@ -224,12 +224,8 @@
             background-color: var(--primary, #8B5E3C);
         }
     </style>
-</body>
-</html>
-            </div>
-        </main>
-    </div>
     @stack('modals')
     @stack('scripts')
 </body>
 </html>
+

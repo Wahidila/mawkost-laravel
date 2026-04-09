@@ -37,7 +37,13 @@ class ContactController extends Controller
      */
     public function show(string $id)
     {
-    //
+        $contact = \App\Models\Contact::findOrFail($id);
+
+        if (!$contact->is_read) {
+            $contact->update(['is_read' => true]);
+        }
+
+        return view('admin.contacts.show', compact('contact'));
     }
 
     /**

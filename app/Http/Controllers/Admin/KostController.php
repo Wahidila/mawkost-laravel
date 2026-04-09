@@ -63,14 +63,9 @@ class KostController extends Controller
 
         $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
 
-        // Backward compatibility for 'type' enum column
+        // Sync 'type' column with the selected KostType slug
         $kostType = KostType::find($validated['kost_type_id']);
-        if ($kostType && in_array($kostType->slug, ['putra', 'putri', 'campur'])) {
-            $validated['type'] = $kostType->slug;
-        }
-        else {
-            $validated['type'] = 'campur'; // Fallback
-        }
+        $validated['type'] = $kostType ? $kostType->slug : 'campur';
 
         $validated['is_featured'] = $request->has('is_featured');
         $validated['is_recommended'] = $request->has('is_recommended');
@@ -157,14 +152,9 @@ class KostController extends Controller
             $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
         }
 
-        // Backward compatibility for 'type' enum column
+        // Sync 'type' column with the selected KostType slug
         $kostType = KostType::find($validated['kost_type_id']);
-        if ($kostType && in_array($kostType->slug, ['putra', 'putri', 'campur'])) {
-            $validated['type'] = $kostType->slug;
-        }
-        else {
-            $validated['type'] = 'campur'; // Fallback
-        }
+        $validated['type'] = $kostType ? $kostType->slug : 'campur';
 
         $validated['is_featured'] = $request->has('is_featured');
         $validated['is_recommended'] = $request->has('is_recommended');

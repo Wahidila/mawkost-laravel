@@ -1,64 +1,64 @@
 {{-- Facility Modal with Icon Picker --}}
 @push('modals')
-<div id="facilityModal" style="display:none;" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-2xl relative w-full max-w-lg max-h-[90vh] overflow-y-auto animate-fade-in">
+<div id="facilityModal" style="display:none;" class="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center p-4">
+    <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_16px_48px_rgba(92,61,46,0.15)] border border-primary-lighter/30 relative w-full max-w-lg max-h-[90vh] overflow-y-auto animate-fade-in">
         <button onclick="closeFacilityModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10">
             <i class="fas fa-times text-lg"></i>
         </button>
 
         <div class="p-6">
-            <h3 class="text-lg font-bold mb-1 text-gray-800">Tambah Fasilitas Baru</h3>
+            <h3 class="text-lg font-bold font-display text-primary-dark mb-1">Tambah Fasilitas Baru</h3>
             <p class="text-xs text-gray-500 mb-5">Fasilitas ini akan langsung tersedia di seluruh data kost.</p>
 
             <form id="form-add-facility" onsubmit="submitFacility(event)">
                 {{-- Icon Picker --}}
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Pilih Ikon</label>
+                    <label class="block text-sm font-semibold text-primary-dark mb-2">Pilih Ikon</label>
                     <input type="hidden" id="fac_icon" value="fa-solid fa-check" required>
 
                     {{-- Search --}}
                     <div class="relative mb-3">
                         <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-xs"></i>
-                        <input type="text" id="icon-search" placeholder="Cari ikon..." class="border rounded w-full py-2 pl-8 pr-3 text-sm focus:ring focus:ring-blue-200 bg-gray-50">
+                        <input type="text" id="icon-search" placeholder="Cari ikon..." class="border border-primary-lighter rounded-xl w-full py-2 pl-8 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-primary-lighter/10 transition-all">
                     </div>
 
                     {{-- Selected Preview --}}
-                    <div class="flex items-center gap-3 mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                        <div id="icon-preview" class="w-10 h-10 bg-blue-600 text-white rounded-lg flex items-center justify-center text-lg">
+                    <div class="flex items-center gap-3 mb-3 p-3 bg-primary-lighter/30 border border-primary-lighter rounded-xl">
+                        <div id="icon-preview" class="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center text-lg">
                             <i class="fa-solid fa-check"></i>
                         </div>
                         <div>
-                            <p class="text-sm font-semibold text-blue-800" id="icon-label">fa-solid fa-check</p>
-                            <p class="text-xs text-blue-600">Ikon yang dipilih</p>
+                            <p class="text-sm font-semibold text-primary-dark" id="icon-label">fa-solid fa-check</p>
+                            <p class="text-xs text-primary">Ikon yang dipilih</p>
                         </div>
                     </div>
 
                     {{-- Icon Grid --}}
-                    <div id="icon-grid" class="grid grid-cols-8 gap-1 max-h-48 overflow-y-auto border rounded-lg p-2 bg-gray-50">
+                    <div id="icon-grid" class="grid grid-cols-8 gap-1 max-h-48 overflow-y-auto border border-primary-lighter rounded-xl p-2 bg-primary-lighter/10">
                         {{-- Icons will be populated by JS --}}
                     </div>
                 </div>
 
                 {{-- Name --}}
                 <div class="mb-3">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Nama Fasilitas</label>
-                    <input type="text" id="fac_name" placeholder="Contoh: Dispenser, Jemuran, Laundry" class="shadow border rounded w-full py-2 px-3 text-sm focus:ring focus:ring-blue-200" required>
+                    <label class="block text-sm font-semibold text-primary-dark mb-2">Nama Fasilitas</label>
+                    <input type="text" id="fac_name" placeholder="Contoh: Dispenser, Jemuran, Laundry" class="border border-primary-lighter rounded-xl w-full py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-primary-lighter/10 transition-all" required>
                 </div>
 
                 {{-- Category --}}
                 <div class="mb-5">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Kategori</label>
+                    <label class="block text-sm font-semibold text-primary-dark mb-2">Kategori</label>
                     <div class="flex gap-3">
                         <label class="flex-1 cursor-pointer">
                             <input type="radio" name="fac_cat_radio" value="kamar" class="peer hidden" checked>
-                            <div class="peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 border-2 border-gray-200 rounded-lg p-3 text-center transition-all hover:border-blue-300">
+                            <div class="peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary border-2 border-primary-lighter rounded-xl p-3 text-center transition-all hover:border-primary-light">
                                 <i class="fas fa-bed text-lg mb-1"></i>
                                 <p class="text-xs font-bold">Kamar</p>
                             </div>
                         </label>
                         <label class="flex-1 cursor-pointer">
                             <input type="radio" name="fac_cat_radio" value="bersama" class="peer hidden">
-                            <div class="peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 border-2 border-gray-200 rounded-lg p-3 text-center transition-all hover:border-blue-300">
+                            <div class="peer-checked:bg-cta peer-checked:text-white peer-checked:border-cta border-2 border-primary-lighter rounded-xl p-3 text-center transition-all hover:border-cta/50">
                                 <i class="fas fa-users text-lg mb-1"></i>
                                 <p class="text-xs font-bold">Bersama</p>
                             </div>
@@ -67,10 +67,10 @@
                 </div>
 
                 {{-- Buttons --}}
-                <div class="flex justify-end gap-2 border-t pt-4">
-                    <button type="button" onclick="closeFacilityModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg text-sm font-medium transition">Batal</button>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-5 rounded-lg text-sm font-bold transition flex items-center gap-2" id="btn-save-fac">
-                        <i class="fas fa-plus"></i> Simpan Fasilitas
+                <div class="flex justify-end gap-3 border-t border-primary-lighter/30 pt-4">
+                    <button type="button" onclick="closeFacilityModal()" class="px-4 py-2 rounded-full bg-primary-lighter/40 hover:bg-primary-lighter text-primary-dark text-sm font-medium transition-colors">Batal</button>
+                    <button type="submit" class="bg-primary hover:bg-primary-dark text-white py-2 px-5 rounded-full text-sm font-bold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-[0_6px_18px_rgba(139,94,60,0.3)]" id="btn-save-fac">
+                        <i class="fas fa-plus text-xs"></i> Simpan Fasilitas
                     </button>
                 </div>
             </form>
@@ -82,14 +82,14 @@
     .icon-btn {
         width: 2.25rem; height: 2.25rem;
         display: flex; align-items: center; justify-content: center;
-        border-radius: 0.5rem; border: 1px solid transparent;
-        color: #6b7280; cursor: pointer;
+        border-radius: 0.625rem; border: 1px solid transparent;
+        color: #8C7A6E; cursor: pointer;
         transition: all 0.15s ease;
         font-size: 0.875rem;
         background: transparent;
     }
-    .icon-btn:hover { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
-    .icon-btn.selected { background: #2563eb; color: #fff; border-color: #2563eb; box-shadow: 0 4px 6px -1px rgba(37,99,235,.3); }
+    .icon-btn:hover { background: #F5E6DB; color: #8B5E3C; border-color: #DEB8A0; }
+    .icon-btn.selected { background: #8B5E3C; color: #fff; border-color: #8B5E3C; box-shadow: 0 4px 6px -1px rgba(139,94,60,.3); }
     .animate-fade-in { animation: fadeInUp 0.2s ease-out; }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
