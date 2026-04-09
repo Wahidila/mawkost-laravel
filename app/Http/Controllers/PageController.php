@@ -10,4 +10,19 @@ class PageController extends Controller
     {
         return view('tentang');
     }
+
+    public function tos()
+    {
+        return view('tos');
+    }
+
+    public function privacy()
+    {
+        return view('privacy');
+    }
+
+    public function refund()
+    {
+        return view('refund');
+    }
 }

@@ -22,38 +22,61 @@
             <div>
                 <h4>Kota</h4>
                 <ul>
-                    @php $footerCities = \App\Models\City::orderBy('name')->take(4)->get(); @endphp
-                    @foreach($footerCities as $city)
-                        <li><a href="{{ route('kost.byCity', $city->slug) }}">{{ $city->name }}</a></li>
+                    @php
+                        $defaultKota = json_encode([
+                            ['label' => 'Malang', 'url' => '/kost/malang'],
+                            ['label' => 'Surabaya', 'url' => '/kost/surabaya'],
+                            ['label' => 'Yogyakarta', 'url' => '/kost/yogyakarta'],
+                            ['label' => 'Bali', 'url' => '/kost/bali'],
+                        ]);
+                        $footerKota = json_decode(\App\Models\Setting::get('footer_kota', $defaultKota), true) ?: [];
+                    @endphp
+                    @foreach($footerKota as $item)
+                        <li><a href="{{ $item['url'] }}">{{ $item['label'] }}</a></li>
                     @endforeach
-                    @if($footerCities->isEmpty())
-                        <li><a href="#">Malang</a></li>
-                        <li><a href="#">Surabaya</a></li>
-                        <li><a href="#">Yogyakarta</a></li>
-                        <li><a href="#">Bali</a></li>
-                    @endif
                 </ul>
             </div>
             <div>
                 <h4>Layanan</h4>
                 <ul>
-                    <li><a href="{{ route('kost.search') }}">Cariin Kost</a></li>
-                    <li><a href="{{ route('home') }}#cara-kerja">Survey Kost</a></li>
-                    <li><a href="{{ route('contact.index') }}">Promosi Kost</a></li>
-                    <li><a href="{{ route('kost.search') }}">Info Kost</a></li>
+                    @php
+                        $defaultLayanan = json_encode([
+                            ['label' => 'Cariin Kost', 'url' => '/cari-kost'],
+                            ['label' => 'Survey Kost', 'url' => '/#cara-kerja'],
+                            ['label' => 'Promosi Kost', 'url' => '/kontak'],
+                            ['label' => 'Info Kost', 'url' => '/cari-kost'],
+                        ]);
+                        $footerLayanan = json_decode(\App\Models\Setting::get('footer_layanan', $defaultLayanan), true) ?: [];
+                    @endphp
+                    @foreach($footerLayanan as $item)
+                        <li><a href="{{ $item['url'] }}">{{ $item['label'] }}</a></li>
+                    @endforeach
                 </ul>
             </div>
             <div>
                 <h4>Kontak</h4>
                 <ul>
-                    <li><a href="mailto:maw.kost198@gmail.com">maw.kost198@gmail.com</a></li>
-                    <li><a href="tel:+6282337985404">+62 823-3798-5404</a></li>
-                    <li><a href="#">@maw.kost</a></li>
+                    @php
+                        $defaultKontak = json_encode([
+                            ['label' => 'maw.kost198@gmail.com', 'url' => 'mailto:maw.kost198@gmail.com'],
+                            ['label' => '+62 823-3798-5404', 'url' => 'tel:+6282337985404'],
+                            ['label' => '@maw.kost', 'url' => '#'],
+                        ]);
+                        $footerKontak = json_decode(\App\Models\Setting::get('footer_kontak', $defaultKontak), true) ?: [];
+                    @endphp
+                    @foreach($footerKontak as $item)
+                        <li><a href="{{ $item['url'] }}">{{ $item['label'] }}</a></li>
+                    @endforeach
                 </ul>
             </div>
         </div>
-        <div class="footer-bottom">
-            &copy; {{ date('Y') }} mawkost. All rights reserved.
+        <div class="footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div>&copy; {{ date('Y') }} mawkost. All rights reserved.</div>
+            <div style="font-size: 0.9em;">
+                <a href="{{ route('tos') }}" style="color: inherit; text-decoration: none; margin-right: 16px;">Terms of Service</a>
+                <a href="{{ route('privacy') }}" style="color: inherit; text-decoration: none; margin-right: 16px;">Kebijakan Privasi</a>
+                <a href="{{ route('refund') }}" style="color: inherit; text-decoration: none;">Kebijakan Pengembalian Dana</a>
+            </div>
         </div>
     </div>
 </footer>

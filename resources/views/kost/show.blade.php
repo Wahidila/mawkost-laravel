@@ -3,8 +3,23 @@
 @section('title', $kost->name . ' — mawkost')
 
 @section('content')
+<!-- ========== BREADCRUMB & HEADER ========== -->
+<div style="background: var(--surface); border-bottom: 1px solid var(--border-light); padding-top: var(--nav-h);">
+    <div class="container">
+      <div class="breadcrumb fade-in">
+        <a href="{{ route('home') }}">Beranda</a>
+        <span class="sep">/</span>
+        <a href="{{ route('kost.search') }}">Cari Kost</a>
+        <span class="sep">/</span>
+        <a href="{{ route('kost.byCity', $kost->city->slug) }}">{{ $kost->city->name }}</a>
+        <span class="sep">/</span>
+        <span class="current">{{ $kost->name }}</span>
+      </div>
+    </div>
+</div>
+
 <!-- ========== MAIN CONTENT ========== -->
-<section class="section" style="padding-top: calc(var(--nav-h) + 32px);">
+<section class="section" style="padding-top: 32px;">
     <div class="container">
 
         <!-- Gallery -->

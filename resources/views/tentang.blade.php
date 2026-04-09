@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- ========== BREADCRUMB & HEADER ========== -->
-<div style="background: var(--surface); border-bottom: 1px solid var(--border-light);">
+<div style="background: var(--surface); border-bottom: 1px solid var(--border-light); padding-top: var(--nav-h);">
     <div class="container">
       <div class="breadcrumb fade-in">
         <a href="{{ route('home') }}">Beranda</a>
@@ -12,7 +12,7 @@
         <span class="current">Tentang Kami</span>
       </div>
       <div class="fade-in" style="padding-bottom: 32px;">
-        <h1 style="font-size: 2rem;">Mengenal mawkost Lebih Dekat</h1>
+        <h1>Mengenal mawkost Lebih Dekat</h1>
         <p class="text-muted" style="margin-top: 8px;">Transparansi, kemudahan, dan keamanan adalah komitmen kami untuk anak rantau.</p>
       </div>
     </div>
@@ -21,12 +21,12 @@
 <!-- ========== MAIN CONTENT ========== -->
 <section class="section" style="padding-top: 40px; padding-bottom: 60px;">
     <div class="container">
-      
-      <div style="display: grid; grid-template-columns: 1fr; gap: 48px; @media(min-width: 768px) { grid-template-columns: 1fr 1fr; }">
-        
-        <!-- Kolom Kiri -->
+
+      <div class="about-grid">
+
+        <!-- Kolom Kiri: Cerita -->
         <div class="fade-in">
-          <h2 style="font-size: 1.75rem; margin-bottom: 24px;">Cerita Kami</h2>
+          <h2 style="margin-bottom: 24px;">Cerita Kami</h2>
           <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 16px;">
             Berawal dari keresahan para mahasiswa baru dan anak rantau yang seringkali tertipu calo kost bodong di berbagai grup WhatsApp atau Facebook. Seringkali foto yang ditampilkan tidak sesuai realita, harga yang jauh lebih mahal dari aslinya, hingga hilangnya uang muka (DP) yang dibawa kabur agen tak bertanggung jawab.
           </p>
@@ -38,18 +38,19 @@
           </p>
         </div>
 
-        <!-- Kolom Kanan -->
+        <!-- Kolom Kanan: Gambar + Statistik -->
         <div class="fade-in" style="animation-delay: 0.1s;">
-          <img src="{{ asset('assets/img/kost-room.png') }}" alt="Tim Mawkost" style="width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); margin-bottom: 24px;">
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div style="background: var(--primary-lighter); padding: 20px; border-radius: var(--radius); text-align: center;">
-              <h3 style="font-size: 2rem; color: var(--primary-dark); margin-bottom: 8px;">500+</h3>
-              <p style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">Kost Tervalidasi</p>
+          <img src="{{ asset('assets/img/kost-room.png') }}" alt="Kamar Kost Mawkost"
+               style="width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); margin-bottom: 24px;">
+
+          <div class="about-stats">
+            <div class="stat-card">
+              <h3>500+</h3>
+              <p>Kost Tervalidasi</p>
             </div>
-            <div style="background: var(--primary-lighter); padding: 20px; border-radius: var(--radius); text-align: center;">
-              <h3 style="font-size: 2rem; color: var(--primary-dark); margin-bottom: 8px;">0%</h3>
-              <p style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">Biaya Markup/Komisi</p>
+            <div class="stat-card">
+              <h3>0%</h3>
+              <p>Biaya Markup/Komisi</p>
             </div>
           </div>
         </div>
@@ -59,31 +60,98 @@
       <hr style="margin: 60px 0; border: 0; border-top: 1px solid var(--border-light);">
 
       <!-- Nilai Inti -->
-      <div style="text-align: center; margin-bottom: 40px;" class="fade-in">
-        <h2 style="font-size: 1.75rem;">Nilai Inti Kami</h2>
+      <div class="section-header fade-in">
+        <h2>Nilai Inti Kami</h2>
+        <p>Prinsip yang menjadi fondasi setiap keputusan kami.</p>
       </div>
 
       <div class="steps-grid fade-in">
-        <div class="step-card" style="background: white;">
+        <div class="step-card">
           <div class="step-icon" style="background: #e6f4ea; color: var(--success);">
             <i class="fa-solid fa-shield-halved"></i>
           </div>
           <h4>Autentik & Validasi Real</h4>
           <p>Setiap foto, fasilitas, dan detail yang kami pajang telah diverifikasi langsung kebenarannya dengan pemilik properti.</p>
         </div>
-        <div class="step-card" style="background: white;">
+        <div class="step-card">
           <div class="step-icon" style="background: var(--primary-lighter); color: var(--primary);">
             <i class="fa-solid fa-wallet"></i>
           </div>
           <h4>Harga Jujur Tanpa Markup</h4>
           <p>Anda membayar harga persis sama (bahkan kadang lebih murah karena promo) seperti saat Anda datang langsung ke ibu kost.</p>
         </div>
-        <div class="step-card" style="background: white;">
+        <div class="step-card">
           <div class="step-icon" style="background: #fff0eb; color: var(--cta);">
             <i class="fa-solid fa-people-group"></i>
           </div>
           <h4>Komunitas Terbuka</h4>
           <p>Kami rutin mengundang feedback dari pencari dan pemilik kost untuk terus memperbaiki ekosistem sewa properti ini.</p>
+        </div>
+      </div>
+
+      <hr style="margin: 60px 0; border: 0; border-top: 1px solid var(--border-light);">
+
+      <!-- ========== VISI & MISI ========== -->
+      <div class="section-header fade-in">
+        <h2>Visi & Misi</h2>
+        <p>Arah dan langkah yang membimbing perjalanan mawkost.</p>
+      </div>
+
+      <div class="visi-misi-grid fade-in">
+        <div class="visi-misi-card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <div class="step-icon" style="background: var(--primary-lighter); color: var(--primary); width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: 0;">
+              <i class="fa-solid fa-eye"></i>
+            </div>
+            <h3 style="margin-bottom: 0;">Visi</h3>
+          </div>
+          <p>Menjadi platform terpercaya dalam pencarian, survei, dan promosi kost di Indonesia yang menghubungkan pencari kost dan pemilik kost secara cepat, mudah, dan transparan.</p>
+        </div>
+
+        <div class="visi-misi-card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+            <div class="step-icon" style="background: #fff0eb; color: var(--cta); width: 48px; height: 48px; font-size: 1.2rem; margin-bottom: 0;">
+              <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <h3 style="margin-bottom: 0;">Misi</h3>
+          </div>
+          <ul>
+            <li>Membantu pencari kost menemukan hunian ideal tanpa harus datang langsung.</li>
+            <li>Menyediakan layanan survei kost yang jujur dan informatif melalui konten visual.</li>
+            <li>Meningkatkan visibilitas kost milik pemilik properti melalui strategi promosi kreatif di media sosial.</li>
+            <li>Menghadirkan pengalaman mencari kost yang efisien, aman, dan sesuai kebutuhan pengguna.</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr style="margin: 60px 0; border: 0; border-top: 1px solid var(--border-light);">
+
+      <!-- ========== TEAM ========== -->
+      <div class="section-header fade-in">
+        <h2>Meet Our Professional Team</h2>
+        <p>Orang-orang di balik misi mawkost untuk anak rantau Indonesia.</p>
+      </div>
+
+      <div class="team-grid fade-in">
+        <div class="team-card">
+          <div class="team-avatar">AS</div>
+          <h4>Ananda Satya</h4>
+          <p>CEO, Content Creator Malang & Editor</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">C</div>
+          <h4>Catherina</h4>
+          <p>CFO, PSS Malang & Admin</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">A</div>
+          <h4>Alexander</h4>
+          <p>CTO, PSS Jogja & Content Creator Jogja</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">N</div>
+          <h4>Nathan</h4>
+          <p>PSS Surabaya & Content Creator Surabaya</p>
         </div>
       </div>
 

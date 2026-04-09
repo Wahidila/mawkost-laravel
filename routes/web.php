@@ -39,6 +39,9 @@ Route::get('/checkout/status/{invoiceNo}', [CheckoutController::class , 'checkSt
 Route::get('/kontak', [ContactController::class , 'index'])->name('contact.index');
 Route::post('/kontak', [ContactController::class , 'store'])->name('contact.store');
 Route::get('/tentang', [PageController::class , 'tentang'])->name('tentang');
+Route::get('/terms-of-service', [PageController::class , 'tos'])->name('tos');
+Route::get('/kebijakan-privasi', [PageController::class , 'privacy'])->name('privacy');
+Route::get('/kebijakan-pengembalian-dana', [PageController::class , 'refund'])->name('refund');
 
 // Auth Routes
 Route::get('/login', [LoginController::class , 'showLoginForm'])->name('login');
@@ -77,4 +80,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::get('settings/xendit', [AdminSettingController::class , 'xendit'])->name('settings.xendit');
     Route::put('settings/xendit', [AdminSettingController::class , 'updateXendit'])->name('settings.xendit.update');
     Route::post('settings/xendit/test', [AdminSettingController::class , 'testXendit'])->name('settings.xendit.test');
+
+    // Footer Settings
+    Route::get('settings/footer', [AdminSettingController::class , 'footer'])->name('settings.footer');
+    Route::put('settings/footer', [AdminSettingController::class , 'updateFooter'])->name('settings.footer.update');
 });

@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- ========== BREADCRUMB & HEADER ========== -->
-<div style="background: var(--surface); border-bottom: 1px solid var(--border-light);">
+<div style="background: var(--surface); border-bottom: 1px solid var(--border-light); padding-top: var(--nav-h);">
     <div class="container">
         <div class="breadcrumb fade-in">
             <a href="{{ route('home') }}">Beranda</a>

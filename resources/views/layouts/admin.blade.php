@@ -131,6 +131,14 @@
                             <span class="ml-3 text-sm tracking-wide truncate">Pengaturan Xendit</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.settings.footer') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.settings.footer*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <i class="fas fa-columns {{ request()->routeIs('admin.settings.footer*') ? 'text-cta' : '' }}"></i>
+                            </span>
+                            <span class="ml-3 text-sm tracking-wide truncate">Pengaturan Footer</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- Logout Button -->

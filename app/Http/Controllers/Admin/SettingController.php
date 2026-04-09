@@ -145,4 +145,66 @@ class SettingController extends Controller
         return redirect()->route('admin.settings.xendit')
             ->with('error', 'Gagal terhubung ke Xendit: ' . ($result['error'] ?? 'Unknown error'));
     }
+
+    // =========================================================================
+    // Footer Links Settings
+    // =========================================================================
+
+    /**
+     * Show Footer links settings form.
+     */
+    public function footer()
+    {
+        $defaultKota = json_encode([
+            ['label' => 'Malang', 'url' => '/kost/malang'],
+            ['label' => 'Surabaya', 'url' => '/kost/surabaya'],
+            ['label' => 'Yogyakarta', 'url' => '/kost/yogyakarta'],
+            ['label' => 'Bali', 'url' => '/kost/bali'],
+        ]);
+        $defaultLayanan = json_encode([
+            ['label' => 'Cariin Kost', 'url' => '/cari-kost'],
+            ['label' => 'Survey Kost', 'url' => '/#cara-kerja'],
+            ['label' => 'Promosi Kost', 'url' => '/kontak'],
+            ['label' => 'Info Kost', 'url' => '/cari-kost'],
+        ]);
+        $defaultKontak = json_encode([
+            ['label' => 'maw.kost198@gmail.com', 'url' => 'mailto:maw.kost198@gmail.com'],
+            ['label' => '+62 823-3798-5404', 'url' => 'tel:+6282337985404'],
+            ['label' => '@maw.kost', 'url' => '#'],
+        ]);
+
+        $footerKota = json_decode(Setting::get('footer_kota', $defaultKota), true) ?: [];
+        $footerLayanan = json_decode(Setting::get('footer_layanan', $defaultLayanan), true) ?: [];
+        $footerKontak = json_decode(Setting::get('footer_kontak', $defaultKontak), true) ?: [];
+
+        return view('admin.settings.footer', compact('footerKota', 'footerLayanan', 'footerKontak'));
+    }
+
+    /**
+     * Save Footer links settings.
+     */
+    public function updateFooter(Request $request)
+    {
+        $kota = collect($request->input('kota', []))->values()->map(fn($item) => [
+        'label' => $item['label'] ?? '',
+        'url' => $item['url'] ?? '#',
+        ])->filter(fn($item) => !empty($item['label']))->values()->toArray();
+
+        $layanan = collect($request->input('layanan', []))->values()->map(fn($item) => [
+        'label' => $item['label'] ?? '',
+        'url' => $item['url'] ?? '#',
+        ])->filter(fn($item) => !empty($item['label']))->values()->toArray();
+
+        $kontak = collect($request->input('kontak', []))->values()->map(fn($item) => [
+        'label' => $item['label'] ?? '',
+        'url' => $item['url'] ?? '#',
+        ])->filter(fn($item) => !empty($item['label']))->values()->toArray();
+
+        Setting::set('footer_kota', json_encode($kota));
+        Setting::set('footer_layanan', json_encode($layanan));
+        Setting::set('footer_kontak', json_encode($kontak));
+
+        return redirect()->route('admin.settings.footer')
+            ->with('success', 'Pengaturan footer berhasil disimpan.');
+    }
 }

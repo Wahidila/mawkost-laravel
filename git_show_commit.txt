@@ -1,0 +1,27 @@
+﻿commit 2e582f12c92fc911cc9df8441b6abd01d9aed4cb
+Author: Wahidila SP <contentsaya1@gmail.com>
+Date:   Thu Mar 26 17:31:50 2026 +0700
+
+    fix(mail): force variables injection via git commit directly
+
+diff --git a/app/Mail/KostUnlockedMail.php b/app/Mail/KostUnlockedMail.php
+index dc42c58..2c1e244 100644
+--- a/app/Mail/KostUnlockedMail.php
++++ b/app/Mail/KostUnlockedMail.php
+@@ -16,10 +16,7 @@ class KostUnlockedMail extends Mailable
+     /**
+      * Create a new message instance.
+      */
+-    public function __construct()
+-    {
+-        //
+-    }
++    public $email;\n    public $user;\n    public $order;\n    public $kost;\n\n    public function __construct($user, $order)\n    {\n        $this->user = $user;\n        $this->email = $user->email ?? $user;\n        $this->order = $order;\n        $this->kost = $order->kost;\n    }
+ 
+     /**
+      * Get the message envelope.
+@@ -51,3 +48,4 @@ public function attachments(): array
+         return [];
+     }
+ }
++
