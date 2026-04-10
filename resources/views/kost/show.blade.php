@@ -102,7 +102,7 @@
                 <div>
                     <div style="display:flex;gap:8px;margin-bottom:12px;">
                         @php
-                            $typeBadgeClass = 'badge-' . ($kost->kostType ? $kost->kostType->slug : ($kost->type ?? 'campur'));
+                            $typeBadgeClass = 'badge-kost-type badge-' . ($kost->kostType ? $kost->kostType->slug : ($kost->type ?? 'campur'));
                             $typeName = $kost->kostType ? $kost->kostType->name : ucfirst($kost->type ?? 'Campur');
                         @endphp
                         <span class="badge {{ $typeBadgeClass }}">Kost {{ $typeName }}</span>

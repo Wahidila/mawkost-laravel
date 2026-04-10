@@ -3,7 +3,7 @@
 @php
     $firstImage = $kost->images->first();
     $imagePath = $firstImage ? $firstImage->image_path : 'assets/img/kost-1.png';
-    $typeBadge = 'badge-' . ($kost->kostType ? $kost->kostType->slug : ($kost->type ?? 'campur'));
+    $typeBadge = 'badge-kost-type badge-' . ($kost->kostType ? $kost->kostType->slug : ($kost->type ?? 'campur'));
     $typeName = $kost->kostType ? $kost->kostType->name : ucfirst($kost->type ?? 'Campur');
 @endphp
 
