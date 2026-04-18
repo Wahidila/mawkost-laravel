@@ -38,6 +38,9 @@ class KostController extends Controller
             $query->where('price', '<=', $request->max_harga);
         }
 
+        // Featured kost muncul duluan di listing
+        $query->orderByDesc('is_featured')->orderByDesc('is_recommended')->latest();
+
         $kosts = $query->paginate(9)->withQueryString();
         $cities = City::orderBy('name')->get();
         $kostTypes = KostType::orderBy('name')->get();
@@ -51,6 +54,9 @@ class KostController extends Controller
         $kosts = Kost::with('city', 'images', 'facilities', 'kostType')
             ->where('city_id', $city->id)
             ->available()
+            ->orderByDesc('is_featured')
+            ->orderByDesc('is_recommended')
+            ->latest()
             ->paginate(9);
 
         return view('kost.by-city', compact('city', 'kosts'));
@@ -62,11 +68,13 @@ class KostController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // Rekomendasi kost lain di kota yang sama
+        // Rekomendasi kost lain di kota yang sama — prioritaskan yang is_recommended
         $otherKosts = Kost::with('city', 'images', 'facilities', 'kostType')
             ->where('city_id', $kost->city_id)
             ->where('id', '!=', $kost->id)
             ->available()
+            ->orderByDesc('is_recommended')
+            ->orderByDesc('is_featured')
             ->take(3)
             ->get();
 

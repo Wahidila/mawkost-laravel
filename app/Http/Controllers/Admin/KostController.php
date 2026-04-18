@@ -16,10 +16,20 @@ use Illuminate\Support\Facades\Storage;
 
 class KostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kosts = Kost::with('city')->latest()->paginate(10);
-        return view('admin.kosts.index', compact('kosts'));
+        $query = Kost::with('city')->latest();
+
+        if ($request->filter === 'featured') {
+            $query->where('is_featured', true);
+        } elseif ($request->filter === 'recommended') {
+            $query->where('is_recommended', true);
+        }
+
+        $kosts = $query->paginate(10)->withQueryString();
+        $currentFilter = $request->filter;
+
+        return view('admin.kosts.index', compact('kosts', 'currentFilter'));
     }
 
     public function create()
@@ -224,6 +234,24 @@ class KostController extends Controller
         $kost->delete();
 
         return redirect()->route('admin.kosts.index')->with('success', 'Kost berhasil dihapus');
+    }
+
+    public function toggleFeatured($id)
+    {
+        $kost = Kost::findOrFail($id);
+        $kost->update(['is_featured' => !$kost->is_featured]);
+
+        $status = $kost->is_featured ? 'diaktifkan' : 'dinonaktifkan';
+        return back()->with('success', "Featured {$status} untuk {$kost->name}");
+    }
+
+    public function toggleRecommended($id)
+    {
+        $kost = Kost::findOrFail($id);
+        $kost->update(['is_recommended' => !$kost->is_recommended]);
+
+        $status = $kost->is_recommended ? 'diaktifkan' : 'dinonaktifkan';
+        return back()->with('success', "Rekomendasi {$status} untuk {$kost->name}");
     }
 
     // Custom method to delete single image via ajax/form

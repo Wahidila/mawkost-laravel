@@ -100,7 +100,13 @@
 
                 <!-- Header Info -->
                 <div>
-                    <div style="display:flex;gap:8px;margin-bottom:12px;">
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                        @if($kost->is_featured)
+                            <span class="badge badge-featured"><i class="fa-solid fa-crown" style="font-size:0.65rem;"></i> Featured</span>
+                        @endif
+                        @if($kost->is_recommended)
+                            <span class="badge badge-recommended"><i class="fa-solid fa-thumbs-up" style="font-size:0.65rem;"></i> Rekomendasi</span>
+                        @endif
                         @php
                             $typeBadgeClass = 'badge-kost-type badge-' . ($kost->kostType ? $kost->kostType->slug : ($kost->type ?? 'campur'));
                             $typeName = $kost->kostType ? $kost->kostType->name : ucfirst($kost->type ?? 'Campur');

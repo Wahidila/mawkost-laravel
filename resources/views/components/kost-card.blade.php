@@ -5,12 +5,18 @@
     $imagePath = $firstImage ? $firstImage->image_path : 'assets/img/kost-1.png';
     $typeBadge = 'badge-kost-type badge-' . ($kost->kostType ? $kost->kostType->slug : ($kost->type ?? 'campur'));
     $typeName = $kost->kostType ? $kost->kostType->name : ucfirst($kost->type ?? 'Campur');
+    $cardClass = $kost->is_featured ? 'listing-card card fade-in card-featured' : 'listing-card card fade-in';
 @endphp
 
-<a href="{{ route('kost.show', ['citySlug' => $kost->city->slug, 'slug' => $kost->slug]) }}" class="listing-card card fade-in">
+<a href="{{ route('kost.show', ['citySlug' => $kost->city->slug, 'slug' => $kost->slug]) }}" class="{{ $cardClass }}">
     <div style="position:relative;">
         <img src="{{ asset($imagePath) }}" alt="{{ $kost->name }}" class="card-img">
         <div class="card-badges">
+            @if($kost->is_featured)
+                <span class="badge badge-featured"><i class="fa-solid fa-crown" style="font-size:0.65rem;"></i> Featured</span>
+            @elseif($kost->is_recommended)
+                <span class="badge badge-recommended"><i class="fa-solid fa-thumbs-up" style="font-size:0.65rem;"></i> Rekomendasi</span>
+            @endif
             <span class="badge {{ $typeBadge }}">{{ $typeName }}</span>
             @if($kost->status === 'tersedia')
                 <span class="badge badge-success">Tersedia</span>

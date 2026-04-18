@@ -87,13 +87,13 @@
                         </div>
                         
                         <div class="pt-2 flex flex-col gap-3">
-                            <label class="inline-flex items-center group cursor-pointer bg-white border border-primary-lighter rounded-xl py-2 px-4 hover:bg-primary-lighter/10 transition-colors">
-                                <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $kost->is_featured) ? 'checked' : '' }} class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
-                                <span class="ml-3 text-sm font-medium text-primary-dark">Tandai Featured (Premium)</span>
+                            <label class="inline-flex items-center group cursor-pointer bg-white border border-primary-lighter rounded-xl py-2.5 px-4 hover:bg-amber-50 hover:border-amber-200 transition-colors">
+                                <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $kost->is_featured) ? 'checked' : '' }} class="w-4 h-4 text-amber-500 bg-gray-100 border-gray-300 rounded focus:ring-amber-500 focus:ring-2">
+                                <span class="ml-3 text-sm font-medium text-primary-dark"><i class="fas fa-crown text-amber-500 mr-1.5"></i> Tandai Featured (Premium)</span>
                             </label>
-                            <label class="inline-flex items-center group cursor-pointer bg-white border border-primary-lighter rounded-xl py-2 px-4 hover:bg-primary-lighter/10 transition-colors">
-                                <input type="checkbox" name="is_recommended" value="1" {{ old('is_recommended', $kost->is_recommended) ? 'checked' : '' }} class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
-                                <span class="ml-3 text-sm font-medium text-primary-dark">Rekomendasi Mawkost</span>
+                            <label class="inline-flex items-center group cursor-pointer bg-white border border-primary-lighter rounded-xl py-2.5 px-4 hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                                <input type="checkbox" name="is_recommended" value="1" {{ old('is_recommended', $kost->is_recommended) ? 'checked' : '' }} class="w-4 h-4 text-blue-500 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                <span class="ml-3 text-sm font-medium text-primary-dark"><i class="fas fa-thumbs-up text-blue-500 mr-1.5"></i> Rekomendasi Mawkost</span>
                             </label>
                         </div>
                     </div>

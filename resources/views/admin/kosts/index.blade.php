@@ -15,6 +15,23 @@
         </a>
     </div>
 
+    <!-- Filter Bar -->
+    <div class="px-6 py-3 border-b border-primary-lighter/30 bg-primary-lighter/5 flex items-center gap-2 flex-wrap">
+        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider mr-1">Filter:</span>
+        <a href="{{ route('admin.kosts.index') }}" 
+           class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 {{ !isset($currentFilter) || !$currentFilter ? 'bg-primary text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' }}">
+            Semua
+        </a>
+        <a href="{{ route('admin.kosts.index', ['filter' => 'featured']) }}" 
+           class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 {{ ($currentFilter ?? '') === 'featured' ? 'bg-amber-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-700' }}">
+            <i class="fas fa-crown text-[10px]"></i> Featured
+        </a>
+        <a href="{{ route('admin.kosts.index', ['filter' => 'recommended']) }}" 
+           class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 {{ ($currentFilter ?? '') === 'recommended' ? 'bg-blue-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700' }}">
+            <i class="fas fa-thumbs-up text-[10px]"></i> Rekomendasi
+        </a>
+    </div>
+
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-primary-lighter/50">
             <thead class="bg-primary-lighter/20">
@@ -24,6 +41,7 @@
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Tipe</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Harga</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Status</th>
+                    <th class="px-6 py-4 text-center text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Label</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Aksi</th>
                 </tr>
             </thead>
@@ -49,6 +67,28 @@
                             </span>
                         @endif
                     </td>
+                    <td class="px-6 py-5 whitespace-nowrap text-sm text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            {{-- Toggle Featured --}}
+                            <form action="{{ route('admin.kosts.toggleFeatured', $item->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" title="{{ $item->is_featured ? 'Nonaktifkan Featured' : 'Aktifkan Featured' }}"
+                                    class="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 {{ $item->is_featured ? 'bg-amber-100 text-amber-600 border border-amber-200 hover:bg-amber-200 shadow-sm' : 'bg-gray-50 text-gray-300 border border-gray-200 hover:bg-amber-50 hover:text-amber-400 hover:border-amber-200' }}">
+                                    <i class="fas fa-crown text-xs"></i>
+                                </button>
+                            </form>
+                            {{-- Toggle Rekomendasi --}}
+                            <form action="{{ route('admin.kosts.toggleRecommended', $item->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" title="{{ $item->is_recommended ? 'Nonaktifkan Rekomendasi' : 'Aktifkan Rekomendasi' }}"
+                                    class="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 {{ $item->is_recommended ? 'bg-blue-100 text-blue-600 border border-blue-200 hover:bg-blue-200 shadow-sm' : 'bg-gray-50 text-gray-300 border border-gray-200 hover:bg-blue-50 hover:text-blue-400 hover:border-blue-200' }}">
+                                    <i class="fas fa-thumbs-up text-xs"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
                     <td class="px-6 py-5 whitespace-nowrap text-sm font-medium">
                         <div class="flex items-center gap-3">
                             <a href="{{ route('admin.kosts.edit', $item->id) }}" class="text-primary hover:text-cta transition-colors flex items-center gap-1.5">
@@ -66,7 +106,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-6 py-8 whitespace-nowrap text-sm text-center font-medium bg-gray-50/30">
+                    <td colspan="7" class="px-6 py-8 whitespace-nowrap text-sm text-center font-medium bg-gray-50/30">
                         <div class="flex flex-col items-center justify-center">
                             <i class="fa-solid fa-building text-3xl mb-3 text-primary-light"></i>
                             <p class="text-gray-500">Belum ada data kost.</p>

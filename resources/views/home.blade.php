@@ -151,6 +151,29 @@
   </div>
 </section>
 
+<!-- ========== KOST PILIHAN (FEATURED) ========== -->
+@if($featuredKosts->count() > 0)
+<section class="section" style="background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span class="badge badge-featured"><i class="fa-solid fa-crown" style="font-size:0.65rem;"></i> Pilihan Premium</span>
+      </div>
+      <h2>Kost Pilihan</h2>
+      <p>Kost premium yang dipilih khusus oleh tim mawkost untuk kamu</p>
+    </div>
+    <div class="listing-grid">
+      @foreach($featuredKosts as $kost)
+        <x-kost-card :kost="$kost" />
+      @endforeach
+    </div>
+    <div style="text-align: center; margin-top: 40px;" class="fade-in">
+      <a href="{{ route('kost.search') }}?featured=1" class="btn btn-outline" style="background:white;">Lihat Semua Kost Pilihan</a>
+    </div>
+  </div>
+</section>
+@endif
+
 <!-- ========== REKOMENDASI KOST ========== -->
 <section class="section" style="background: var(--primary-lighter);">
   <div class="container">

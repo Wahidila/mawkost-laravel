@@ -330,12 +330,50 @@ textarea {
   color: #ffffff;
 }
 
+.badge-danger {
+  background: #DC3545;
+  color: #ffffff;
+}
+
+.badge-featured {
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.badge-recommended {
+  background: linear-gradient(135deg, #3B82F6, #2563EB);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+}
+
 .badge-kost-type,
 .badge-putra,
 .badge-putri,
 .badge-campur {
   background: #e8734a;
   color: #ffffff;
+}
+
+/* Featured card glow effect */
+.listing-card.card-featured {
+  border: 1.5px solid rgba(245, 158, 11, 0.35);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.1), var(--shadow);
+  position: relative;
+}
+
+.listing-card.card-featured::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #F59E0B, #D97706);
+  border-radius: var(--radius) var(--radius) 0 0;
+  z-index: 2;
 }
 
 /* ---------- Navbar ---------- */
