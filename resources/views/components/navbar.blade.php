@@ -8,45 +8,38 @@ $currentRoute = request()->route()->getName();
             <img src="{{ asset('assets/img/logo.png') }}" alt="mawkost logo">
             <span>maw.kost</span>
         </a>
-        <div class="nav-links" id="navLinks">
-            <a href="{{ route('home') }}" class="{{ $currentRoute === 'home' ? 'active' : '' }}">Beranda</a>
-            <a href="{{ route('home') }}#cara-kerja">Cara Kerja</a>
-            <a href="{{ route('tentang') }}" class="{{ $currentRoute === 'tentang' ? 'active' : '' }}">Tentang</a>
-            <a href="{{ route('contact.index') }}" class="{{ $currentRoute === 'contact.index' ? 'active' : '' }}">Kontak</a>
-            <a href="{{ route('chat.index') }}" class="{{ $currentRoute === 'chat.index' ? 'active' : '' }}"><i class="fa-solid fa-robot" style="margin-right: 3px;"></i> Konsultasi AI</a>
-            <a href="{{ route('kost.search') }}" class="btn btn-cta btn-sm nav-cta">Cari Kost</a>
 
-            @auth
-                @if(auth()->user()->isAdmin())
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-sm" style="background: var(--primary); color: #fff; margin-left: 8px;">
-                        <i class="fa-solid fa-gauge-high" style="margin-right: 4px;"></i> Admin
-                    </a>
+        <div class="nav-menu" id="navMenu">
+            <div class="nav-links-center">
+                <a href="{{ route('home') }}" class="{{ $currentRoute === 'home' ? 'active' : '' }}">Beranda</a>
+                <a href="{{ route('home') }}#cara-kerja">Cara Kerja</a>
+                <a href="{{ route('tentang') }}" class="{{ $currentRoute === 'tentang' ? 'active' : '' }}">Tentang</a>
+                <a href="{{ route('contact.index') }}" class="{{ $currentRoute === 'contact.index' ? 'active' : '' }}">Kontak</a>
+            </div>
+
+            <div class="nav-actions">
+                <a href="{{ route('chat.index') }}" class="btn btn-sm nav-ai-chat {{ $currentRoute === 'chat.index' ? 'active' : '' }}"><i class="fa-solid fa-robot"></i> Konsultasi AI</a>
+                <a href="{{ route('kost.search') }}" class="btn btn-cta btn-sm nav-cta"><i class="fa-solid fa-magnifying-glass"></i> Cari Kost</a>
+                @auth
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-sm nav-auth nav-auth-solid">
+                            <i class="fa-solid fa-gauge-high"></i> Admin
+                        </a>
+                    @else
+                        <a href="{{ route('user.dashboard') }}" class="btn btn-sm nav-auth nav-auth-solid">
+                            <i class="fa-solid fa-user"></i> Dashboard
+                        </a>
+                    @endif
                 @else
-                    <a href="{{ route('user.dashboard') }}" class="btn btn-sm" style="background: var(--primary); color: #fff; margin-left: 8px;">
-                        <i class="fa-solid fa-user" style="margin-right: 4px;"></i> Dashboard
+                    <a href="{{ route('login') }}" class="btn btn-sm nav-auth nav-auth-icon" title="Masuk" aria-label="Masuk">
+                        <i class="fa-solid fa-right-to-bracket"></i>
                     </a>
-                @endif
-            @else
-                <a href="{{ route('login') }}" class="btn btn-sm" style="border: 1px solid var(--border); color: var(--text); margin-left: 8px;">
-                    <i class="fa-solid fa-right-to-bracket" style="margin-right: 4px;"></i> Masuk
-                </a>
-            @endauth
+                @endauth
+            </div>
         </div>
-        <div class="nav-toggle" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu">
             <span></span><span></span><span></span>
-        </div>
+        </button>
     </div>
 </nav>
-
-<script>
-    // Toggle mobile menu
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggle = document.getElementById('navToggle');
-        const links = document.getElementById('navLinks');
-        if(toggle && links) {
-            toggle.addEventListener('click', function() {
-                links.classList.toggle('open');
-            });
-        }
-    });
-</script>
