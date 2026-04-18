@@ -2,7 +2,6 @@
 
 @section('title', 'Konsultasi AI - Temukan Kost Ideal | mawkost')
 @section('meta_description', 'Konsultasi dengan AI mawkost untuk menemukan kost ideal sesuai kebutuhan dan budget kamu.')
-@section('body_class', 'chat-page')
 @section('hide_footer', true)
 
 @section('content')
