@@ -9,6 +9,7 @@ use App\Models\Kost;
 use App\Models\KostType;
 use App\Models\KostImage;
 use App\Models\NearbyPlace;
+use App\Services\WatermarkService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -80,8 +81,13 @@ class KostController extends Controller
 
         // Process Images
         if ($request->hasFile('images')) {
+            $watermarkService = app(WatermarkService::class);
             foreach ($request->file('images') as $i => $file) {
                 $path = $file->store('kosts', 'public');
+
+                // Apply watermark if enabled
+                $watermarkService->apply($path);
+
                 KostImage::create([
                     'kost_id' => $kost->id,
                     'image_path' => 'storage/' . $path,
@@ -170,8 +176,13 @@ class KostController extends Controller
 
         // Process Additional Images
         if ($request->hasFile('images')) {
+            $watermarkService = app(WatermarkService::class);
             foreach ($request->file('images') as $i => $file) {
                 $path = $file->store('kosts', 'public');
+
+                // Apply watermark if enabled
+                $watermarkService->apply($path);
+
                 KostImage::create([
                     'kost_id' => $kost->id,
                     'image_path' => 'storage/' . $path,

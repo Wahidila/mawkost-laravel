@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Services\WatermarkService;
 use App\Services\XSenderService;
 use App\Services\XenditService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -178,6 +180,94 @@ class SettingController extends Controller
         $footerKontak = json_decode(Setting::get('footer_kontak', $defaultKontak), true) ?: [];
 
         return view('admin.settings.footer', compact('footerKota', 'footerLayanan', 'footerKontak'));
+    }
+
+    // =========================================================================
+    // Watermark Settings
+    // =========================================================================
+
+    /**
+     * Show Watermark settings form.
+     */
+    public function watermark()
+    {
+        $settings = [
+            'watermark_enabled' => Setting::get('watermark_enabled', '0'),
+            'watermark_image' => Setting::get('watermark_image', ''),
+            'watermark_opacity' => Setting::get('watermark_opacity', '50'),
+            'watermark_size' => Setting::get('watermark_size', '30'),
+        ];
+
+        return view('admin.settings.watermark', compact('settings'));
+    }
+
+    /**
+     * Save Watermark settings.
+     */
+    public function updateWatermark(Request $request)
+    {
+        $request->validate([
+            'watermark_image' => 'nullable|image|mimes:png,webp|max:2048',
+            'watermark_opacity' => 'required|integer|min:0|max:100',
+            'watermark_size' => 'required|integer|min:10|max:80',
+        ]);
+
+        Setting::set('watermark_enabled', $request->has('watermark_enabled') ? '1' : '0');
+        Setting::set('watermark_opacity', $request->watermark_opacity);
+        Setting::set('watermark_size', $request->watermark_size);
+
+        // Handle watermark image upload
+        if ($request->hasFile('watermark_image')) {
+            // Delete old watermark image if exists
+            $oldImage = Setting::get('watermark_image');
+            if ($oldImage) {
+                $oldDiskPath = str_replace('storage/', '', $oldImage);
+                Storage::disk('public')->delete($oldDiskPath);
+            }
+
+            $path = $request->file('watermark_image')->store('watermarks', 'public');
+            Setting::set('watermark_image', 'storage/' . $path);
+        }
+
+        // Handle watermark image removal
+        if ($request->has('remove_watermark_image')) {
+            $oldImage = Setting::get('watermark_image');
+            if ($oldImage) {
+                $oldDiskPath = str_replace('storage/', '', $oldImage);
+                Storage::disk('public')->delete($oldDiskPath);
+            }
+            Setting::set('watermark_image', '');
+        }
+
+        return redirect()->route('admin.settings.watermark')
+            ->with('success', 'Pengaturan watermark berhasil disimpan.');
+    }
+
+    /**
+     * Apply watermark to all existing kost images.
+     */
+    public function applyWatermarkAll(WatermarkService $watermarkService)
+    {
+        if (!$watermarkService->isEnabled()) {
+            return redirect()->route('admin.settings.watermark')
+                ->with('error', 'Watermark belum aktif atau gambar watermark belum diupload.');
+        }
+
+        // Increase time limit for bulk processing
+        set_time_limit(300);
+
+        $result = $watermarkService->applyToAll();
+
+        $message = "Watermark berhasil diterapkan ke {$result['processed']} gambar.";
+        if ($result['failed'] > 0) {
+            $message .= " {$result['failed']} gambar gagal diproses.";
+        }
+        if ($result['skipped'] > 0) {
+            $message .= " {$result['skipped']} gambar dilewati (file tidak ditemukan).";
+        }
+
+        return redirect()->route('admin.settings.watermark')
+            ->with('success', $message);
     }
 
     /**

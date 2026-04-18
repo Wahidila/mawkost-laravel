@@ -86,4 +86,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     // Footer Settings
     Route::get('settings/footer', [AdminSettingController::class , 'footer'])->name('settings.footer');
     Route::put('settings/footer', [AdminSettingController::class , 'updateFooter'])->name('settings.footer.update');
+
+    // Watermark Settings
+    Route::get('settings/watermark', [AdminSettingController::class , 'watermark'])->name('settings.watermark');
+    Route::put('settings/watermark', [AdminSettingController::class , 'updateWatermark'])->name('settings.watermark.update');
+    Route::post('settings/watermark/apply-all', [AdminSettingController::class , 'applyWatermarkAll'])->name('settings.watermark.apply-all');
 });
