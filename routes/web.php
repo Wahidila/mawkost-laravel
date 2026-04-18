@@ -7,6 +7,7 @@ use App\Http\Controllers\KostController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\StorageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KostController as AdminKostController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\AiSettingController as AdminAiSettingController;
 use App\Http\Controllers\User\UserDashboardController;
 
 // Public Pages
@@ -35,6 +37,9 @@ Route::post('/checkout/{kostSlug}', [CheckoutController::class , 'process'])->na
 Route::post('/payment/callback', [CheckoutController::class , 'callback'])->name('payment.callback');
 Route::get('/success/{invoiceNo}', [CheckoutController::class , 'success'])->name('checkout.success');
 Route::get('/checkout/status/{invoiceNo}', [CheckoutController::class , 'checkStatus'])->name('checkout.status');
+
+// AI Consultation
+Route::get('/konsultasi', [ChatController::class , 'index'])->name('chat.index');
 
 // Static Pages & Forms
 Route::get('/kontak', [ContactController::class , 'index'])->name('contact.index');
@@ -96,4 +101,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::get('settings/watermark', [AdminSettingController::class , 'watermark'])->name('settings.watermark');
     Route::put('settings/watermark', [AdminSettingController::class , 'updateWatermark'])->name('settings.watermark.update');
     Route::post('settings/watermark/apply-all', [AdminSettingController::class , 'applyWatermarkAll'])->name('settings.watermark.apply-all');
+
+    // AI Chat Settings
+    Route::get('settings/ai', [AdminAiSettingController::class , 'show'])->name('settings.ai');
+    Route::put('settings/ai', [AdminAiSettingController::class , 'update'])->name('settings.ai.update');
+    Route::post('settings/ai/test', [AdminAiSettingController::class , 'test'])->name('settings.ai.test');
+    Route::post('settings/ai/clear-cache', [AdminAiSettingController::class , 'clearCache'])->name('settings.ai.clearCache');
 });

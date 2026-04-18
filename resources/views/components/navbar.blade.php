@@ -13,6 +13,7 @@ $currentRoute = request()->route()->getName();
             <a href="{{ route('home') }}#cara-kerja">Cara Kerja</a>
             <a href="{{ route('tentang') }}" class="{{ $currentRoute === 'tentang' ? 'active' : '' }}">Tentang</a>
             <a href="{{ route('contact.index') }}" class="{{ $currentRoute === 'contact.index' ? 'active' : '' }}">Kontak</a>
+            <a href="{{ route('chat.index') }}" class="{{ $currentRoute === 'chat.index' ? 'active' : '' }}"><i class="fa-solid fa-robot" style="margin-right: 3px;"></i> Konsultasi AI</a>
             <a href="{{ route('kost.search') }}" class="btn btn-cta btn-sm nav-cta">Cari Kost</a>
 
             @auth
