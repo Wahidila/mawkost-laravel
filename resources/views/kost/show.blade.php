@@ -112,7 +112,6 @@
                             $typeName = $kost->kostType ? $kost->kostType->name : ucfirst($kost->type ?? 'Campur');
                         @endphp
                         <span class="badge {{ $typeBadgeClass }}">Kost {{ $typeName }}</span>
-                        <span class="badge {{ $kost->statusBadge['class'] }}" {!! isset($kost->statusBadge['style']) ? 'style="'.$kost->statusBadge['style'].'"' : '' !!}>{{ $kost->statusBadge['text'] }}</span>
                     </div>
                     <h1 class="kost-title">{{ $kost->name }}</h1>
                     <p class="text-muted" style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:1.05rem;">

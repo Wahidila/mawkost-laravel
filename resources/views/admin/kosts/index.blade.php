@@ -40,7 +40,6 @@
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Kota</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Tipe</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Harga</th>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Status</th>
                     <th class="px-6 py-4 text-center text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Label</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Aksi</th>
                 </tr>
@@ -56,17 +55,6 @@
                         </span>
                     </td>
                     <td class="px-6 py-5 whitespace-nowrap text-sm font-semibold text-primary-dark">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
-                    <td class="px-6 py-5 whitespace-nowrap text-sm">
-                        @if($item->status == 'tersedia')
-                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-green-100 text-green-800 border border-green-200">
-                                Tersedia
-                            </span>
-                        @else
-                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-red-100 text-red-800 border border-red-200">
-                                Penuh
-                            </span>
-                        @endif
-                    </td>
                     <td class="px-6 py-5 whitespace-nowrap text-sm text-center">
                         <div class="flex items-center justify-center gap-2">
                             {{-- Toggle Featured --}}
@@ -106,7 +94,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-6 py-8 whitespace-nowrap text-sm text-center font-medium bg-gray-50/30">
+                    <td colspan="6" class="px-6 py-8 whitespace-nowrap text-sm text-center font-medium bg-gray-50/30">
                         <div class="flex flex-col items-center justify-center">
                             <i class="fa-solid fa-building text-3xl mb-3 text-primary-light"></i>
                             <p class="text-gray-500">Belum ada data kost.</p>

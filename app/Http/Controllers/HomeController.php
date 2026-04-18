@@ -14,18 +14,15 @@ class HomeController extends Controller
 
         $featuredKosts = Kost::with('city', 'images', 'facilities', 'kostType')
             ->featured()
-            ->available()
             ->take(4)
             ->get();
 
         $recommendedKosts = Kost::with('city', 'images', 'facilities', 'kostType')
             ->recommended()
-            ->available()
             ->take(6)
             ->get();
 
         $recentKosts = Kost::with('city', 'images', 'facilities', 'kostType')
-            ->available()
             ->latest()
             ->take(3)
             ->get();

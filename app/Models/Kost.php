@@ -12,7 +12,7 @@ class Kost extends Model
     protected $fillable = [
         'kost_type_id',
         'kode', 'name', 'slug', 'city_id', 'type', 'price', 'description',
-        'area_label', 'available_rooms', 'total_rooms', 'total_bathrooms', 'status', 'floor_count', 'parking_type',
+        'area_label', 'total_rooms', 'total_bathrooms', 'floor_count', 'parking_type',
         'is_featured', 'is_recommended', 'unlock_price', 'address',
         'owner_contact', 'owner_name', 'maps_link', 'purchase_count',
     ];
@@ -78,11 +78,6 @@ class Kost extends Model
         return $query->where('is_recommended', true);
     }
 
-    public function scopeAvailable($query)
-    {
-        return $query->where('status', 'tersedia');
-    }
-
     public function scopeByCity($query, $cityId)
     {
         return $query->where('city_id', $cityId);
@@ -114,11 +109,5 @@ class Kost extends Model
             };
     }
 
-    public function getStatusBadgeAttribute()
-    {
-        if ($this->status === 'tersedia' && $this->available_rooms > 0) {
-            return ['class' => 'badge-success', 'text' => 'Tersedia ' . $this->available_rooms . ' Kamar'];
-        }
-        return ['class' => '', 'text' => 'Penuh', 'style' => 'background:#9ca3af;color:#fff;'];
-    }
+
 }

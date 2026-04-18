@@ -18,13 +18,6 @@
                 <span class="badge badge-recommended"><i class="fa-solid fa-thumbs-up" style="font-size:0.65rem;"></i> Rekomendasi</span>
             @endif
             <span class="badge {{ $typeBadge }}">{{ $typeName }}</span>
-            @if($kost->status === 'tersedia')
-                <span class="badge badge-success">Tersedia</span>
-            @elseif($kost->status === 'penuh')
-                <span class="badge badge-danger">Penuh</span>
-            @else
-                <span class="badge badge-success">Sisa {{ $kost->available_rooms ?? '' }} Kamar</span>
-            @endif
         </div>
     </div>
     <div class="card-body">

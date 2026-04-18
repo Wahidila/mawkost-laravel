@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
             'kode' => 'MK-001', 'name' => 'Kost Griya Asri Residence', 'slug' => 'kost-griya-asri-residence',
             'city_id' => $malang->id, 'type' => 'putri', 'price' => 1200000,
             'description' => 'Kost eksklusif khusus putri dengan fasilitas lengkap dan bangunan baru. Berada di lingkungan yang aman, tenang, dan sangat strategis dekat dengan pintu gerbang utama Universitas Brawijaya.',
-            'area_label' => 'Radius 500m dari UB, Malang', 'available_rooms' => 3, 'total_rooms' => 12, 'total_bathrooms' => 4, 'status' => 'tersedia',
+            'area_label' => 'Radius 500m dari UB, Malang', 'total_rooms' => 12, 'total_bathrooms' => 4,
             'floor_count' => '2', 'parking_type' => 'Motor', 'is_featured' => true, 'is_recommended' => true,
             'unlock_price' => 35000, 'address' => 'Jl. Soekarno Hatta Indah No. XX, Lowokwaru, Malang',
             'owner_contact' => '+62 812-XXXX-XXXX', 'owner_name' => 'Ibu Sari',
@@ -108,7 +108,7 @@ class DatabaseSeeder extends Seeder
             'kode' => 'MK-002', 'name' => 'Kost Harmoni 88', 'slug' => 'kost-harmoni-88',
             'city_id' => $malang->id, 'type' => 'putra', 'price' => 950000,
             'description' => 'Kost putra bersih dengan fasilitas dasar lengkap. Lingkungan aman dan dekat kampus.',
-            'area_label' => 'Radius 1km dari UB, Malang', 'available_rooms' => 5, 'total_rooms' => 8, 'total_bathrooms' => 3, 'status' => 'tersedia',
+            'area_label' => 'Radius 1km dari UB, Malang', 'total_rooms' => 8, 'total_bathrooms' => 3,
             'is_featured' => false, 'is_recommended' => true, 'unlock_price' => 15000, 'purchase_count' => 12,
             'address' => 'Jl. Veteran No. XX, Malang', 'owner_contact' => '+62 813-XXXX-XXXX',
         ]);
@@ -124,7 +124,7 @@ class DatabaseSeeder extends Seeder
             'kode' => 'MK-003', 'name' => 'Kost Sakura Living', 'slug' => 'kost-sakura-living',
             'city_id' => $malang->id, 'type' => 'campur', 'price' => 800000,
             'description' => 'Kost campur bersih dan nyaman. Dekat Politeknik Negeri Malang.',
-            'area_label' => 'Dekat Polinema, Malang', 'available_rooms' => 2, 'total_rooms' => 6, 'total_bathrooms' => 2, 'status' => 'tersedia',
+            'area_label' => 'Dekat Polinema, Malang', 'total_rooms' => 6, 'total_bathrooms' => 2,
             'is_recommended' => true, 'unlock_price' => 15000, 'purchase_count' => 8,
             'address' => 'Jl. Soekarno Hatta No. XX, Malang', 'owner_contact' => '+62 857-XXXX-XXXX',
         ]);
@@ -140,7 +140,7 @@ class DatabaseSeeder extends Seeder
             'kode' => 'MK-004', 'name' => 'Kost Bunga Eksekutif', 'slug' => 'kost-bunga-eksekutif',
             'city_id' => $malang->id, 'type' => 'putri', 'price' => 1500000,
             'description' => 'Kost eksekutif putri dengan fasilitas premium.',
-            'area_label' => 'Suhat, Malang', 'available_rooms' => 1, 'total_rooms' => 5, 'total_bathrooms' => 5, 'status' => 'tersedia',
+            'area_label' => 'Suhat, Malang', 'total_rooms' => 5, 'total_bathrooms' => 5,
             'is_featured' => true, 'unlock_price' => 15000, 'purchase_count' => 18,
             'address' => 'Jl. Suhat No. XX, Malang', 'owner_contact' => '+62 811-XXXX-XXXX',
         ]);
@@ -156,7 +156,7 @@ class DatabaseSeeder extends Seeder
             'kode' => 'JK-001', 'name' => 'Kost Merdeka', 'slug' => 'kost-merdeka',
             'city_id' => $jogja->id, 'type' => 'putra', 'price' => 750000,
             'description' => 'Kost putra sederhana di Yogyakarta. Lingkungan tenang dekat kampus.',
-            'area_label' => 'Sleman, Yogyakarta', 'available_rooms' => 0, 'total_rooms' => 10, 'total_bathrooms' => 3, 'status' => 'penuh',
+            'area_label' => 'Sleman, Yogyakarta', 'total_rooms' => 10, 'total_bathrooms' => 3,
             'unlock_price' => 15000, 'purchase_count' => 6,
             'address' => 'Jl. Kaliurang Km 5, Sleman', 'owner_contact' => '+62 878-XXXX-XXXX',
         ]);
@@ -172,7 +172,7 @@ class DatabaseSeeder extends Seeder
             'kode' => 'SB-001', 'name' => 'Kost Mawar Sederhana', 'slug' => 'kost-mawar-sederhana',
             'city_id' => $surabaya->id, 'type' => 'putri', 'price' => 600000,
             'description' => 'Kost putri sederhana di Surabaya, cocok untuk pekerja.',
-            'area_label' => 'Gubeng, Surabaya', 'available_rooms' => 4, 'total_rooms' => 6, 'total_bathrooms' => 2, 'status' => 'tersedia',
+            'area_label' => 'Gubeng, Surabaya', 'total_rooms' => 6, 'total_bathrooms' => 2,
             'unlock_price' => 15000, 'purchase_count' => 3,
             'address' => 'Jl. Gubeng Kertajaya No. XX, Surabaya', 'owner_contact' => '+62 822-XXXX-XXXX',
         ]);
@@ -188,7 +188,7 @@ class DatabaseSeeder extends Seeder
             'kode' => 'MK-007', 'name' => 'Kost Griya Pelajar', 'slug' => 'kost-griya-pelajar',
             'city_id' => $malang->id, 'type' => 'campur', 'price' => 850000,
             'description' => 'Kost Griya Pelajar adalah pilihan tepat untuk mahasiswa yang mencari hunian nyaman dan strategis di area Universitas Brawijaya. Dengan suasana tenang, akses mudah ke kampus, dan fasilitas lengkap, kost ini cocok untuk kamu yang ingin fokus kuliah tanpa repot urusan tempat tinggal. Lingkungan sekitar aman, dekat dengan warung makan, minimarket, dan jalur angkot.',
-            'area_label' => 'Radius 500m dari Universitas Brawijaya, Malang', 'available_rooms' => 8, 'total_rooms' => 10, 'total_bathrooms' => 3, 'status' => 'tersedia',
+            'area_label' => 'Radius 500m dari Universitas Brawijaya, Malang', 'total_rooms' => 10, 'total_bathrooms' => 3,
             'floor_count' => '2', 'is_recommended' => true,
             'unlock_price' => 35000, 'address' => 'Jl Raung Barisan Kalipare cek aja cek aja',
             'owner_contact' => '082312312312312', 'owner_name' => 'ibu ayu',

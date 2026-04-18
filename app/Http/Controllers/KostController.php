@@ -11,7 +11,7 @@ class KostController extends Controller
 {
     public function search(Request $request)
     {
-        $query = Kost::with('city', 'images', 'facilities', 'kostType')->available();
+        $query = Kost::with('city', 'images', 'facilities', 'kostType');
 
         if ($request->filled('lokasi')) {
             $city = City::where('slug', $request->lokasi)->first();
@@ -53,7 +53,6 @@ class KostController extends Controller
         $city = City::where('slug', $citySlug)->firstOrFail();
         $kosts = Kost::with('city', 'images', 'facilities', 'kostType')
             ->where('city_id', $city->id)
-            ->available()
             ->orderByDesc('is_featured')
             ->orderByDesc('is_recommended')
             ->latest()
@@ -72,7 +71,6 @@ class KostController extends Controller
         $otherKosts = Kost::with('city', 'images', 'facilities', 'kostType')
             ->where('city_id', $kost->city_id)
             ->where('id', '!=', $kost->id)
-            ->available()
             ->orderByDesc('is_recommended')
             ->orderByDesc('is_featured')
             ->take(3)

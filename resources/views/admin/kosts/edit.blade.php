@@ -78,14 +78,6 @@
                             </div>
                         </div>
                         
-                        <div>
-                            <label class="block text-sm font-semibold text-primary-dark mb-1.5">Status</label>
-                            <select name="status" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all text-gray-700" required>
-                                <option value="tersedia" {{ old('status', $kost->status) == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                <option value="penuh" {{ old('status', $kost->status) == 'penuh' ? 'selected' : '' }}>Penuh</option>
-                            </select>
-                        </div>
-                        
                         <div class="pt-2 flex flex-col gap-3">
                             <label class="inline-flex items-center group cursor-pointer bg-white border border-primary-lighter rounded-xl py-2.5 px-4 hover:bg-amber-50 hover:border-amber-200 transition-colors">
                                 <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $kost->is_featured) ? 'checked' : '' }} class="w-4 h-4 text-amber-500 bg-gray-100 border-gray-300 rounded focus:ring-amber-500 focus:ring-2">
@@ -154,15 +146,9 @@
                             <textarea name="description" rows="3" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all resize-none" required>{{ old('description', $kost->description) }}</textarea>
                         </div>
                         
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-semibold text-primary-dark mb-1.5">Total Kamar</label>
-                                <input type="number" name="total_rooms" value="{{ old('total_rooms', $kost->total_rooms) }}" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-primary-dark mb-1.5">Kamar Tersedia</label>
-                                <input type="number" name="available_rooms" value="{{ old('available_rooms', $kost->available_rooms) }}" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all border-l-4 border-l-cta" required>
-                            </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-primary-dark mb-1.5">Total Kamar</label>
+                            <input type="number" name="total_rooms" value="{{ old('total_rooms', $kost->total_rooms) }}" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all" required>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-4">

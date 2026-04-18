@@ -121,7 +121,6 @@ class XSenderService
             '{owner_contact}' => $kost->owner_contact ?? '-',
             '{maps_link}' => $kost->maps_link ?? '-',
             '{facilities}' => $facilities ?: '-',
-            '{available_rooms}' => $kost->available_rooms ?? '-',
             '{amount}' => 'Rp ' . number_format($order->amount, 0, ',', '.'),
         ];
 
@@ -159,8 +158,6 @@ Harga: {kost_price}/bulan
 Alamat: {kost_address}
 Kota: {kost_city}
 Area: {kost_area}
-Kamar Tersedia: {available_rooms}
-
 👤 *Pemilik Kost*
 Nama: {owner_name}
 Kontak: {owner_contact}

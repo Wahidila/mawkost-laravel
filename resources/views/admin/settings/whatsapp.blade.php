@@ -95,7 +95,6 @@
                             '{owner_contact}' => 'Kontak Pemilik',
                             '{maps_link}' => 'Google Maps',
                             '{facilities}' => 'Fasilitas',
-                            '{available_rooms}' => 'Kamar Tersedia',
                         ] as $placeholder => $label)
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-600 font-mono cursor-pointer hover:bg-green-100 hover:text-green-700 transition" onclick="insertPlaceholder('{{ $placeholder }}')" title="{{ $label }}">{{ $placeholder }}</span>
                         @endforeach
