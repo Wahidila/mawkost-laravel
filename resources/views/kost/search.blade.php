@@ -43,11 +43,16 @@
             </div>
             <div class="filter-group price-range-wrapper">
                 <label class="range-label">Rentang Harga</label>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="number" name="min_harga" value="{{ request('min_harga') }}" placeholder="Min Harga" style="width: 100%; padding: 8px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); font-size: 0.9rem;">
-                    <span>-</span>
-                    <input type="number" name="max_harga" value="{{ request('max_harga') }}" placeholder="Max Harga" style="width: 100%; padding: 8px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); font-size: 0.9rem;">
+                <div class="range-values">
+                    <span id="minPriceLabel">Rp 500rb</span>
+                    <span id="maxPriceLabel">Rp 5jt</span>
                 </div>
+                <div class="multi-range" id="multiRange">
+                    <input type="range" id="minRange" min="500000" max="5000000" step="100000" value="{{ request('min_harga', 500000) }}">
+                    <input type="range" id="maxRange" min="500000" max="5000000" step="100000" value="{{ request('max_harga', 5000000) }}">
+                </div>
+                <input type="hidden" name="min_harga" id="minHargaInput" value="{{ request('min_harga') }}">
+                <input type="hidden" name="max_harga" id="maxHargaInput" value="{{ request('max_harga') }}">
             </div>
             <div class="filter-group" style="flex: 0 0 auto;">
                 <button type="submit" class="btn btn-primary" style="height: 46px; border-radius: var(--radius-sm);">Terapkan Filter</button>
@@ -80,4 +85,55 @@
         @endif
     </div>
 </section>
+
+@push('scripts')
+<script>
+(function() {
+    const minRange = document.getElementById('minRange');
+    const maxRange = document.getElementById('maxRange');
+    const minLabel = document.getElementById('minPriceLabel');
+    const maxLabel = document.getElementById('maxPriceLabel');
+    const minInput = document.getElementById('minHargaInput');
+    const maxInput = document.getElementById('maxHargaInput');
+    const container = document.getElementById('multiRange');
+
+    const RANGE_MIN = 500000;
+    const RANGE_MAX = 5000000;
+    const GAP = 100000;
+
+    function formatPrice(val) {
+        val = parseInt(val);
+        if (val >= 1000000) {
+            const jt = val / 1000000;
+            return 'Rp ' + (jt % 1 === 0 ? jt : jt.toFixed(1).replace('.0', '')) + 'jt';
+        }
+        return 'Rp ' + (val / 1000) + 'rb';
+    }
+
+    function update() {
+        let minVal = parseInt(minRange.value);
+        let maxVal = parseInt(maxRange.value);
+
+        if (minVal > maxVal - GAP) { minVal = maxVal - GAP; minRange.value = minVal; }
+        if (maxVal < minVal + GAP) { maxVal = minVal + GAP; maxRange.value = maxVal; }
+
+        minLabel.textContent = formatPrice(minVal);
+        maxLabel.textContent = formatPrice(maxVal);
+
+        minInput.value = minVal > RANGE_MIN ? minVal : '';
+        maxInput.value = maxVal < RANGE_MAX ? maxVal : '';
+
+        // Set CSS custom properties — gradient follows the same % as the thumbs
+        const pctMin = ((minVal - RANGE_MIN) / (RANGE_MAX - RANGE_MIN)) * 100;
+        const pctMax = ((maxVal - RANGE_MIN) / (RANGE_MAX - RANGE_MIN)) * 100;
+        container.style.setProperty('--min-pct', pctMin + '%');
+        container.style.setProperty('--max-pct', pctMax + '%');
+    }
+
+    minRange.addEventListener('input', update);
+    maxRange.addEventListener('input', update);
+    update();
+})();
+</script>
+@endpush
 @endsection
