@@ -9,13 +9,13 @@
                 <p class="footer-desc">Platform digital yang memudahkan kamu menemukan, mengecek, dan mempromosikan kost secara praktis dan terpercaya</p>
                 <div class="footer-social">
                     <a href="#" aria-label="TikTok">
-                        <i class="fa-brands fa-tiktok" style="font-size: 24px;"></i>
+                        <i class="fa-brands fa-tiktok" style="font-size: 24px; color: #fff;"></i>
                     </a>
                     <a href="#" aria-label="Instagram">
-                        <i class="fa-brands fa-instagram" style="font-size: 24px;"></i>
+                        <i class="fa-brands fa-instagram" style="font-size: 24px; color: #fff;"></i>
                     </a>
                     <a href="#" aria-label="WhatsApp">
-                        <i class="fa-brands fa-whatsapp" style="font-size: 24px;"></i>
+                        <i class="fa-brands fa-whatsapp" style="font-size: 24px; color: #fff;"></i>
                     </a>
                 </div>
             </div>

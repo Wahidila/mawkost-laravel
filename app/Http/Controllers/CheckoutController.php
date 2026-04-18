@@ -19,6 +19,20 @@ class CheckoutController extends Controller
     public function show($kostSlug)
     {
         $kost = Kost::where('slug', $kostSlug)->firstOrFail();
+
+        // Prevent duplicate unlock — redirect if user already has a paid order for this kost
+        if (auth()->check()) {
+            $existingOrder = auth()->user()->orders()
+                ->where('kost_id', $kost->id)
+                ->where('status', 'paid')
+                ->first();
+
+            if ($existingOrder) {
+                return redirect()->route('user.orders.show', $existingOrder->id)
+                    ->with('success', 'Kamu sudah membuka info kontak kost ini sebelumnya.');
+            }
+        }
+
         return view('checkout.show', compact('kost'));
     }
 

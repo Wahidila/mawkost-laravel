@@ -16,21 +16,65 @@ class UserDashboardController extends Controller
         $user = auth()->user();
         $totalOrders = $user->orders()->where('status', 'paid')->count();
         $totalSpent = $user->orders()->where('status', 'paid')->sum('amount');
-        $recentOrders = $user->orders()->with('kost.city')->where('status', 'paid')->latest()->take(5)->get();
+        $pendingOrders = $user->orders()->where('status', 'pending')->count();
+        $recentOrders = $user->orders()->with('kost.city')->latest()->take(5)->get();
 
-        return view('user.dashboard', compact('user', 'totalOrders', 'totalSpent', 'recentOrders'));
+        return view('user.dashboard', compact('user', 'totalOrders', 'totalSpent', 'pendingOrders', 'recentOrders'));
     }
 
     public function orders()
     {
-        $orders = auth()->user()->orders()->with('kost.city')->where('status', 'paid')->latest()->paginate(10);
+        $orders = auth()->user()->orders()->with('kost.city')->latest()->paginate(10);
         return view('user.orders.index', compact('orders'));
     }
 
     public function showOrder($id)
     {
-        $order = auth()->user()->orders()->with('kost.city', 'kost.images', 'kost.facilities')->where('status', 'paid')->findOrFail($id);
+        $order = auth()->user()->orders()->with('kost.city', 'kost.images', 'kost.facilities')->findOrFail($id);
         return view('user.orders.show', compact('order'));
+    }
+
+    public function retryPayment($id)
+    {
+        $order = auth()->user()->orders()->where('status', 'expired')->findOrFail($id);
+        $kost = $order->kost;
+
+        if (!$kost) {
+            return back()->with('error', 'Kost tidak ditemukan.');
+        }
+
+        // Create a new order copying data from the expired one
+        $newOrder = Order::create([
+            'invoice_no' => Order::generateInvoiceNo(),
+            'kost_id' => $kost->id,
+            'user_id' => auth()->id(),
+            'customer_name' => $order->customer_name,
+            'customer_whatsapp' => $order->customer_whatsapp,
+            'customer_email' => $order->customer_email,
+            'amount' => $kost->unlock_price,
+            'payment_method' => $order->payment_method,
+            'status' => 'pending',
+        ]);
+
+        // Try Xendit if enabled
+        $xendit = new \App\Services\XenditService();
+        if ($xendit->isEnabled()) {
+            $result = $xendit->createInvoice($newOrder);
+            if ($result['ok']) {
+                $newOrder->update([
+                    'xendit_invoice_id' => $result['invoice_id'],
+                    'xendit_invoice_url' => $result['invoice_url'],
+                ]);
+                return redirect()->away($result['invoice_url']);
+            }
+            // Xendit failed
+            $newOrder->delete();
+            return back()->with('error', 'Gagal membuat invoice pembayaran: ' . ($result['error'] ?? 'Unknown error'));
+        }
+
+        // Simulation mode
+        $newOrder->update(['status' => 'paid', 'paid_at' => now()]);
+        return redirect()->route('user.orders.show', $newOrder->id)->with('success', 'Pembayaran berhasil! Info kontak kost sudah terbuka.');
     }
 
     public function profile()

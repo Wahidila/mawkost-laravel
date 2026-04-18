@@ -54,6 +54,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], func
     Route::get('/dashboard', [UserDashboardController::class , 'index'])->name('dashboard');
     Route::get('/orders', [UserDashboardController::class , 'orders'])->name('orders');
     Route::get('/orders/{id}', [UserDashboardController::class , 'showOrder'])->name('orders.show');
+    Route::post('/orders/{id}/retry', [UserDashboardController::class , 'retryPayment'])->name('orders.retry');
     Route::get('/profile', [UserDashboardController::class , 'profile'])->name('profile');
     Route::put('/profile', [UserDashboardController::class , 'updateProfile'])->name('profile.update');
     Route::put('/profile/password', [UserDashboardController::class , 'updatePassword'])->name('profile.password');
@@ -71,6 +72,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::resource('cities', AdminCityController::class);
     Route::resource('facilities', AdminFacilityController::class);
     Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
+    Route::patch('orders/{order}/status', [AdminOrderController::class , 'updateStatus'])->name('orders.updateStatus');
+    Route::get('orders-export', [AdminOrderController::class , 'export'])->name('orders.export');
     Route::resource('contacts', AdminContactController::class)->only(['index', 'show']);
     Route::resource('users', AdminUserController::class);
     Route::post('users/{user}/send-credentials', [AdminUserController::class , 'sendCredentials'])->name('users.sendCredentials');
