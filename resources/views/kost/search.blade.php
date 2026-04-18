@@ -74,8 +74,8 @@
             </div>
 
             <!-- Pagination -->
-            <div style="margin-top: 40px; display: flex; justify-content: center;">
-                {{ $kosts->links('pagination::bootstrap-4') }}
+            <div style="margin-top: 40px;">
+                {{ $kosts->links('vendor.pagination.mawkost') }}
             </div>
         @endif
     </div>

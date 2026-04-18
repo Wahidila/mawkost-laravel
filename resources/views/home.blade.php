@@ -203,59 +203,42 @@
 
     <div class="steps-grid fade-in" style="animation-delay: 0.2s;">
       <!-- Step 1 -->
-      <div class="step-card">
-        <div class="step-card-inner">
-          <div class="step-badge">100% Online</div>
-          <div class="step-icon-wrap">
-            <div class="step-icon">
-              <i class="fa-solid fa-mobile-screen-button" style="font-size: 1.5rem;"></i>
-            </div>
-            <div class="step-number">1</div>
+      <div class="step-card-inner">
+        <div class="step-badge">100% Online</div>
+        <div class="step-icon-wrap">
+          <div class="step-icon">
+            <i class="fa-solid fa-mobile-screen-button" style="font-size: 1.5rem;"></i>
           </div>
-          <h4 style="color:var(--primary-dark);">Pilih & Bandingkan</h4>
-          <p>Lihat foto kamar, harga, & fasilitas tanpa harus keliling lokasi.</p>
+          <div class="step-number">1</div>
         </div>
-        <div class="step-connector">
-          <svg viewBox="0 0 100 24" fill="none">
-            <path class="connector-dash" d="M0,12 L100,12" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="6,6" fill="none" />
-          </svg>
-        </div>
+        <h4 style="color:var(--primary-dark);">Pilih & Bandingkan</h4>
+        <p>Lihat foto kamar, harga, & fasilitas tanpa harus keliling lokasi.</p>
       </div>
       
       <!-- Step 2 -->
-      <div class="step-card">
-        <div class="step-card-inner">
-          <div class="step-badge step-badge--success">Aman</div>
-          <div class="step-icon-wrap">
-            <div class="step-icon step-icon--success">
-              <i class="fa-solid fa-lock" style="font-size: 1.5rem;"></i>
-            </div>
-            <div class="step-number step-number--success">2</div>
+      <div class="step-card-inner">
+        <div class="step-badge step-badge--success">Aman</div>
+        <div class="step-icon-wrap">
+          <div class="step-icon step-icon--success">
+            <i class="fa-solid fa-lock" style="font-size: 1.5rem;"></i>
           </div>
-          <h4 style="color:var(--primary-dark);">Buka Kontak (Rp 15k)</h4>
-          <p>Bayar biaya super admin via QRIS untuk tahu alamat & WA pemilik.</p>
+          <div class="step-number step-number--success">2</div>
         </div>
-        <div class="step-connector">
-          <svg viewBox="0 0 100 24" fill="none">
-            <path class="connector-dash" d="M0,12 L100,12" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="6,6" fill="none" />
-          </svg>
-        </div>
+        <h4 style="color:var(--primary-dark);">Buka Kontak (Rp 35k)</h4>
+        <p>Bayar biaya super admin via QRIS untuk tahu alamat & WA pemilik.</p>
       </div>
       
       <!-- Step 3 -->
-      <div class="step-card">
-        <div class="step-card-inner">
-          <div class="step-badge">Tanpa Calo</div>
-          <div class="step-icon-wrap">
-            <div class="step-icon step-icon--accent">
-              <i class="fa-solid fa-handshake" style="font-size: 1.5rem;"></i>
-            </div>
-            <div class="step-number step-number--accent">3</div>
+      <div class="step-card-inner">
+        <div class="step-badge">Tanpa Calo</div>
+        <div class="step-icon-wrap">
+          <div class="step-icon step-icon--accent">
+            <i class="fa-solid fa-handshake" style="font-size: 1.5rem;"></i>
           </div>
-          <h4 style="color:var(--primary-dark);">Booking Langsung</h4>
-          <p>Chat langsung dengan pemilik (tanpa lewat kami) untuk booking atau DP.</p>
+          <div class="step-number step-number--accent">3</div>
         </div>
-        <div class="step-connector"></div>
+        <h4 style="color:var(--primary-dark);">Booking Langsung</h4>
+        <p>Chat langsung dengan pemilik (tanpa lewat kami) untuk booking atau DP.</p>
       </div>
     </div>
   </div>

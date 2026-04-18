@@ -40,7 +40,7 @@
                         </div>
                         <div>
                             <h4>Alamat Kantor</h4>
-                            <p>Malang Creative Center (MCC)<br>Jl. A. Yani No.53, Blimbing<br>Kota Malang, Jawa Timur</p>
+                            <p>JL. PULAU BATAM NO. 12<br>Desa/Kelurahan Dauh Puri Kelod<br>Kec. Denpasar Barat, Kota Denpasar<br>Provinsi Bali, Kode Pos: 80114</p>
                         </div>
                     </div>
 

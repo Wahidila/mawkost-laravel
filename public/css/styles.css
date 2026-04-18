@@ -949,14 +949,8 @@ textarea {
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0;
+  gap: 28px;
   align-items: start;
-}
-
-.step-card {
-  position: relative;
-  display: flex;
-  align-items: center;
 }
 
 .step-card-inner {
@@ -969,8 +963,6 @@ textarea {
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow);
   position: relative;
-  flex: 1;
-  min-width: 0;
   transition: transform var(--dur-md) var(--ease), box-shadow var(--dur-md) var(--ease);
 }
 
@@ -1119,36 +1111,6 @@ textarea {
 .step-tag--success {
   background: rgba(40, 167, 69, .08);
   color: #1e7e34;
-}
-
-/* Connector arrow between steps */
-.step-connector {
-  flex-shrink: 0;
-  width: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-}
-
-.step-connector svg {
-  width: 100%;
-  height: 24px;
-}
-
-/* Animate the dashed line */
-@keyframes dashFlow {
-  to {
-    stroke-dashoffset: -20;
-  }
-}
-
-.connector-dash {
-  animation: dashFlow 1.2s linear infinite;
-}
-
-.step-card:last-child .step-connector {
-  display: none;
 }
 
 /* ---------- Testimonials ---------- */
@@ -2089,8 +2051,10 @@ textarea {
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  align-items: center;
+  gap: 6px;
   margin-top: 40px;
+  flex-wrap: wrap;
 }
 
 .pagination a,
@@ -2098,27 +2062,45 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
+  min-width: 40px;
   height: 40px;
+  padding: 0 4px;
   border-radius: var(--radius-sm);
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: .9rem;
   transition: all var(--dur) var(--ease);
-  cursor: pointer;
   border: 1px solid var(--border);
   color: var(--text-muted);
+  text-decoration: none;
+  user-select: none;
+}
+
+.pagination a {
+  cursor: pointer;
 }
 
 .pagination a:hover {
   border-color: var(--primary);
   color: var(--primary);
   background: var(--primary-lighter);
+  box-shadow: var(--shadow-sm);
 }
 
 .pagination .active {
   background: var(--primary);
   color: #fff;
   border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), .25);
+  cursor: default;
+}
+
+.pagination .disabled {
+  color: var(--border);
+  border-color: var(--border-light);
+  background: var(--bg);
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 /* ---------- Responsive ---------- */
@@ -2634,15 +2616,7 @@ textarea {
 @media (max-width: 900px) {
   .steps-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  .step-card {
-    flex-direction: column;
-  }
-
-  .step-connector {
-    display: none;
+    gap: 24px;
   }
 
   .step-card-inner {
@@ -2826,53 +2800,6 @@ textarea {
 .breadcrumb .current {
   color: var(--primary-dark);
   font-weight: 600;
-}
-
-/* ---------- Steps Grid & Cards (Cara Kerja / Nilai Inti) ---------- */
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-}
-
-.step-card {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  padding: 32px 24px;
-  text-align: center;
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-sm);
-  transition: all var(--dur-md) var(--ease);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.step-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.step-card h4 {
-  margin-bottom: 12px;
-  color: var(--primary-dark);
-}
-
-.step-card p {
-  color: var(--text-muted);
-  font-size: .95rem;
-  line-height: 1.7;
-}
-
-.step-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
 }
 
 /* ---------- About Page ---------- */
