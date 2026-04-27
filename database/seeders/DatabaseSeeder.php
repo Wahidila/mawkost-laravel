@@ -67,7 +67,7 @@ class DatabaseSeeder extends Seeder
         // ── Kost 1: Griya Asri Residence ──
         // ══════════════════════════════════════
         $k1 = Kost::create([
-            'kode' => 'MK-001', 'name' => 'Kost Griya Asri Residence', 'slug' => 'kost-griya-asri-residence',
+            'kode' => 'MK-001', 'title' => 'Kost Eksklusif Putri Dekat UB — Fasilitas Lengkap', 'name' => 'Kost Griya Asri Residence', 'slug' => 'kost-griya-asri-residence',
             'city_id' => $malang->id, 'type' => 'putri', 'price' => 1200000,
             'description' => 'Kost eksklusif khusus putri dengan fasilitas lengkap dan bangunan baru. Berada di lingkungan yang aman, tenang, dan sangat strategis dekat dengan pintu gerbang utama Universitas Brawijaya.',
             'area_label' => 'Radius 500m dari UB, Malang', 'total_rooms' => 12, 'total_bathrooms' => 4,
@@ -105,7 +105,7 @@ class DatabaseSeeder extends Seeder
         // ── Kost 2: Harmoni 88 ──
         // ══════════════════════════════════════
         $k2 = Kost::create([
-            'kode' => 'MK-002', 'name' => 'Kost Harmoni 88', 'slug' => 'kost-harmoni-88',
+            'kode' => 'MK-002', 'title' => 'Kost Putra Bersih Dekat Kampus UB', 'name' => 'Kost Harmoni 88', 'slug' => 'kost-harmoni-88',
             'city_id' => $malang->id, 'type' => 'putra', 'price' => 950000,
             'description' => 'Kost putra bersih dengan fasilitas dasar lengkap. Lingkungan aman dan dekat kampus.',
             'area_label' => 'Radius 1km dari UB, Malang', 'total_rooms' => 8, 'total_bathrooms' => 3,
@@ -121,7 +121,7 @@ class DatabaseSeeder extends Seeder
         // ── Kost 3: Sakura Living ──
         // ══════════════════════════════════════
         $k3 = Kost::create([
-            'kode' => 'MK-003', 'name' => 'Kost Sakura Living', 'slug' => 'kost-sakura-living',
+            'kode' => 'MK-003', 'title' => 'Kost Campur Nyaman Dekat Polinema', 'name' => 'Kost Sakura Living', 'slug' => 'kost-sakura-living',
             'city_id' => $malang->id, 'type' => 'campur', 'price' => 800000,
             'description' => 'Kost campur bersih dan nyaman. Dekat Politeknik Negeri Malang.',
             'area_label' => 'Dekat Polinema, Malang', 'total_rooms' => 6, 'total_bathrooms' => 2,
@@ -137,7 +137,7 @@ class DatabaseSeeder extends Seeder
         // ── Kost 4: Bunga Eksekutif ──
         // ══════════════════════════════════════
         $k4 = Kost::create([
-            'kode' => 'MK-004', 'name' => 'Kost Bunga Eksekutif', 'slug' => 'kost-bunga-eksekutif',
+            'kode' => 'MK-004', 'title' => 'Kost Premium Putri di Suhat Malang', 'name' => 'Kost Bunga Eksekutif', 'slug' => 'kost-bunga-eksekutif',
             'city_id' => $malang->id, 'type' => 'putri', 'price' => 1500000,
             'description' => 'Kost eksekutif putri dengan fasilitas premium.',
             'area_label' => 'Suhat, Malang', 'total_rooms' => 5, 'total_bathrooms' => 5,
@@ -153,7 +153,7 @@ class DatabaseSeeder extends Seeder
         // ── Kost 5: Merdeka ──
         // ══════════════════════════════════════
         $k5 = Kost::create([
-            'kode' => 'JK-001', 'name' => 'Kost Merdeka', 'slug' => 'kost-merdeka',
+            'kode' => 'JK-001', 'title' => 'Kost Putra Murah di Sleman Yogyakarta', 'name' => 'Kost Merdeka', 'slug' => 'kost-merdeka',
             'city_id' => $jogja->id, 'type' => 'putra', 'price' => 750000,
             'description' => 'Kost putra sederhana di Yogyakarta. Lingkungan tenang dekat kampus.',
             'area_label' => 'Sleman, Yogyakarta', 'total_rooms' => 10, 'total_bathrooms' => 3,
@@ -169,7 +169,7 @@ class DatabaseSeeder extends Seeder
         // ── Kost 6: Mawar Sederhana ──
         // ══════════════════════════════════════
         $k6 = Kost::create([
-            'kode' => 'SB-001', 'name' => 'Kost Mawar Sederhana', 'slug' => 'kost-mawar-sederhana',
+            'kode' => 'SB-001', 'title' => 'Kost Putri Sederhana di Gubeng Surabaya', 'name' => 'Kost Mawar Sederhana', 'slug' => 'kost-mawar-sederhana',
             'city_id' => $surabaya->id, 'type' => 'putri', 'price' => 600000,
             'description' => 'Kost putri sederhana di Surabaya, cocok untuk pekerja.',
             'area_label' => 'Gubeng, Surabaya', 'total_rooms' => 6, 'total_bathrooms' => 2,
@@ -185,7 +185,7 @@ class DatabaseSeeder extends Seeder
         // ── Kost 7: Griya Pelajar ──
         // ══════════════════════════════════════
         $k7 = Kost::create([
-            'kode' => 'MK-007', 'name' => 'Kost Griya Pelajar', 'slug' => 'kost-griya-pelajar',
+            'kode' => 'MK-007', 'title' => 'Kost Campur Strategis Dekat UB — Cocok Mahasiswa', 'name' => 'Kost Griya Pelajar', 'slug' => 'kost-griya-pelajar',
             'city_id' => $malang->id, 'type' => 'campur', 'price' => 850000,
             'description' => 'Kost Griya Pelajar adalah pilihan tepat untuk mahasiswa yang mencari hunian nyaman dan strategis di area Universitas Brawijaya. Dengan suasana tenang, akses mudah ke kampus, dan fasilitas lengkap, kost ini cocok untuk kamu yang ingin fokus kuliah tanpa repot urusan tempat tinggal. Lingkungan sekitar aman, dekat dengan warung makan, minimarket, dan jalur angkot.',
             'area_label' => 'Radius 500m dari Universitas Brawijaya, Malang', 'total_rooms' => 10, 'total_bathrooms' => 3,
