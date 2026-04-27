@@ -31,9 +31,10 @@
 
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-semibold text-primary-dark mb-1.5">Nama Kost</label>
-                            <input type="text" name="name" value="{{ old('name') }}" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all placeholder:text-gray-400" placeholder="Contoh: Kost Griya Asri Residence" required>
-                            @error('name') <p class="text-red-500 text-xs italic mt-1 font-medium">{{ $message }}</p> @enderror
+                            <label class="block text-sm font-semibold text-primary-dark mb-1.5">Judul Kost</label>
+                            <input type="text" name="title" value="{{ old('title') }}" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all placeholder:text-gray-400" placeholder="Contoh: Kost Eksklusif Putri Dekat UB" required>
+                            @error('title') <p class="text-red-500 text-xs italic mt-1 font-medium">{{ $message }}</p> @enderror
+                            <p class="text-xs text-gray-400 mt-1">Judul yang ditampilkan publik di halaman pencarian & detail.</p>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
@@ -94,6 +95,13 @@
                     </h4>
 
                     <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-primary-dark mb-1.5">Nama Kost <span class="text-xs font-normal text-amber-600"><i class="fas fa-lock text-[10px]"></i> Info Locked</span></label>
+                            <input type="text" name="name" value="{{ old('name') }}" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all placeholder:text-gray-400" placeholder="Contoh: Kost Griya Asri Residence" required>
+                            @error('name') <p class="text-red-500 text-xs italic mt-1 font-medium">{{ $message }}</p> @enderror
+                            <p class="text-xs text-gray-400 mt-1">Nama asli kost, hanya tampil setelah user membuka info kontak.</p>
+                        </div>
+
                         <div>
                             <label class="block text-sm font-semibold text-primary-dark mb-1.5">Label Area</label>
                             <input type="text" name="area_label" value="{{ old('area_label') }}" placeholder="Contoh: Dekat UGM, Seturan, dll" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all placeholder:text-gray-400" required>

@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'Info Kost — ' . $order->kost->name)
+@section('title', 'Info Kost — ' . $order->kost->title)
 @section('header', 'Detail Info Kost')
 
 @section('content')
@@ -17,7 +17,7 @@
         <div class="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100">
             <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
                 <div>
-                    <h2 class="text-lg sm:text-xl font-bold text-gray-800">{{ $order->kost->name }}</h2>
+                    <h2 class="text-lg sm:text-xl font-bold text-gray-800">{{ $order->kost->title }}</h2>
                     <p class="text-gray-500 text-sm mt-1">
                         <i class="fas fa-location-dot mr-1"></i> {{ $order->kost->area_label ?? $order->kost->city->name }}
                     </p>
@@ -42,6 +42,15 @@
                 </h3>
             </div>
             <div class="p-4 sm:p-6 space-y-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-building text-green-600 text-sm"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-sm text-gray-500">Nama Kost</p>
+                        <p class="font-semibold text-gray-800">{{ $order->kost->name }}</p>
+                    </div>
+                </div>
                 <div class="flex items-start gap-3">
                     <div class="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-user text-green-600 text-sm"></i>
@@ -87,7 +96,7 @@
 
                 <!-- Quick Action -->
                 <div class="pt-4 border-t">
-                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact)) }}?text={{ urlencode('Halo, saya ' . auth()->user()->name . '. Saya tertarik dengan ' . $order->kost->name . ' (Kode: ' . $order->kost->kode . '). Apakah masih tersedia?') }}" 
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact)) }}?text={{ urlencode('Halo, saya ' . auth()->user()->name . '. Saya tertarik dengan ' . $order->kost->name . ' (Kode: ' . $order->kost->kode . '). Apakah kamar masih tersedia?') }}" 
                        target="_blank"
                        class="w-full inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-bold transition text-sm">
                         <i class="fab fa-whatsapp text-lg"></i> Hubungi Pemilik via WhatsApp

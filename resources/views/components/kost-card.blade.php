@@ -10,7 +10,7 @@
 
 <a href="{{ route('kost.show', ['citySlug' => $kost->city->slug, 'slug' => $kost->slug]) }}" class="{{ $cardClass }}">
     <div style="position:relative;">
-        <img src="{{ asset($imagePath) }}" alt="{{ $kost->name }}" class="card-img">
+        <img src="{{ asset($imagePath) }}" alt="{{ $kost->title }}" class="card-img">
         <div class="card-badges">
             @if($kost->is_featured)
                 <span class="badge badge-featured"><i class="fa-solid fa-crown" style="font-size:0.65rem;"></i> Featured</span>
@@ -22,7 +22,7 @@
     </div>
     <div class="card-body">
         <div class="listing-price">Rp {{ number_format($kost->price, 0, ',', '.') }} <span>/bulan</span></div>
-        <div class="listing-name">{{ $kost->name }}</div>
+        <div class="listing-name">{{ $kost->title }}</div>
         <div class="listing-area">
             <i class="fa-solid fa-location-dot"></i>
             {{ $kost->area_label ?? $kost->city->name }}

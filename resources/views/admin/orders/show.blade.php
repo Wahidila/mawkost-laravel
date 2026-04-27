@@ -82,7 +82,7 @@
             <div class="p-5">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-base font-bold text-primary-dark">{{ $order->kost->name ?? 'Kost tidak ditemukan' }}</p>
+                        <p class="text-base font-bold text-primary-dark">{{ $order->kost->title ?? 'Kost tidak ditemukan' }}</p>
                         <p class="text-sm text-gray-500 mt-1"><i class="fas fa-location-dot mr-1"></i> {{ $order->kost->city->name ?? '-' }}</p>
                     </div>
                     @if($order->kost)

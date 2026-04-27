@@ -122,7 +122,7 @@
                 </div>
                 <div class="info-row">
                     <span class="label">Item:</span>
-                    <span>Info {{ $order->kost->name ?? 'Kost' }}</span>
+                    <span>Info {{ $order->kost->title ?? 'Kost' }}</span>
                 </div>
                 <div class="info-row">
                     <span class="label">Total:</span>

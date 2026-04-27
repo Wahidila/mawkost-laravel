@@ -76,7 +76,7 @@
                 <tr class="hover:bg-primary-lighter/10 transition-colors duration-150">
                     <td class="px-6 py-5 whitespace-nowrap text-sm font-semibold text-primary-dark">{{ $order->invoice_no }}</td>
                     <td class="px-6 py-5 whitespace-nowrap text-sm text-gray-600 font-medium">{{ $order->customer_name }}</td>
-                    <td class="px-6 py-5 whitespace-nowrap text-sm text-gray-600">{{ $order->kost->name ?? '-' }}</td>
+                    <td class="px-6 py-5 whitespace-nowrap text-sm text-gray-600">{{ $order->kost->title ?? '-' }}</td>
                     <td class="px-6 py-5 whitespace-nowrap text-sm">
                         <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full 
                         @if($order->status == 'paid') bg-green-100 text-green-800 

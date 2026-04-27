@@ -135,7 +135,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px; height:16px;">
                     <path d="m15 18-6-6 6-6" />
                 </svg>
-                Kembali ke Info {{ $kost->name }}
+                Kembali ke Info {{ $kost->title }}
             </a>
         </div>
     </div>

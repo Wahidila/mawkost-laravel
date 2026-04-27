@@ -43,6 +43,7 @@ class KostController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'title' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'city_id' => 'required|exists:cities,id',
             'kost_type_id' => 'required|exists:kost_types,id',
@@ -62,15 +63,14 @@ class KostController extends Controller
             'facilities.*' => 'exists:facilities,id',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-            'nearby_places' => 'nullable|string', // separated by newline
+            'nearby_places' => 'nullable|string',
         ]);
 
-        // Auto Generate Kode
         $lastKost = Kost::orderBy('id', 'desc')->first();
         $lastId = $lastKost ? $lastKost->id + 1 : 1;
         $validated['kode'] = 'MK-' . str_pad($lastId, 3, '0', STR_PAD_LEFT);
 
-        $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
+        $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
 
         // Sync 'type' column with the selected KostType slug
         $kostType = KostType::find($validated['kost_type_id']);
@@ -139,6 +139,7 @@ class KostController extends Controller
 
         $validated = $request->validate([
             'kode' => 'required|unique:kosts,kode,' . $kost->id,
+            'title' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'city_id' => 'required|exists:cities,id',
             'kost_type_id' => 'required|exists:kost_types,id',
@@ -160,8 +161,8 @@ class KostController extends Controller
             'nearby_places' => 'nullable|string',
         ]);
 
-        if ($request->name != $kost->name) {
-            $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
+        if ($request->title != $kost->title) {
+            $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
         }
 
         // Sync 'type' column with the selected KostType slug
@@ -238,7 +239,7 @@ class KostController extends Controller
         $kost->update(['is_featured' => !$kost->is_featured]);
 
         $status = $kost->is_featured ? 'diaktifkan' : 'dinonaktifkan';
-        return back()->with('success', "Featured {$status} untuk {$kost->name}");
+        return back()->with('success', "Featured {$status} untuk {$kost->title}");
     }
 
     public function toggleRecommended($id)
@@ -247,7 +248,7 @@ class KostController extends Controller
         $kost->update(['is_recommended' => !$kost->is_recommended]);
 
         $status = $kost->is_recommended ? 'diaktifkan' : 'dinonaktifkan';
-        return back()->with('success', "Rekomendasi {$status} untuk {$kost->name}");
+        return back()->with('success', "Rekomendasi {$status} untuk {$kost->title}");
     }
 
     // Custom method to delete single image via ajax/form

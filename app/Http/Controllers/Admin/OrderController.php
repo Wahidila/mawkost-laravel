@@ -143,7 +143,7 @@ class OrderController extends Controller
                     $order->customer_name,
                     $order->customer_whatsapp,
                     $order->customer_email,
-                    $order->kost->name ?? '-',
+                    $order->kost->title ?? '-',
                     $order->kost->city->name ?? '-',
                     $order->amount,
                     strtoupper($order->status),

@@ -94,7 +94,7 @@
                         {{ $item->customer_name }}
                         <br><span class="text-gray-500 text-xs font-normal">{{ $item->customer_email }}</span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">{{ $item->kost->name ?? '-' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">{{ $item->kost->title ?? '-' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-primary-dark font-bold">Rp {{ number_format($item->amount, 0, ',', '.') }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                         <span class="px-3 py-1 inline-flex text-[11px] leading-5 font-bold rounded-full shadow-sm border

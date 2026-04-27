@@ -90,7 +90,7 @@ class KostKnowledgeService
 
                     return [
                         'kode' => $kost->kode,
-                        'nama' => $kost->name,
+                        'nama' => $kost->title,
                         'kota' => $kost->city->name ?? '-',
                         'tipe' => $kost->kostType->name ?? $kost->type ?? '-',
                         'harga_rb' => $priceK,

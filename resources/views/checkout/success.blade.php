@@ -40,7 +40,7 @@
                 </div>
                 <div class="info-row">
                     <span class="label">Item:</span>
-                    <span>Info {{ $order->kost->name }}</span>
+                    <span>Info {{ $order->kost->title }}</span>
                 </div>
                 <div class="info-row">
                     <span class="label">No. Invoice:</span>

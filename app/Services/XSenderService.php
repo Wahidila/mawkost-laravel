@@ -110,6 +110,7 @@ class XSenderService
         $replacements = [
             '{customer_name}' => $order->customer_name,
             '{invoice_no}' => $order->invoice_no,
+            '{kost_title}' => $kost->title,
             '{kost_name}' => $kost->name,
             '{kost_code}' => $kost->kode ?? '-',
             '{kost_type}' => ucfirst($kost->type),

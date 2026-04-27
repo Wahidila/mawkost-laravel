@@ -17,13 +17,14 @@
         <div style="padding:32px;">
             <h2 style="color:#1e293b;margin:0 0 8px;font-size:20px;">Halo, {{ $user->name }}! 👋</h2>
             <p style="color:#64748b;margin:0 0 24px;font-size:14px;line-height:1.6;">
-                Terima kasih telah menggunakan mawkost! Pembelian tiket info kontak untuk kost <strong>{{ $kost->name }}</strong> telah berhasil diproses (Invoice: {{ $order->invoice_no }}).
+                Terima kasih telah menggunakan mawkost! Pembelian tiket info kontak untuk kost <strong>{{ $kost->title }}</strong> telah berhasil diproses (Invoice: {{ $order->invoice_no }}).
             </p>
 
             <!-- Unlocked Contact Info -->
             <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px;margin-bottom:24px;">
                 <h3 style="color:#166534;margin:0 0 12px;font-size:14px;text-transform:uppercase;letter-spacing:0.05em;">🔓 Info Kontak Kost (Unlocked)</h3>
                 <div style="font-size:13px;color:#374151;line-height:1.6;">
+                    <p style="margin:0 0 8px;"><strong>🏠 Nama Kost:</strong><br>{{ $kost->name }}</p>
                     <p style="margin:0 0 8px;"><strong>📱 Nama Pemilik:</strong><br>{{ $kost->owner_name ?? 'Bapak/Ibu Kost' }}</p>
                     <p style="margin:0 0 8px;"><strong>📞 WhatsApp Pemilik:</strong><br><a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $kost->owner_contact ?? '')) }}" style="color:#16a34a;font-weight:600;text-decoration:none;">{{ $kost->owner_contact ?? '-' }}</a></p>
                     <p style="margin:0 0 8px;"><strong>📍 Alamat Lengkap:</strong><br>{{ $kost->address ?? '-' }}</p>
@@ -39,7 +40,7 @@
 
             <!-- CTA -->
             <div style="text-align:center;margin:28px 0 16px;display:flex;flex-direction:column;gap:12px;align-items:center;">
-                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $kost->owner_contact ?? '')) }}?text={{ urlencode('Halo, saya ' . $email . '. Saya tertarik dengan ' . $kost->name . ' (Kode: ' . $kost->kode . '). Apakah masih tersedia?') }}" style="display:inline-block;background:#16A34A;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;width:fit-content;">
+                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $kost->owner_contact ?? '')) }}?text={{ urlencode('Halo, saya ' . $email . '. Saya tertarik dengan ' . $kost->name . ' (Kode: ' . $kost->kode . '). Apakah kamar masih tersedia?') }}" style="display:inline-block;background:#16A34A;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;width:fit-content;">
                     Hubungi via WhatsApp
                 </a>
                 

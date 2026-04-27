@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         <td style="padding:4px 0;color:#64748b;font-size:13px;">Kost</td>
-                        <td style="padding:4px 0;color:#0f172a;font-size:13px;font-weight:600;">{{ $order->kost->name ?? '-' }}</td>
+                        <td style="padding:4px 0;color:#0f172a;font-size:13px;font-weight:600;">{{ $order->kost->title ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td style="padding:4px 0;color:#64748b;font-size:13px;">Total Bayar</td>

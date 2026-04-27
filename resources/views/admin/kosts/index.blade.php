@@ -36,7 +36,7 @@
         <table class="min-w-full divide-y divide-primary-lighter/50">
             <thead class="bg-primary-lighter/20">
                 <tr>
-                    <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Nama Kost</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Judul Kost</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Kota</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Tipe</th>
                     <th class="px-6 py-4 text-left text-xs font-bold text-primary-dark uppercase tracking-wider font-display">Harga</th>
@@ -47,7 +47,7 @@
             <tbody class="divide-y divide-primary-lighter/30">
                 @forelse($kosts as $item)
                 <tr class="hover:bg-primary-lighter/10 transition-colors duration-150">
-                    <td class="px-6 py-5 whitespace-nowrap text-sm font-semibold text-primary-dark">{{ $item->name }}</td>
+                    <td class="px-6 py-5 whitespace-nowrap text-sm font-semibold text-primary-dark">{{ $item->title }}</td>
                     <td class="px-6 py-5 whitespace-nowrap text-sm text-gray-600">{{ $item->city->name ?? '-' }}</td>
                     <td class="px-6 py-5 whitespace-nowrap text-sm">
                         <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-cta/10 text-cta border border-cta/20">

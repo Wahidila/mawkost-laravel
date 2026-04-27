@@ -35,7 +35,7 @@
                     @foreach($orders as $order)
                     <tr class="hover:bg-gray-50 transition">
                         <td class="px-4 py-3 text-sm font-mono text-gray-600">{{ $order->invoice_no }}</td>
-                        <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ $order->kost->name ?? '-' }}</td>
+                        <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ $order->kost->title ?? '-' }}</td>
                         <td class="px-4 py-3 text-sm text-gray-500">{{ $order->kost->city->name ?? '-' }}</td>
                         <td class="px-4 py-3 text-sm text-gray-500">{{ $order->formatted_amount }}</td>
                         <td class="px-4 py-3 text-sm">
@@ -81,7 +81,7 @@
             @foreach($orders as $order)
             <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition">
                 <div class="flex justify-between items-start mb-1">
-                    <h4 class="font-medium text-gray-900 text-sm flex-1 pr-2">{{ $order->kost->name ?? '-' }}</h4>
+                    <h4 class="font-medium text-gray-900 text-sm flex-1 pr-2">{{ $order->kost->title ?? '-' }}</h4>
                     @if($order->status === 'paid')
                         <span class="text-[10px] font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full border border-green-200">Lunas</span>
                     @elseif($order->status === 'pending')

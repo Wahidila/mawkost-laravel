@@ -101,7 +101,7 @@
                     @foreach($recentOrders as $order)
                     <tr class="hover:bg-primary-lighter/10 transition-colors duration-150">
                         <td class="px-6 py-5 text-sm font-semibold text-primary-dark">{{ $order->invoice_no }}</td>
-                        <td class="px-6 py-5 text-sm font-medium text-gray-700">{{ $order->kost->name ?? '-' }}</td>
+                        <td class="px-6 py-5 text-sm font-medium text-gray-700">{{ $order->kost->title ?? '-' }}</td>
                         <td class="px-6 py-5 text-sm text-text-muted">{{ $order->kost->city->name ?? '-' }}</td>
                         <td class="px-6 py-5 text-sm">
                             @if($order->status === 'paid')
@@ -146,7 +146,7 @@
             @foreach($recentOrders as $order)
             <div class="border border-primary-lighter/50 bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div class="flex justify-between items-start mb-3">
-                    <h4 class="font-bold font-display text-primary-dark text-base">{{ $order->kost->name ?? '-' }}</h4>
+                    <h4 class="font-bold font-display text-primary-dark text-base">{{ $order->kost->title ?? '-' }}</h4>
                     @if($order->status === 'paid')
                         <span class="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full border border-green-200">Lunas</span>
                     @elseif($order->status === 'pending')

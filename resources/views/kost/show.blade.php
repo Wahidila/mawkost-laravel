@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $kost->name . ' — mawkost')
+@section('title', $kost->title . ' — mawkost')
 
 @section('content')
 <!-- ========== BREADCRUMB & HEADER ========== -->
@@ -13,7 +13,7 @@
         <span class="sep">/</span>
         <a href="{{ route('kost.byCity', $kost->city->slug) }}">{{ $kost->city->name }}</a>
         <span class="sep">/</span>
-        <span class="current">{{ $kost->name }}</span>
+        <span class="current">{{ $kost->title }}</span>
       </div>
     </div>
 </div>
@@ -31,7 +31,7 @@
                 $sideImg2 = $images->count() > 2 ? asset($images[2]->image_path) : asset('assets/img/kost-bathroom.png');
             @endphp
             <div class="gallery-main" onclick="openLightbox(0)">
-                <img src="{{ $mainImg }}" alt="{{ $kost->name }}">
+                <img src="{{ $mainImg }}" alt="{{ $kost->title }}">
             </div>
             <div class="gallery-side">
                 <div class="gallery-thumb" onclick="openLightbox(1)">
@@ -113,7 +113,7 @@
                         @endphp
                         <span class="badge {{ $typeBadgeClass }}">Kost {{ $typeName }}</span>
                     </div>
-                    <h1 class="kost-title">{{ $kost->name }}</h1>
+                    <h1 class="kost-title">{{ $kost->title }}</h1>
                     <p class="text-muted" style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:1.05rem;">
                         <span style="display:flex;align-items:center;gap:8px;">
                             <i class="fa-solid fa-location-dot"></i> {{ $kost->area_label ?? $kost->city->name }}
@@ -235,6 +235,11 @@
                         <h4 style="color: #166534; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 16px; margin-top: 0;">
                             <i class="fa-solid fa-unlock-keyhole"></i> Info Kontak Terbuka
                         </h4>
+
+                        <div style="margin-bottom: 16px;">
+                            <strong style="display: block; font-size: 13px; color: #166534; opacity: 0.9; margin-bottom: 4px;">Nama Kost:</strong>
+                            <p style="margin:0; color: #15803D; font-size: 14px; line-height: 1.5; font-weight: 600;">{{ $kost->name }}</p>
+                        </div>
                         
                         <div style="margin-bottom: 16px;">
                             <strong style="display: block; font-size: 13px; color: #166534; opacity: 0.9; margin-bottom: 4px;">Alamat Lengkap:</strong>
@@ -261,6 +266,8 @@
                     <!-- THE BLUR SECTION (PAY TO UNLOCK) -->
                     <div class="blur-section">
                         <div class="blur-content">
+                            <strong>Nama Kost:</strong>
+                            <p>{{ $kost->name ?? 'Kost XXXXX' }}</p>
                             <strong>Alamat Lengkap:</strong>
                             <p>{{ $kost->address ?? 'Jl. Placeholder No XXX, Kota' }}</p>
                             <strong>Kontak Pemilik (Bpk/Ibu {{ $kost->owner_name ?? '...' }}):</strong>

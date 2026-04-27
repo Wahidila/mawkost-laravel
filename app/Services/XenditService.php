@@ -52,7 +52,7 @@ class XenditService
             'external_id' => $order->invoice_no,
             'amount' => (int)$order->amount,
             'payer_email' => $order->customer_email,
-            'description' => 'Unlock Info Kost: ' . ($order->kost->name ?? 'Kost'),
+            'description' => 'Unlock Info Kost: ' . ($order->kost->title ?? 'Kost'),
             'invoice_duration' => $this->invoiceDuration * 3600, // convert hours to seconds
             'success_redirect_url' => $successUrl,
             'failure_redirect_url' => $successUrl,
