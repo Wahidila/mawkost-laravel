@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Kost;
 
 class BlogController extends Controller
 {
@@ -27,6 +28,11 @@ class BlogController extends Controller
             ->take(5)
             ->get();
 
-        return view('blog.show', compact('article', 'relatedArticles'));
+        $recommendedKosts = Kost::with('city', 'images', 'facilities', 'kostType')
+            ->recommended()
+            ->take(3)
+            ->get();
+
+        return view('blog.show', compact('article', 'relatedArticles', 'recommendedKosts'));
     }
 }

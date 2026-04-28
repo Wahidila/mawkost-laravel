@@ -127,6 +127,19 @@
             </aside>
             @endif
         </div>
+        @if($recommendedKosts->count() > 0)
+        <div style="margin-top: 40px;">
+            <div class="section-header fade-in" style="padding: 0 0 24px;">
+                <h2>Rekomendasi Kost</h2>
+                <p>Kost pilihan yang mungkin cocok untukmu</p>
+            </div>
+            <div class="listing-grid fade-in">
+                @foreach($recommendedKosts as $kost)
+                    <x-kost-card :kost="$kost" />
+                @endforeach
+            </div>
+        </div>
+        @endif
     </div>
 </article>
 @endsection
