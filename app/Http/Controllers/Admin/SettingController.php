@@ -311,4 +311,42 @@ class SettingController extends Controller
         return redirect()->route('admin.settings.footer')
             ->with('success', 'Pengaturan footer berhasil disimpan.');
     }
+
+    public function alerts()
+    {
+        $settings = [
+            'kost_alerts_enabled' => Setting::get('kost_alerts_enabled', '0'),
+        ];
+
+        $stats = [
+            'total_alerts' => \App\Models\KostAlert::count(),
+            'active_alerts' => \App\Models\KostAlert::where('is_active', true)->count(),
+            'users_with_alerts' => \App\Models\KostAlert::distinct('user_id')->count('user_id'),
+            'pending_kosts' => \App\Models\Kost::whereNull('notified_at')->count(),
+        ];
+
+        return view('admin.settings.alerts', compact('settings', 'stats'));
+    }
+
+    public function updateAlerts(Request $request)
+    {
+        Setting::set('kost_alerts_enabled', $request->has('kost_alerts_enabled') ? '1' : '0');
+
+        return redirect()->route('admin.settings.alerts')
+            ->with('success', 'Pengaturan alert berhasil disimpan.');
+    }
+
+    public function testAlert(Request $request)
+    {
+        $request->validate([
+            'channel' => 'required|in:email,whatsapp',
+            'target' => 'required|string|max:255',
+        ]);
+
+        $service = new \App\Services\KostAlertService();
+        $result = $service->sendTestNotification($request->channel, $request->target);
+
+        return redirect()->route('admin.settings.alerts')
+            ->with($result['ok'] ? 'success' : 'error', $result['message']);
+    }
 }
