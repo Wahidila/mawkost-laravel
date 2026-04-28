@@ -36,6 +36,8 @@ class KostAlertService
             ->where('is_active', true)
             ->get();
 
+        $userKosts = [];
+
         foreach ($newKosts as $kost) {
             $result['kosts_processed']++;
 
@@ -44,29 +46,40 @@ class KostAlertService
                     continue;
                 }
 
-                $sent = $this->sendNotification($alert, $kost);
-                if ($sent) {
-                    $result['notified']++;
-                    $alert->update(['last_notified_at' => now()]);
-                } else {
-                    $result['failed']++;
+                $key = $alert->user_id . '_' . $alert->channel;
+                if (!isset($userKosts[$key])) {
+                    $userKosts[$key] = [
+                        'alert' => $alert,
+                        'kosts' => collect(),
+                    ];
                 }
+                $userKosts[$key]['kosts']->push($kost);
             }
 
             $kost->update(['notified_at' => now()]);
         }
 
+        foreach ($userKosts as $entry) {
+            $sent = $this->sendBatchNotification($entry['alert'], $entry['kosts']);
+            if ($sent) {
+                $result['notified']++;
+                $entry['alert']->update(['last_notified_at' => now()]);
+            } else {
+                $result['failed']++;
+            }
+        }
+
         return $result;
     }
 
-    public function sendNotification(KostAlert $alert, Kost $kost): bool
+    public function sendBatchNotification(KostAlert $alert, $kosts): bool
     {
         $user = $alert->user;
         $success = false;
 
         if (in_array($alert->channel, ['email', 'both'])) {
             try {
-                Mail::to($user->email)->send(new KostAlertMail($user, $kost));
+                Mail::to($user->email)->send(new KostAlertMail($user, $kosts));
                 $success = true;
             } catch (\Exception $e) {
                 Log::error('KostAlert email failed', [
@@ -80,7 +93,7 @@ class KostAlertService
         if (in_array($alert->channel, ['whatsapp', 'both'])) {
             $xsender = new XSenderService();
             if ($xsender->isEnabled() && $user->whatsapp) {
-                $message = $this->buildWhatsAppMessage($user, $kost);
+                $message = $this->buildWhatsAppDigest($kosts);
                 $res = $xsender->send($user->whatsapp, $message);
                 if ($res['ok']) {
                     $success = true;
@@ -97,35 +110,45 @@ class KostAlertService
         return $success;
     }
 
-    protected function buildWhatsAppMessage($user, Kost $kost): string
+    protected function buildWhatsAppDigest($kosts): string
     {
-        $price = 'Rp ' . number_format($kost->price, 0, ',', '.');
-        $city = $kost->city->name ?? '-';
-        $type = $kost->kostType->name ?? ucfirst($kost->type);
-        $url = url("/kost/" . ($kost->city->slug ?? '') . "/{$kost->slug}");
+        $count = $kosts->count();
+        $msg = "🏠 *{$count} Kost Baru di mawkost!*\n";
 
-        return "🏠 *Kost Baru di mawkost!*\n\n"
-            . "*{$kost->title}*\n"
-            . "📍 {$city} — {$kost->area_label}\n"
-            . "🏷️ Tipe: {$type}\n"
-            . "💰 {$price}/bulan\n\n"
-            . "👉 Lihat detail: {$url}\n\n"
-            . "_Kamu menerima pesan ini karena mengaktifkan alert kost di mawkost._";
+        foreach ($kosts->take(5) as $i => $kost) {
+            $price = 'Rp ' . number_format($kost->price, 0, ',', '.');
+            $city = $kost->city->name ?? '-';
+            $url = url("/kost/" . ($kost->city->slug ?? '') . "/{$kost->slug}");
+
+            $msg .= "\n*" . ($i + 1) . ". {$kost->title}*\n"
+                . "📍 {$city} · 💰 {$price}/bln\n"
+                . "👉 {$url}\n";
+        }
+
+        if ($count > 5) {
+            $more = $count - 5;
+            $msg .= "\n_...dan {$more} kost lainnya._\n";
+        }
+
+        $msg .= "\n🔍 Lihat semua: " . url('/cari-kost') . "\n"
+            . "_Alert mawkost · Kelola di dashboard_";
+
+        return $msg;
     }
 
     public function sendTestNotification(string $channel, string $target): array
     {
-        $testKost = Kost::with(['city', 'kostType'])->first();
+        $testKosts = Kost::with(['city', 'kostType'])->take(3)->get();
 
-        if (!$testKost) {
+        if ($testKosts->isEmpty()) {
             return ['ok' => false, 'message' => 'Tidak ada data kost untuk test.'];
         }
 
         if ($channel === 'email') {
             try {
                 $fakeUser = new \App\Models\User(['name' => 'Test User', 'email' => $target]);
-                Mail::to($target)->send(new KostAlertMail($fakeUser, $testKost));
-                return ['ok' => true, 'message' => "Email test berhasil dikirim ke {$target}"];
+                Mail::to($target)->send(new KostAlertMail($fakeUser, $testKosts));
+                return ['ok' => true, 'message' => "Email test berhasil dikirim ke {$target} ({$testKosts->count()} kost)"];
             } catch (\Exception $e) {
                 return ['ok' => false, 'message' => 'Gagal kirim email: ' . $e->getMessage()];
             }
@@ -136,11 +159,10 @@ class KostAlertService
             if (!$xsender->isEnabled()) {
                 return ['ok' => false, 'message' => 'WhatsApp API belum aktif.'];
             }
-            $fakeUser = new \App\Models\User(['name' => 'Test User']);
-            $message = $this->buildWhatsAppMessage($fakeUser, $testKost);
+            $message = $this->buildWhatsAppDigest($testKosts);
             $res = $xsender->send($target, $message);
             if ($res['ok']) {
-                return ['ok' => true, 'message' => "WhatsApp test berhasil dikirim ke {$target}"];
+                return ['ok' => true, 'message' => "WhatsApp test berhasil dikirim ke {$target} ({$testKosts->count()} kost)"];
             }
             return ['ok' => false, 'message' => 'Gagal kirim WA: ' . ($res['body'] ?? 'Unknown')];
         }

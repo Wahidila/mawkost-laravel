@@ -2,28 +2,32 @@
 
 namespace App\Mail;
 
-use App\Models\Kost;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class KostAlertMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public User $user;
-    public Kost $kost;
+    public Collection $kosts;
 
-    public function __construct(User $user, Kost $kost)
+    public function __construct(User $user, Collection $kosts)
     {
         $this->user = $user;
-        $this->kost = $kost;
+        $this->kosts = $kosts;
     }
 
     public function build()
     {
-        return $this->subject('Kost Baru Sesuai Kriteriamu! — mawkost')
-            ->view('emails.kost-alert');
+        $count = $this->kosts->count();
+        $subject = $count === 1
+            ? 'Kost Baru Sesuai Kriteriamu! — mawkost'
+            : "{$count} Kost Baru Sesuai Kriteriamu! — mawkost";
+
+        return $this->subject($subject)->view('emails.kost-alert');
     }
 }
