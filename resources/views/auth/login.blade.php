@@ -231,6 +231,57 @@
 
         .login-paw i:nth-child(2) { transform: rotate(-12deg); }
         .login-paw i:nth-child(3) { transform: rotate(8deg); }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(92, 61, 46, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .modal-card {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 32px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 16px 48px rgba(92, 61, 46, 0.2);
+            position: relative;
+            animation: modalIn 200ms ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(16px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--border-light);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .85rem;
+            transition: all 200ms ease;
+        }
+
+        .modal-close:hover {
+            background: var(--primary-lighter);
+            color: var(--primary-dark);
+        }
     </style>
 </head>
 <body>
@@ -287,6 +338,12 @@
                 </button>
             </form>
 
+            <div style="text-align:center;margin-top:16px;">
+                <button type="button" onclick="document.getElementById('forgotModal').style.display='flex'" style="background:none;border:none;color:var(--cta);font-size:.85rem;font-weight:600;cursor:pointer;font-family:'Open Sans',sans-serif;">
+                    <i class="fa-solid fa-key" style="font-size:.75rem;margin-right:4px;"></i> Lupa Password?
+                </button>
+            </div>
+
             <div class="login-footer">
                 <a href="{{ route('home') }}">
                     <i class="fa-solid fa-arrow-left" style="font-size:.75rem;"></i> Kembali ke Beranda
@@ -300,5 +357,53 @@
             </div>
         </div>
     </div>
+    <div class="modal-overlay" id="forgotModal" onclick="if(event.target===this)this.style.display='none'">
+        <div class="modal-card">
+            <button type="button" class="modal-close" onclick="document.getElementById('forgotModal').style.display='none'">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div style="text-align:center;margin-bottom:20px;">
+                <div style="width:52px;height:52px;background:var(--primary-lighter);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+                    <i class="fa-solid fa-key" style="color:var(--primary);font-size:1.2rem;"></i>
+                </div>
+                <h3 style="font-family:'Poppins',sans-serif;font-weight:700;color:var(--primary-dark);font-size:1.15rem;margin-bottom:4px;">Lupa Password?</h3>
+                <p style="color:var(--text-muted);font-size:.85rem;">Masukkan email atau nomor WhatsApp yang terdaftar. Password baru akan dikirim ke email & WA kamu.</p>
+            </div>
+
+            @if(session('forgot_error'))
+            <div class="alert alert-error" style="margin-bottom:16px;">
+                <i class="fa-solid fa-circle-exclamation" style="margin-top:2px;"></i>
+                <div>{{ session('forgot_error') }}</div>
+            </div>
+            @endif
+
+            @if(session('forgot_success'))
+            <div class="alert alert-success" style="margin-bottom:16px;">
+                <i class="fa-solid fa-circle-check" style="margin-top:2px;"></i>
+                <div>{{ session('forgot_success') }}</div>
+            </div>
+            @endif
+
+            <form method="POST" action="{{ route('forgot-password') }}">
+                @csrf
+                <div class="form-group">
+                    <label class="form-label">Email atau No. WhatsApp</label>
+                    <div class="input-wrapper">
+                        <input type="text" name="identifier" required placeholder="email@example.com atau 08123456789">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" style="background:var(--cta);">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Password Baru
+                </button>
+            </form>
+        </div>
+    </div>
+
+    @if(session('forgot_error') || session('forgot_success'))
+    <script>document.getElementById('forgotModal').style.display='flex';</script>
+    @endif
 </body>
 </html>

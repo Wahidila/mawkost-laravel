@@ -61,6 +61,7 @@ Route::get('/kebijakan-pengembalian-dana', [PageController::class , 'refund'])->
 Route::get('/login', [LoginController::class , 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class , 'login']);
 Route::post('/logout', [LoginController::class , 'logout'])->name('logout');
+Route::post('/forgot-password', [LoginController::class , 'forgotPassword'])->name('forgot-password');
 
 // User Dashboard
 Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], function () {
