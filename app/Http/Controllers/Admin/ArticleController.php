@@ -34,8 +34,8 @@ class ArticleController extends Controller
 
         $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
         $validated['author'] = $validated['author'] ?: 'Tim Mawkost';
-        $validated['is_published'] = $request->has('is_published');
-        $validated['published_at'] = $request->has('is_published') ? now() : null;
+        $validated['is_published'] = $request->input('is_published') === '1';
+        $validated['published_at'] = $validated['is_published'] ? now() : null;
 
         if ($request->hasFile('thumbnail')) {
             $path = $request->file('thumbnail')->store('articles', 'public');
@@ -73,7 +73,7 @@ class ArticleController extends Controller
         $validated['author'] = $validated['author'] ?: 'Tim Mawkost';
 
         $wasPublished = $article->is_published;
-        $validated['is_published'] = $request->has('is_published');
+        $validated['is_published'] = $request->input('is_published') === '1';
 
         if (!$wasPublished && $validated['is_published']) {
             $validated['published_at'] = now();
