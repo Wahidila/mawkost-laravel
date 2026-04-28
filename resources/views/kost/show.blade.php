@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('title', $kost->title . ' — mawkost')
+@section('meta_description', 'Rp ' . number_format($kost->price, 0, ',', '.') . '/bln · ' . ($kost->kostType->name ?? ucfirst($kost->type)) . ' · ' . ($kost->area_label ?? $kost->city->name))
+
+@php
+    $ogImage = $kost->images->first() ? url($kost->images->first()->image_path) : asset('assets/img/kost-1.png');
+    $shareUrl = url()->current();
+    $shareTitle = $kost->title . ' — mawkost';
+    $shareText = 'Cek kost ini di mawkost! 🏠 ' . $kost->title . ' - Rp ' . number_format($kost->price, 0, ',', '.') . '/bln di ' . ($kost->city->name ?? '');
+@endphp
+
+@section('og_title', $shareTitle)
+@section('og_description', 'Rp ' . number_format($kost->price, 0, ',', '.') . '/bln · ' . ($kost->kostType->name ?? ucfirst($kost->type)) . ' · ' . ($kost->area_label ?? $kost->city->name))
+@section('og_image', $ogImage)
 
 @section('content')
 <!-- ========== BREADCRUMB & HEADER ========== -->
@@ -89,6 +101,24 @@
             document.getElementById('lightbox').addEventListener('click', function (e) {
                 if (e.target === this) closeLightbox();
             });
+
+            function copyShareLink() {
+                navigator.clipboard.writeText('{{ $shareUrl }}').then(function() {
+                    showToast('Link berhasil disalin!');
+                });
+            }
+
+            function showToast(msg) {
+                var existing = document.getElementById('share-toast');
+                if (existing) existing.remove();
+                var toast = document.createElement('div');
+                toast.id = 'share-toast';
+                toast.className = 'share-toast';
+                toast.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + msg;
+                document.body.appendChild(toast);
+                setTimeout(function() { toast.classList.add('show'); }, 10);
+                setTimeout(function() { toast.classList.remove('show'); setTimeout(function() { toast.remove(); }, 300); }, 2500);
+            }
         </script>
         @endpush
 
@@ -124,6 +154,22 @@
                         </span>
                         @endif
                     </p>
+
+                    <div class="share-bar">
+                        <span class="share-label"><i class="fa-solid fa-share-nodes"></i> Bagikan:</span>
+                        <a href="https://wa.me/?text={{ urlencode($shareText . "\n👉 " . $shareUrl) }}" target="_blank" rel="noopener" class="share-btn share-wa" title="Share via WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text={{ urlencode($shareText) }}&url={{ urlencode($shareUrl) }}" target="_blank" rel="noopener" class="share-btn share-twitter" title="Share via X/Twitter">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($shareUrl) }}" target="_blank" rel="noopener" class="share-btn share-fb" title="Share via Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <button type="button" onclick="copyShareLink()" class="share-btn share-copy" title="Copy Link">
+                            <i class="fa-solid fa-link"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Deskripsi -->

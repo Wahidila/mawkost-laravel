@@ -1572,6 +1572,76 @@ textarea {
   margin-bottom: 8px;
 }
 
+.share-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.share-label {
+  font-size: .85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.share-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 200ms ease;
+  text-decoration: none;
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.share-wa:hover { background: #25D366; color: #fff; border-color: #25D366; }
+.share-twitter:hover { background: #000; color: #fff; border-color: #000; }
+.share-fb:hover { background: #1877F2; color: #fff; border-color: #1877F2; }
+.share-copy:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.share-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--primary-dark);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-size: .9rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: var(--shadow-lg);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 300ms ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.share-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 .kost-price {
   font-family: 'Poppins', sans-serif;
   font-size: clamp(1.5rem, 5vw, 2rem);
