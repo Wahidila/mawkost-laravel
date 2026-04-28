@@ -26,6 +26,16 @@
             </div>
 
             <div>
+                <label class="block text-sm font-semibold text-primary-dark mb-1.5">Permalink</label>
+                <div class="flex items-center gap-0 border border-primary-lighter rounded-xl overflow-hidden bg-white">
+                    <span class="px-3 py-2.5 text-sm text-gray-400 bg-primary-lighter/20 border-r border-primary-lighter whitespace-nowrap">/blog/</span>
+                    <input type="text" name="slug" value="{{ old('slug', $article->slug) }}" class="flex-1 px-3 py-2.5 text-sm focus:outline-none bg-transparent font-mono" placeholder="{{ $article->slug }}">
+                </div>
+                <p class="text-xs text-gray-400 mt-1">Biarkan kosong untuk generate otomatis dari judul. Jika slug sudah dipakai, akan ditambahkan suffix angka.</p>
+                @error('slug') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
                 <label class="block text-sm font-semibold text-primary-dark mb-1.5">Ringkasan / Excerpt</label>
                 <textarea name="excerpt" rows="2" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all resize-none">{{ old('excerpt', $article->excerpt) }}</textarea>
             </div>

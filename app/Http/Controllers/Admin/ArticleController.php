@@ -59,6 +59,7 @@ class ArticleController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255',
             'excerpt' => 'nullable|string|max:500',
             'content' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
@@ -66,8 +67,12 @@ class ArticleController extends Controller
             'meta_description' => 'nullable|string|max:160',
         ]);
 
-        if ($request->title !== $article->title) {
+        if ($request->filled('slug') && $request->slug !== $article->slug) {
+            $validated['slug'] = $this->generateUniqueSlug($request->slug, $article->id);
+        } elseif ($request->title !== $article->title && !$request->filled('slug')) {
             $validated['slug'] = $this->generateUniqueSlug($validated['title'], $article->id);
+        } else {
+            unset($validated['slug']);
         }
 
         $validated['author'] = $validated['author'] ?: 'Tim Mawkost';
