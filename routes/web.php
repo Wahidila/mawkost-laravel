@@ -62,6 +62,8 @@ Route::get('/login', [LoginController::class , 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class , 'login']);
 Route::post('/logout', [LoginController::class , 'logout'])->name('logout');
 Route::post('/forgot-password', [LoginController::class , 'forgotPassword'])->name('forgot-password');
+Route::post('/otp/send', [LoginController::class , 'sendOtp'])->name('otp.send');
+Route::post('/otp/verify', [LoginController::class , 'verifyOtp'])->name('otp.verify');
 
 // User Dashboard
 Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], function () {

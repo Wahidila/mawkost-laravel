@@ -338,7 +338,17 @@
                 </button>
             </form>
 
-            <div style="text-align:center;margin-top:16px;">
+            <div style="display:flex;align-items:center;gap:12px;margin:20px 0 0;">
+                <div style="flex:1;height:1px;background:var(--border);"></div>
+                <span style="font-size:.78rem;color:var(--text-muted);font-weight:500;">atau</span>
+                <div style="flex:1;height:1px;background:var(--border);"></div>
+            </div>
+
+            <button type="button" onclick="document.getElementById('otpModal').style.display='flex'" style="width:100%;margin-top:16px;padding:12px;background:#25D366;color:#fff;border:none;border-radius:9999px;font-family:'Poppins',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 200ms ease;" onmouseover="this.style.background='#1DA851';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#25D366';this.style.transform=''">
+                <i class="fa-brands fa-whatsapp" style="font-size:1.1rem;"></i> Login via WhatsApp OTP
+            </button>
+
+            <div style="text-align:center;margin-top:14px;">
                 <button type="button" onclick="document.getElementById('forgotModal').style.display='flex'" style="background:none;border:none;color:var(--cta);font-size:.85rem;font-weight:600;cursor:pointer;font-family:'Open Sans',sans-serif;">
                     <i class="fa-solid fa-key" style="font-size:.75rem;margin-right:4px;"></i> Lupa Password?
                 </button>
@@ -357,6 +367,54 @@
             </div>
         </div>
     </div>
+    <div class="modal-overlay" id="otpModal" onclick="if(event.target===this)this.style.display='none'">
+        <div class="modal-card">
+            <button type="button" class="modal-close" onclick="document.getElementById('otpModal').style.display='none'">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div style="text-align:center;margin-bottom:20px;">
+                <div style="width:52px;height:52px;background:#dcfce7;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+                    <i class="fa-brands fa-whatsapp" style="color:#25D366;font-size:1.4rem;"></i>
+                </div>
+                <h3 style="font-family:'Poppins',sans-serif;font-weight:700;color:var(--primary-dark);font-size:1.15rem;margin-bottom:4px;">Login via WhatsApp</h3>
+                <p style="color:var(--text-muted);font-size:.85rem;">Masukkan nomor WhatsApp terdaftar. Kami akan kirim kode OTP 6 digit.</p>
+            </div>
+
+            <div id="otp-alert" style="display:none;padding:12px 16px;border-radius:12px;font-size:.85rem;margin-bottom:16px;"></div>
+
+            <div id="otp-step-1">
+                <div class="form-group">
+                    <label class="form-label">Nomor WhatsApp</label>
+                    <div class="input-wrapper">
+                        <input type="tel" id="otp-phone" placeholder="081234567890" required>
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                </div>
+                <button type="button" onclick="sendOtp()" id="otp-send-btn" style="width:100%;padding:12px;background:#25D366;color:#fff;border:none;border-radius:9999px;font-family:'Poppins',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 200ms ease;">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Kode OTP
+                </button>
+            </div>
+
+            <div id="otp-step-2" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label">Kode OTP (6 digit)</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="otp-code" maxlength="6" placeholder="000000" style="text-align:center;font-size:1.5rem;font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:8px;" required>
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <p style="font-size:.78rem;color:var(--text-muted);margin-top:6px;text-align:center;">Kode berlaku 5 menit. Cek WhatsApp kamu.</p>
+                </div>
+                <button type="button" onclick="verifyOtp()" id="otp-verify-btn" style="width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:9999px;font-family:'Poppins',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 200ms ease;">
+                    <i class="fa-solid fa-check"></i> Verifikasi & Login
+                </button>
+                <button type="button" onclick="document.getElementById('otp-step-1').style.display='';document.getElementById('otp-step-2').style.display='none';otpAlert('','');" style="width:100%;margin-top:10px;padding:8px;background:none;border:1px solid var(--border);border-radius:9999px;color:var(--text-muted);font-size:.82rem;cursor:pointer;font-family:'Open Sans',sans-serif;">
+                    <i class="fa-solid fa-arrow-left" style="font-size:.7rem;margin-right:4px;"></i> Ganti Nomor
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="forgotModal" onclick="if(event.target===this)this.style.display='none'">
         <div class="modal-card">
             <button type="button" class="modal-close" onclick="document.getElementById('forgotModal').style.display='none'">
@@ -401,6 +459,78 @@
             </form>
         </div>
     </div>
+
+    <script>
+    var csrfToken = '{{ csrf_token() }}';
+
+    function otpAlert(type, msg) {
+        var el = document.getElementById('otp-alert');
+        if (!msg) { el.style.display = 'none'; return; }
+        el.style.display = 'flex';
+        el.style.alignItems = 'flex-start';
+        el.style.gap = '8px';
+        if (type === 'error') {
+            el.style.background = '#fef2f2'; el.style.border = '1px solid #fecaca'; el.style.color = '#991b1b';
+            el.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="margin-top:2px"></i><div>' + msg + '</div>';
+        } else {
+            el.style.background = '#f0fdf4'; el.style.border = '1px solid #bbf7d0'; el.style.color = '#166534';
+            el.innerHTML = '<i class="fa-solid fa-circle-check" style="margin-top:2px"></i><div>' + msg + '</div>';
+        }
+    }
+
+    function sendOtp() {
+        var phone = document.getElementById('otp-phone').value.trim();
+        if (!phone) return;
+        var btn = document.getElementById('otp-send-btn');
+        btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+        otpAlert('', '');
+
+        fetch('{{ route("otp.send") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+            body: JSON.stringify({ whatsapp: phone })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                otpAlert('success', data.message);
+                document.getElementById('otp-step-1').style.display = 'none';
+                document.getElementById('otp-step-2').style.display = '';
+                document.getElementById('otp-code').focus();
+            } else {
+                otpAlert('error', data.message);
+            }
+        })
+        .catch(function() { otpAlert('error', 'Terjadi kesalahan. Coba lagi.'); })
+        .finally(function() { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Kode OTP'; });
+    }
+
+    function verifyOtp() {
+        var phone = document.getElementById('otp-phone').value.trim();
+        var otp = document.getElementById('otp-code').value.trim();
+        if (!otp || otp.length !== 6) { otpAlert('error', 'Masukkan 6 digit kode OTP.'); return; }
+        var btn = document.getElementById('otp-verify-btn');
+        btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...';
+        otpAlert('', '');
+
+        fetch('{{ route("otp.verify") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+            body: JSON.stringify({ whatsapp: phone, otp: otp })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                otpAlert('success', data.message + ' Mengalihkan...');
+                setTimeout(function() { window.location.href = data.redirect; }, 1000);
+            } else {
+                otpAlert('error', data.message);
+                btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-check"></i> Verifikasi & Login';
+            }
+        })
+        .catch(function() { otpAlert('error', 'Terjadi kesalahan.'); btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-check"></i> Verifikasi & Login'; });
+    }
+    </script>
 
     @if(session('forgot_error') || session('forgot_success'))
     <script>document.getElementById('forgotModal').style.display='flex';</script>

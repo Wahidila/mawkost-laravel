@@ -41,6 +41,68 @@ class LoginController extends Controller
         ])->onlyInput('email');
     }
 
+    public function sendOtp(Request $request)
+    {
+        $request->validate(['whatsapp' => 'required|string|max:20']);
+
+        $phone = preg_replace('/[^0-9]/', '', $request->whatsapp);
+        $user = User::where('whatsapp', 'LIKE', '%' . substr($phone, -8) . '%')->first();
+
+        if (!$user) {
+            return response()->json(['ok' => false, 'message' => 'Nomor WhatsApp tidak terdaftar. Silahkan order di mawkost untuk mendapatkan akun.']);
+        }
+
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        cache()->put('otp_' . $phone, ['code' => $otp, 'user_id' => $user->id], 300);
+
+        $xsender = new XSenderService();
+        if (!$xsender->isEnabled()) {
+            return response()->json(['ok' => false, 'message' => 'WhatsApp API belum aktif. Hubungi admin.']);
+        }
+
+        $msg = "🔐 *Kode OTP mawkost*\n\n"
+            . "Kode verifikasi login kamu:\n\n"
+            . "▶️ *{$otp}*\n\n"
+            . "Kode berlaku 5 menit.\n"
+            . "_Jangan bagikan kode ini ke siapapun._";
+
+        $res = $xsender->send($request->whatsapp, $msg);
+
+        if ($res['ok']) {
+            return response()->json(['ok' => true, 'message' => 'Kode OTP telah dikirim ke WhatsApp kamu.']);
+        }
+
+        return response()->json(['ok' => false, 'message' => 'Gagal mengirim OTP. Coba lagi.']);
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'whatsapp' => 'required|string|max:20',
+            'otp' => 'required|string|size:6',
+        ]);
+
+        $phone = preg_replace('/[^0-9]/', '', $request->whatsapp);
+        $cached = cache()->get('otp_' . $phone);
+
+        if (!$cached || $cached['code'] !== $request->otp) {
+            return response()->json(['ok' => false, 'message' => 'Kode OTP salah atau sudah expired.']);
+        }
+
+        $user = User::find($cached['user_id']);
+        if (!$user) {
+            return response()->json(['ok' => false, 'message' => 'User tidak ditemukan.']);
+        }
+
+        cache()->forget('otp_' . $phone);
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        $redirect = $user->isAdmin() ? '/admin/dashboard' : route('user.dashboard');
+
+        return response()->json(['ok' => true, 'message' => 'Login berhasil!', 'redirect' => $redirect]);
+    }
+
     public function forgotPassword(Request $request)
     {
         $request->validate([
