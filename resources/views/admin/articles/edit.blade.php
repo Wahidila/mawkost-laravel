@@ -61,21 +61,20 @@
                 <input type="text" name="meta_description" value="{{ old('meta_description', $article->meta_description) }}" maxlength="160" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all">
             </div>
 
-            <div>
-                <label class="inline-flex items-center gap-2 cursor-pointer bg-white border border-primary-lighter rounded-xl py-2.5 px-4 hover:bg-green-50 hover:border-green-200 transition-colors">
-                    <input type="checkbox" name="is_published" value="1" {{ $article->is_published ? 'checked' : '' }} class="w-4 h-4 text-green-500 rounded focus:ring-green-500">
-                    <span class="text-sm font-medium text-primary-dark"><i class="fas fa-globe text-green-500 mr-1"></i> Published</span>
-                </label>
-                @if($article->published_at)
-                    <span class="text-xs text-gray-400 ml-3">Dipublish {{ $article->published_at->format('d M Y, H:i') }}</span>
-                @endif
-            </div>
+            @if($article->published_at)
+            <p class="text-xs text-gray-400"><i class="fas fa-clock mr-1"></i> Dipublish {{ $article->published_at->format('d M Y, H:i') }}</p>
+            @endif
         </div>
+
+        <input type="hidden" name="is_published" id="publish_flag" value="{{ $article->is_published ? '1' : '0' }}">
 
         <div class="p-6 bg-primary-lighter/10 border-t border-primary-lighter/30 flex justify-end gap-3 rounded-b-2xl">
             <a href="{{ route('admin.articles.index') }}" class="px-5 py-2.5 rounded-full bg-white border border-primary-lighter text-primary-dark hover:bg-primary-lighter/30 text-sm font-medium transition-colors">Batal</a>
-            <button type="submit" class="bg-primary text-white hover:bg-primary-dark hover:-translate-y-[1px] shadow-sm hover:shadow-[0_6px_18px_rgba(139,94,60,0.3)] px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 flex items-center gap-2">
-                <i class="fas fa-save text-xs"></i> Simpan Perubahan
+            <button type="submit" onclick="document.getElementById('publish_flag').value='0'" class="px-6 py-2.5 rounded-full bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200 text-sm font-semibold transition-all duration-200 flex items-center gap-2">
+                <i class="fas fa-file-pen text-xs"></i> Simpan Draft
+            </button>
+            <button type="submit" onclick="document.getElementById('publish_flag').value='1'" class="bg-green-600 text-white hover:bg-green-700 hover:-translate-y-[1px] shadow-sm hover:shadow-[0_6px_18px_rgba(22,163,74,0.3)] px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 flex items-center gap-2">
+                <i class="fas fa-globe text-xs"></i> {{ $article->is_published ? 'Update & Publish' : 'Publish Now' }}
             </button>
         </div>
     </form>
