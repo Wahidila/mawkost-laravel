@@ -886,9 +886,14 @@ textarea {
 
 /* ---------- City Cards ---------- */
 .city-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 24px;
+}
+
+.city-grid > * {
+  width: calc((100% - 48px) / 3);
 }
 
 .city-card {
@@ -2353,8 +2358,8 @@ textarea {
     min-width: unset;
   }
 
-  .city-grid {
-    grid-template-columns: 1fr;
+  .city-grid > * {
+    width: 100%;
   }
 
   .listing-grid {
