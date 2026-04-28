@@ -3753,6 +3753,15 @@ select.form-control {
   margin: 16px 0;
 }
 
+.blog-article-content a {
+  color: var(--cta);
+  text-decoration: underline;
+}
+
+.blog-article-content a:hover {
+  color: var(--cta-hover);
+}
+
 .blog-article-content blockquote {
   border-left: 4px solid var(--primary);
   padding: 16px 20px;
