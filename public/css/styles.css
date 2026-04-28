@@ -487,6 +487,65 @@ textarea {
   font-weight: 600;
 }
 
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-toggle {
+  cursor: pointer;
+}
+
+.nav-dropdown-arrow {
+  font-size: .55rem;
+  margin-left: 3px;
+  transition: transform 200ms ease;
+}
+
+.nav-dropdown:hover .nav-dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  min-width: 180px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 200ms ease;
+  z-index: 200;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.nav-dropdown-menu a {
+  display: block;
+  padding: 10px 20px;
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--text);
+  transition: all 150ms ease;
+}
+
+.nav-dropdown-menu a:hover {
+  background: var(--primary-lighter);
+  color: var(--primary-dark);
+}
+
+.nav-dropdown-menu a::after {
+  display: none;
+}
+
 /* -- Nav Actions Button Group -- */
 .nav-actions {
   display: flex;
@@ -2427,6 +2486,36 @@ textarea {
 
   .nav-links-center a::after {
     display: none;
+  }
+
+  .nav-dropdown-menu {
+    position: static;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    min-width: unset;
+    padding: 0;
+    display: none;
+    background: var(--primary-lighter);
+    border-radius: var(--radius-sm);
+    margin-top: 2px;
+  }
+
+  .nav-dropdown.open .nav-dropdown-menu {
+    display: block;
+  }
+
+  .nav-dropdown.open .nav-dropdown-arrow {
+    transform: rotate(180deg);
+  }
+
+  .nav-dropdown-menu a {
+    text-align: center;
+    padding: 10px 16px;
+    font-size: .88rem;
   }
 
   .nav-actions {

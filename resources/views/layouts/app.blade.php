@@ -49,6 +49,16 @@
                 });
             }
 
+            // Mobile dropdown toggle
+            document.querySelectorAll('.nav-dropdown-toggle').forEach(function(toggle) {
+                toggle.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        this.closest('.nav-dropdown').classList.toggle('open');
+                    }
+                });
+            });
+
             // Intersection Observer for fade-in animations
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {

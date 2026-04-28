@@ -1,5 +1,6 @@
 @php
 $currentRoute = request()->route()->getName();
+$navCities = \App\Models\City::orderBy('name')->get();
 @endphp
 
 <nav class="navbar" id="navbar">
@@ -12,6 +13,14 @@ $currentRoute = request()->route()->getName();
         <div class="nav-menu" id="navMenu">
             <div class="nav-links-center">
                 <a href="{{ route('home') }}" class="{{ $currentRoute === 'home' ? 'active' : '' }}">Beranda</a>
+                <div class="nav-dropdown">
+                    <a href="{{ route('kost.search') }}" class="nav-dropdown-toggle {{ $currentRoute === 'kost.byCity' ? 'active' : '' }}">Kost Terbaik <i class="fa-solid fa-chevron-down nav-dropdown-arrow"></i></a>
+                    <div class="nav-dropdown-menu">
+                        @foreach($navCities as $c)
+                            <a href="{{ route('kost.byCity', $c->slug) }}">{{ $c->name }}</a>
+                        @endforeach
+                    </div>
+                </div>
                 <a href="{{ route('home') }}#cara-kerja">Cara Kerja</a>
                 <a href="{{ route('tentang') }}" class="{{ $currentRoute === 'tentang' ? 'active' : '' }}">Tentang</a>
                 <a href="{{ route('contact.index') }}" class="{{ $currentRoute === 'contact.index' ? 'active' : '' }}">Kontak</a>
