@@ -69,6 +69,45 @@
         </div>
     </div>
 
+    <div class="bg-white shadow rounded-lg mb-6">
+        <div class="p-6 border-b border-gray-100">
+            <h4 class="font-semibold text-gray-800 flex items-center gap-2">
+                <i class="fas fa-paper-plane text-green-600"></i> Kirim Notifikasi Kost Baru
+            </h4>
+            <p class="text-sm text-gray-500 mt-1">Kirim notifikasi ke semua user yang punya alert aktif untuk kost yang belum dikirim.</p>
+        </div>
+        <div class="p-6">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-info-circle text-blue-500 mt-0.5"></i>
+                    <div class="text-sm text-blue-700">
+                        <p class="font-semibold mb-1">Bagaimana cara kerjanya?</p>
+                        <ul class="list-disc list-inside space-y-1 text-blue-600">
+                            <li><strong>Otomatis:</strong> Sistem mengirim notifikasi <strong>setiap 1 jam</strong> via cron job untuk kost baru yang belum dikirim.</li>
+                            <li><strong>Manual:</strong> Klik tombol di bawah untuk langsung mengirim notifikasi tanpa menunggu cron.</li>
+                            <li>Hanya kost dengan <code class="bg-blue-100 px-1 rounded text-xs">notified_at = NULL</code> yang akan diproses.</li>
+                            <li>Setiap kost hanya dikirim <strong>1 kali</strong> — tidak akan double.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            @if($stats['pending_kosts'] > 0)
+            <form action="{{ route('admin.settings.alerts.send-now') }}" method="POST" onsubmit="return confirm('Kirim notifikasi untuk {{ $stats['pending_kosts'] }} kost baru ke semua user yang match?');">
+                @csrf
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-6 rounded-lg text-sm transition shadow-sm">
+                    <i class="fas fa-bell mr-2"></i> Kirim Sekarang ({{ $stats['pending_kosts'] }} kost pending)
+                </button>
+            </form>
+            @else
+            <div class="flex items-center gap-2 text-sm text-gray-400">
+                <i class="fas fa-check-circle text-green-400"></i>
+                Semua kost sudah dikirim notifikasinya. Tidak ada yang pending.
+            </div>
+            @endif
+        </div>
+    </div>
+
     <div class="bg-white shadow rounded-lg">
         <div class="p-6 border-b border-gray-100">
             <h4 class="font-semibold text-gray-800 flex items-center gap-2">

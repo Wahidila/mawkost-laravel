@@ -115,6 +115,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::get('settings/alerts', [AdminSettingController::class , 'alerts'])->name('settings.alerts');
     Route::put('settings/alerts', [AdminSettingController::class , 'updateAlerts'])->name('settings.alerts.update');
     Route::post('settings/alerts/test', [AdminSettingController::class , 'testAlert'])->name('settings.alerts.test');
+    Route::post('settings/alerts/send-now', [AdminSettingController::class , 'sendAlertsNow'])->name('settings.alerts.send-now');
 
     Route::get('settings/ai', [AdminAiSettingController::class , 'show'])->name('settings.ai');
     Route::put('settings/ai', [AdminAiSettingController::class , 'update'])->name('settings.ai.update');

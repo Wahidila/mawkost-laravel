@@ -336,6 +336,27 @@ class SettingController extends Controller
             ->with('success', 'Pengaturan alert berhasil disimpan.');
     }
 
+    public function sendAlertsNow()
+    {
+        $service = new \App\Services\KostAlertService();
+
+        if (!$service::isEnabled()) {
+            return redirect()->route('admin.settings.alerts')
+                ->with('error', 'Fitur alert belum diaktifkan.');
+        }
+
+        set_time_limit(120);
+        $result = $service->processNewKosts();
+
+        $message = "Selesai! {$result['kosts_processed']} kost diproses, {$result['notified']} notifikasi terkirim.";
+        if ($result['failed'] > 0) {
+            $message .= " {$result['failed']} gagal.";
+        }
+
+        return redirect()->route('admin.settings.alerts')
+            ->with('success', $message);
+    }
+
     public function testAlert(Request $request)
     {
         $request->validate([
