@@ -97,7 +97,7 @@
             <span>Kota Operasi</span>
           </div>
           <div class="hero-stat">
-            <strong>{{ number_format($orderCount) }}</strong>
+            <strong>{{ number_format($orderCount) }}+</strong>
             <span>Customer Puas</span>
           </div>
         </div>
