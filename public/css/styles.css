@@ -3238,6 +3238,16 @@ select.form-control {
   font-weight: 700;
 }
 
+.team-avatar-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 16px;
+  border: 3px solid var(--primary-lighter);
+  box-shadow: 0 4px 12px rgba(139, 94, 60, 0.12);
+}
+
 .team-card h4 {
   margin-bottom: 6px;
   color: var(--primary-dark);
@@ -3249,6 +3259,56 @@ select.form-control {
   line-height: 1.5;
 }
 
+/* ---------- Nilai Inti (Redesigned) ---------- */
+.nilai-inti-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.nilai-inti-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 200ms ease;
+}
+
+.nilai-inti-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-light);
+}
+
+.nilai-inti-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 1.5rem;
+}
+
+.nilai-inti-body h4 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+.nilai-inti-body p {
+  color: var(--text-muted);
+  font-size: .9rem;
+  line-height: 1.7;
+}
+
 @media (max-width: 768px) {
   .visi-misi-grid {
     grid-template-columns: 1fr;
@@ -3256,6 +3316,11 @@ select.form-control {
 
   .team-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .nilai-inti-grid {
+    grid-template-columns: 1fr;
     gap: 16px;
   }
 }

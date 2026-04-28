@@ -59,33 +59,39 @@
 
       <hr style="margin: 60px 0; border: 0; border-top: 1px solid var(--border-light);">
 
-      <!-- Nilai Inti -->
+      <!-- ========== NILAI INTI ========== -->
       <div class="section-header fade-in">
         <h2>Nilai Inti Kami</h2>
         <p>Prinsip yang menjadi fondasi setiap keputusan kami.</p>
       </div>
 
-      <div class="steps-grid fade-in">
-        <div class="step-card">
-          <div class="step-icon" style="background: #e6f4ea; color: var(--success);">
-            <i class="fa-solid fa-shield-halved"></i>
+      <div class="nilai-inti-grid fade-in">
+        <div class="nilai-inti-card">
+          <div class="nilai-inti-icon" style="background: linear-gradient(135deg, #e6f4ea 0%, #d4edda 100%);">
+            <i class="fa-solid fa-shield-halved" style="color: var(--success);"></i>
           </div>
-          <h4>Autentik & Validasi Real</h4>
-          <p>Setiap foto, fasilitas, dan detail yang kami pajang telah diverifikasi langsung kebenarannya dengan pemilik properti.</p>
+          <div class="nilai-inti-body">
+            <h4>Autentik & Validasi Real</h4>
+            <p>Setiap foto, fasilitas, dan detail yang kami pajang telah diverifikasi langsung kebenarannya dengan pemilik properti.</p>
+          </div>
         </div>
-        <div class="step-card">
-          <div class="step-icon" style="background: var(--primary-lighter); color: var(--primary);">
-            <i class="fa-solid fa-wallet"></i>
+        <div class="nilai-inti-card">
+          <div class="nilai-inti-icon" style="background: linear-gradient(135deg, var(--primary-lighter) 0%, #edd5c4 100%);">
+            <i class="fa-solid fa-wallet" style="color: var(--primary);"></i>
           </div>
-          <h4>Harga Jujur Tanpa Markup</h4>
-          <p>Anda membayar harga persis sama (bahkan kadang lebih murah karena promo) seperti saat Anda datang langsung ke ibu kost.</p>
+          <div class="nilai-inti-body">
+            <h4>Harga Jujur Tanpa Markup</h4>
+            <p>Anda membayar harga persis sama (bahkan kadang lebih murah karena promo) seperti saat Anda datang langsung ke ibu kost.</p>
+          </div>
         </div>
-        <div class="step-card">
-          <div class="step-icon" style="background: #fff0eb; color: var(--cta);">
-            <i class="fa-solid fa-people-group"></i>
+        <div class="nilai-inti-card">
+          <div class="nilai-inti-icon" style="background: linear-gradient(135deg, #fff0eb 0%, #ffe0d4 100%);">
+            <i class="fa-solid fa-people-group" style="color: var(--cta);"></i>
           </div>
-          <h4>Komunitas Terbuka</h4>
-          <p>Kami rutin mengundang feedback dari pencari dan pemilik kost untuk terus memperbaiki ekosistem sewa properti ini.</p>
+          <div class="nilai-inti-body">
+            <h4>Komunitas Terbuka</h4>
+            <p>Kami rutin mengundang feedback dari pencari dan pemilik kost untuk terus memperbaiki ekosistem sewa properti ini.</p>
+          </div>
         </div>
       </div>
 
@@ -133,26 +139,23 @@
       </div>
 
       <div class="team-grid fade-in">
+        @forelse($teamMembers as $member)
         <div class="team-card">
-          <div class="team-avatar">AS</div>
-          <h4>Ananda Satya</h4>
-          <p>CEO, Content Creator Malang & Editor</p>
+          @if($member->photo_url)
+            <img src="{{ $member->photo_url }}" alt="{{ $member->name }}" class="team-avatar-img">
+          @else
+            <div class="team-avatar">{{ $member->initials }}</div>
+          @endif
+          <h4>{{ $member->name }}</h4>
+          <p>{{ $member->position }}</p>
         </div>
+        @empty
         <div class="team-card">
-          <div class="team-avatar">C</div>
-          <h4>Catherina</h4>
-          <p>CFO, PSS Malang & Admin</p>
+          <div class="team-avatar">M</div>
+          <h4>Tim Mawkost</h4>
+          <p>Segera hadir</p>
         </div>
-        <div class="team-card">
-          <div class="team-avatar">A</div>
-          <h4>Alexander</h4>
-          <p>CTO, PSS Jogja & Content Creator Jogja</p>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">N</div>
-          <h4>Nathan</h4>
-          <p>PSS Surabaya & Content Creator Surabaya</p>
-        </div>
+        @endforelse
       </div>
 
     </div>

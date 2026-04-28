@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TeamMember;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
     public function tentang()
     {
-        return view('tentang');
+        $teamMembers = TeamMember::orderBy('sort_order')->orderBy('id')->get();
+        return view('tentang', compact('teamMembers'));
     }
 
     public function tos()
