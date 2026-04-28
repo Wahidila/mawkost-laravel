@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('kost:send-alerts')->hourly();
+        $schedule->command('kost:send-alerts')->daily();
     }
 
     /**

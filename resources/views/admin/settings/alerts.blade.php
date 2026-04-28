@@ -69,30 +69,62 @@
         </div>
     </div>
 
+    {{-- Status Cron / Last Run --}}
     <div class="bg-white shadow rounded-lg mb-6">
         <div class="p-6 border-b border-gray-100">
             <h4 class="font-semibold text-gray-800 flex items-center gap-2">
-                <i class="fas fa-paper-plane text-green-600"></i> Kirim Notifikasi Kost Baru
+                <i class="fas fa-heartbeat text-red-500"></i> Status Otomatis (Cron)
             </h4>
-            <p class="text-sm text-gray-500 mt-1">Kirim notifikasi ke semua user yang punya alert aktif untuk kost yang belum dikirim.</p>
         </div>
         <div class="p-6">
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                <div class="flex items-start gap-3">
-                    <i class="fas fa-info-circle text-blue-500 mt-0.5"></i>
-                    <div class="text-sm text-blue-700">
-                        <p class="font-semibold mb-1">Bagaimana cara kerjanya?</p>
-                        <ul class="list-disc list-inside space-y-1 text-blue-600">
-                            <li><strong>Otomatis:</strong> Sistem mengirim notifikasi <strong>setiap 1 jam</strong> via cron job untuk kost baru yang belum dikirim.</li>
-                            <li><strong>Manual:</strong> Klik tombol di bawah untuk langsung mengirim notifikasi tanpa menunggu cron.</li>
-                            <li>Hanya kost dengan <code class="bg-blue-100 px-1 rounded text-xs">notified_at = NULL</code> yang akan diproses.</li>
-                            <li>Setiap kost hanya dikirim <strong>1 kali</strong> — tidak akan double.</li>
-                        </ul>
+            @if(!empty($lastRun['at']))
+                @php
+                    $runAt = \Carbon\Carbon::parse($lastRun['at']);
+                    $statusMap = [
+                        'success' => ['bg-green-100 border-green-200', 'text-green-700', 'fa-check-circle text-green-500', 'Berhasil'],
+                        'empty' => ['bg-blue-100 border-blue-200', 'text-blue-700', 'fa-info-circle text-blue-500', 'Tidak ada kost baru'],
+                        'partial' => ['bg-amber-100 border-amber-200', 'text-amber-700', 'fa-exclamation-triangle text-amber-500', 'Sebagian gagal'],
+                        'disabled' => ['bg-gray-100 border-gray-200', 'text-gray-600', 'fa-pause-circle text-gray-400', 'Fitur nonaktif'],
+                    ];
+                    $s = $statusMap[$lastRun['status']] ?? $statusMap['empty'];
+                @endphp
+                <div class="flex items-start gap-4 p-4 rounded-lg border {{ $s[0] }}">
+                    <i class="fas {{ $s[2] }} text-xl mt-0.5"></i>
+                    <div>
+                        <p class="font-semibold {{ $s[1] }}">{{ $s[3] }}</p>
+                        <p class="text-sm {{ $s[1] }} opacity-80">{{ $lastRun['summary'] }}</p>
+                        <p class="text-xs text-gray-400 mt-1">
+                            <i class="fas fa-clock mr-1"></i> {{ $runAt->translatedFormat('d M Y, H:i:s') }} ({{ $runAt->diffForHumans() }})
+                        </p>
                     </div>
                 </div>
-            </div>
+            @else
+                <div class="flex items-start gap-4 p-4 rounded-lg border bg-gray-50 border-gray-200">
+                    <i class="fas fa-question-circle text-gray-400 text-xl mt-0.5"></i>
+                    <div>
+                        <p class="font-semibold text-gray-600">Belum pernah dijalankan</p>
+                        <p class="text-sm text-gray-400">Cron belum pernah menjalankan command <code class="bg-gray-100 px-1 rounded text-xs">kost:send-alerts</code>. Pastikan cron sudah di-setup di Hostinger.</p>
+                    </div>
+                </div>
+            @endif
 
+            <div class="mt-4 text-xs text-gray-400 flex items-center gap-1.5">
+                <i class="fas fa-sync-alt"></i>
+                Frekuensi otomatis: <strong>1x sehari</strong> via cron. Atau kirim manual di bawah.
+            </div>
+        </div>
+    </div>
+
+    {{-- Manual Send --}}
+    <div class="bg-white shadow rounded-lg mb-6">
+        <div class="p-6 border-b border-gray-100">
+            <h4 class="font-semibold text-gray-800 flex items-center gap-2">
+                <i class="fas fa-paper-plane text-green-600"></i> Kirim Notifikasi Manual
+            </h4>
+        </div>
+        <div class="p-6">
             @if($stats['pending_kosts'] > 0)
+            <p class="text-sm text-gray-600 mb-4">Ada <strong class="text-amber-700">{{ $stats['pending_kosts'] }} kost baru</strong> yang belum dikirim notifikasinya ke subscriber.</p>
             <form action="{{ route('admin.settings.alerts.send-now') }}" method="POST" onsubmit="return confirm('Kirim notifikasi untuk {{ $stats['pending_kosts'] }} kost baru ke semua user yang match?');">
                 @csrf
                 <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-6 rounded-lg text-sm transition shadow-sm">

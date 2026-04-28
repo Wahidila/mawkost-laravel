@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Setting;
 use App\Services\KostAlertService;
 use Illuminate\Console\Command;
 
@@ -13,6 +14,7 @@ class SendKostAlerts extends Command
     public function handle(KostAlertService $service): int
     {
         if (!KostAlertService::isEnabled()) {
+            $this->logRun('disabled', 'Fitur alert nonaktif.');
             $this->info('Kost alerts feature is disabled.');
             return 0;
         }
@@ -21,8 +23,21 @@ class SendKostAlerts extends Command
 
         $result = $service->processNewKosts();
 
-        $this->info("Done. Kosts processed: {$result['kosts_processed']}, Notifications sent: {$result['notified']}, Failed: {$result['failed']}");
+        $summary = "Kost: {$result['kosts_processed']}, Terkirim: {$result['notified']}, Gagal: {$result['failed']}";
+        $status = $result['failed'] > 0 ? 'partial' : ($result['notified'] > 0 ? 'success' : 'empty');
+
+        $this->logRun($status, $summary);
+        $this->info("Done. {$summary}");
 
         return 0;
+    }
+
+    private function logRun(string $status, string $summary): void
+    {
+        Setting::set('kost_alerts_last_run', json_encode([
+            'at' => now()->toIso8601String(),
+            'status' => $status,
+            'summary' => $summary,
+        ]));
     }
 }

@@ -325,7 +325,9 @@ class SettingController extends Controller
             'pending_kosts' => \App\Models\Kost::whereNull('notified_at')->count(),
         ];
 
-        return view('admin.settings.alerts', compact('settings', 'stats'));
+        $lastRun = json_decode(Setting::get('kost_alerts_last_run', '{}'), true);
+
+        return view('admin.settings.alerts', compact('settings', 'stats', 'lastRun'));
     }
 
     public function updateAlerts(Request $request)
