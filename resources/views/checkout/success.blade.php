@@ -121,7 +121,7 @@
 
             <div class="success-actions">
                 <a href="{{ route('home') }}" class="btn btn-outline">Kembali ke Beranda</a>
-                <a href="{{ route('kost.show', ['citySlug' => $order->kost->city->slug, 'slug' => $order->kost->slug]) }}" class="btn btn-primary">Lihat Detail Kost</a>
+                <a href="{{ route('login') }}" class="btn btn-primary"><i class="fa-solid fa-right-to-bracket" style="margin-right:6px;"></i>Login Akunmu</a>
             </div>
         </div>
     </div>
