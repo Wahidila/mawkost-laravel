@@ -110,6 +110,14 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.vouchers.index') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.vouchers.*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <i class="fas fa-ticket {{ request()->routeIs('admin.vouchers.*') ? 'text-cta' : '' }}"></i>
+                            </span>
+                            <span class="ml-3 text-sm tracking-wide truncate">Voucher</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.contacts.index') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.contacts.*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
                             <span class="inline-flex justify-center items-center ml-4">
                                 <i class="fas fa-envelope {{ request()->routeIs('admin.contacts.*') ? 'text-cta' : '' }}"></i>
