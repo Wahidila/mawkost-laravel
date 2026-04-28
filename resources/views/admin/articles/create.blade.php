@@ -33,8 +33,8 @@
 
             <div>
                 <label class="block text-sm font-semibold text-primary-dark mb-1.5">Konten Artikel</label>
-                <textarea name="content" id="content-editor" rows="15" class="w-full border border-primary-lighter rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white transition-all" placeholder="Tulis konten artikel di sini... (mendukung HTML)" required>{{ old('content') }}</textarea>
-                <p class="text-xs text-gray-400 mt-1">Mendukung HTML. Gunakan tag &lt;h2&gt;, &lt;h3&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;, &lt;img&gt; untuk format.</p>
+                <div id="ckeditor-container" class="border border-primary-lighter rounded-xl overflow-hidden bg-white"></div>
+                <textarea name="content" id="content-hidden" class="hidden" required>{{ old('content') }}</textarea>
                 @error('content') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
@@ -73,4 +73,32 @@
         </div>
     </form>
 </div>
+@push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<style>
+    .ck-editor__editable { min-height: 350px; font-family: 'Open Sans', sans-serif; font-size: 15px; line-height: 1.7; }
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) { border-color: transparent; }
+    .ck.ck-toolbar { border-radius: 12px 12px 0 0 !important; }
+</style>
+<script>
+ClassicEditor.create(document.getElementById('ckeditor-container'), {
+    toolbar: ['heading', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'insertTable', 'imageInsertViaUrl', '|', 'undo', 'redo'],
+    heading: {
+        options: [
+            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' }
+        ]
+    },
+    table: { contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'] },
+    language: 'id'
+}).then(function(editor) {
+    var hidden = document.getElementById('content-hidden');
+    if (hidden.value) editor.setData(hidden.value);
+    editor.model.document.on('change:data', function() { hidden.value = editor.getData(); });
+    document.querySelector('form').addEventListener('submit', function() { hidden.value = editor.getData(); });
+});
+</script>
+@endpush
 @endsection
