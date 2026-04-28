@@ -432,8 +432,13 @@ textarea {
 }
 
 .nav-brand img {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  background: var(--primary-lighter);
+  border-radius: 50%;
+  border: 2px solid var(--primary-light);
+  object-fit: contain;
 }
 
 /* -- Nav Menu (full nav container) -- */
