@@ -178,6 +178,9 @@
 <section class="section" style="background: var(--primary-lighter);">
   <div class="container">
     <div class="section-header fade-in">
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span class="badge badge-recommended"><i class="fa-solid fa-thumbs-up" style="font-size:0.65rem;"></i> Rekomendasi</span>
+      </div>
       <h2>Rekomendasi Kost</h2>
       <p>Kost paling banyak dicari dan direkomendasikan oleh tim mawkost</p>
     </div>
