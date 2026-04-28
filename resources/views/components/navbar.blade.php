@@ -21,10 +21,9 @@ $navCities = \App\Models\City::orderBy('name')->get();
                         @endforeach
                     </div>
                 </div>
-                <a href="{{ route('home') }}#cara-kerja">Cara Kerja</a>
-                <a href="{{ route('blog.index') }}" class="{{ str_starts_with($currentRoute, 'blog') ? 'active' : '' }}">Blog</a>
                 <a href="{{ route('tentang') }}" class="{{ $currentRoute === 'tentang' ? 'active' : '' }}">Tentang</a>
                 <a href="{{ route('contact.index') }}" class="{{ $currentRoute === 'contact.index' ? 'active' : '' }}">Kontak</a>
+                <a href="{{ route('blog.index') }}" class="{{ str_starts_with($currentRoute, 'blog') ? 'active' : '' }}">Blog</a>
             </div>
 
             <div class="nav-actions">
