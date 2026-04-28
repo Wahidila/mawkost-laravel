@@ -435,9 +435,8 @@ textarea {
   width: 32px;
   height: 32px;
   padding: 4px;
-  background: var(--primary-lighter);
+  background: #8b5e3c;
   border-radius: 50%;
-  border: 2px solid var(--primary-light);
   object-fit: contain;
 }
 
