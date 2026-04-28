@@ -14,7 +14,7 @@ class Kost extends Model
         'kode', 'title', 'name', 'slug', 'city_id', 'type', 'price', 'description',
         'area_label', 'total_rooms', 'total_bathrooms', 'floor_count', 'parking_type',
         'is_featured', 'is_recommended', 'unlock_price', 'address',
-        'owner_contact', 'owner_name', 'maps_link', 'purchase_count',
+        'owner_contact', 'owner_name', 'maps_link', 'purchase_count', 'notified_at',
     ];
 
     protected $casts = [

@@ -41,6 +41,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Order::class);
     }
 
+    public function kostAlerts()
+    {
+        return $this->hasMany(\App\Models\KostAlert::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
