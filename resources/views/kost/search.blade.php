@@ -46,8 +46,8 @@
                     <span id="maxPriceLabel">Rp 5jt</span>
                 </div>
                 <div class="multi-range" id="multiRange">
-                    <input type="range" id="minRange" min="500000" max="5000000" step="100000" value="{{ request('min_harga', 500000) }}">
-                    <input type="range" id="maxRange" min="500000" max="5000000" step="100000" value="{{ request('max_harga', 5000000) }}">
+                    <input type="range" id="minRange" min="50000" max="10000000" step="50000" value="{{ request('min_harga', 50000) }}">
+                    <input type="range" id="maxRange" min="50000" max="10000000" step="50000" value="{{ request('max_harga', 10000000) }}">
                 </div>
                 <input type="hidden" name="min_harga" id="minHargaInput" value="{{ request('min_harga') }}">
                 <input type="hidden" name="max_harga" id="maxHargaInput" value="{{ request('max_harga') }}">
@@ -105,9 +105,9 @@
     const maxInput = document.getElementById('maxHargaInput');
     const container = document.getElementById('multiRange');
 
-    const RANGE_MIN = 500000;
-    const RANGE_MAX = 5000000;
-    const GAP = 100000;
+    const RANGE_MIN = 50000;
+    const RANGE_MAX = 10000000;
+    const GAP = 50000;
 
     function formatPrice(val) {
         val = parseInt(val);
