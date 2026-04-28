@@ -30,6 +30,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function voucher()
+    {
+        return $this->belongsTo(Voucher::class);
+    }
+
     public static function generateInvoiceNo(): string
     {
         $date = now()->format('ymd');

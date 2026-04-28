@@ -46,6 +46,12 @@
                     <span class="label">No. Invoice:</span>
                     <span style="font-family: monospace;">{{ $order->invoice_no }}</span>
                 </div>
+                @if($order->discount_amount > 0)
+                <div class="info-row">
+                    <span class="label">Voucher:</span>
+                    <span style="color: #16a34a; font-weight: 600;">{{ $order->voucher->code ?? '-' }} (-Rp {{ number_format($order->discount_amount, 0, ',', '.') }})</span>
+                </div>
+                @endif
             </div>
 
             @if(session('email_error'))

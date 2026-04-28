@@ -123,8 +123,24 @@
                     <span class="text-gray-500">Metode Bayar</span>
                     <span class="text-gray-700 uppercase">{{ $order->payment_method }}</span>
                 </div>
+                @if($order->discount_amount > 0)
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Harga Asli</span>
+                    <span class="text-gray-400 line-through text-sm">Rp {{ number_format($order->original_amount, 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Diskon</span>
+                    <span class="text-green-600 font-semibold">- Rp {{ number_format($order->discount_amount, 0, ',', '.') }}</span>
+                </div>
+                @if($order->voucher)
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500">Voucher</span>
+                    <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 font-mono">{{ $order->voucher->code }}</span>
+                </div>
+                @endif
+                @endif
                 <div class="flex justify-between border-t pt-3 mt-3">
-                    <span class="font-bold text-gray-800">Total</span>
+                    <span class="font-bold text-gray-800">Total Bayar</span>
                     <span class="font-bold text-green-700">{{ $order->formatted_amount }}</span>
                 </div>
                 <div class="flex justify-between">
