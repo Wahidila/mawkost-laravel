@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\AiSettingController as AdminAiSettingController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamController;
+use App\Http\Controllers\Admin\VoucherController as AdminVoucherController;
 use App\Http\Controllers\User\KostAlertController;
 use App\Http\Controllers\User\UserDashboardController;
 
@@ -36,6 +37,7 @@ Route::get('/kost/{citySlug}/{slug}', [KostController::class , 'show'])->name('k
 // Checkout
 Route::get('/checkout/{kostSlug}', [CheckoutController::class , 'show'])->name('checkout.show');
 Route::post('/checkout/{kostSlug}', [CheckoutController::class , 'process'])->name('checkout.process');
+Route::post('/checkout/validate-voucher', [CheckoutController::class , 'validateVoucher'])->name('checkout.validateVoucher');
 Route::post('/payment/callback', [CheckoutController::class , 'callback'])->name('payment.callback');
 Route::get('/success/{invoiceNo}', [CheckoutController::class , 'success'])->name('checkout.success');
 Route::get('/checkout/status/{invoiceNo}', [CheckoutController::class , 'checkStatus'])->name('checkout.status');
@@ -89,6 +91,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::resource('contacts', AdminContactController::class)->only(['index', 'show']);
     Route::resource('users', AdminUserController::class);
     Route::resource('team', AdminTeamController::class)->except(['show', 'create']);
+    Route::resource('vouchers', AdminVoucherController::class)->except(['show', 'create']);
     Route::post('users/{user}/send-credentials', [AdminUserController::class , 'sendCredentials'])->name('users.sendCredentials');
 
     // WhatsApp Settings

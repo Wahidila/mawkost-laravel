@@ -56,6 +56,18 @@
                             <input type="email" id="email" name="email" class="form-control xendit-input" placeholder="budi@gmail.com" required value="{{ old('email', auth()->user()->email ?? '') }}">
                         </div>
 
+                    <div class="xendit-section-title">Punya Kode Voucher?</div>
+
+                    <div class="form-group" style="margin-bottom: 24px;">
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="voucher_input" name="voucher_code" class="form-control xendit-input" placeholder="Masukkan kode voucher" style="flex: 1; text-transform: uppercase;">
+                            <button type="button" onclick="checkVoucher()" id="voucher_btn" style="padding: 10px 20px; border-radius: 8px; border: 1px solid #E8734A; background: #fff; color: #E8734A; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;" onmouseover="this.style.background='#E8734A';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='#E8734A'">
+                                Terapkan
+                            </button>
+                        </div>
+                        <div id="voucher_result" style="margin-top: 8px; display: none;"></div>
+                    </div>
+
                     <div class="xendit-section-title">Pilih Metode Pembayaran</div>
 
                     <div class="xendit-payment-list">
@@ -112,8 +124,8 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="btn xendit-btn-pay" style="width: 100%; margin-top: 32px;">
-                        Bayar Rp {{ number_format($kost->unlock_price, 0, ',', '.') }}
+                    <button type="submit" class="btn xendit-btn-pay" id="pay_btn" style="width: 100%; margin-top: 32px;">
+                        Bayar <span id="pay_amount">Rp {{ number_format($kost->unlock_price, 0, ',', '.') }}</span>
                     </button>
 
                 </form>
@@ -158,6 +170,50 @@
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        var originalAmount = {{ $kost->unlock_price }};
+
+        function formatRp(n) {
+            return 'Rp ' + n.toLocaleString('id-ID');
+        }
+
+        function checkVoucher() {
+            var code = document.getElementById('voucher_input').value.trim();
+            var result = document.getElementById('voucher_result');
+            if (!code) { result.style.display = 'none'; return; }
+
+            var btn = document.getElementById('voucher_btn');
+            btn.textContent = '...';
+            btn.disabled = true;
+
+            fetch('{{ route("checkout.validateVoucher") }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                body: JSON.stringify({ code: code, amount: originalAmount })
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                result.style.display = 'block';
+                if (data.valid) {
+                    result.innerHTML = '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;color:#166534;font-size:0.85rem;">'
+                        + '<i class="fa-solid fa-check-circle" style="margin-right:6px;"></i>' + data.message
+                        + '<br><span style="font-size:0.8rem;color:#15803d;">Diskon: ' + formatRp(data.discount) + ' → Total: <strong>' + formatRp(data.final_amount) + '</strong></span></div>';
+                    document.getElementById('pay_amount').textContent = formatRp(data.final_amount);
+                } else {
+                    result.innerHTML = '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;color:#991b1b;font-size:0.85rem;">'
+                        + '<i class="fa-solid fa-times-circle" style="margin-right:6px;"></i>' + data.message + '</div>';
+                    document.getElementById('pay_amount').textContent = formatRp(originalAmount);
+                }
+            })
+            .catch(function() {
+                result.style.display = 'block';
+                result.innerHTML = '<div style="color:#991b1b;font-size:0.85rem;">Gagal memvalidasi voucher.</div>';
+            })
+            .finally(function() {
+                btn.textContent = 'Terapkan';
+                btn.disabled = false;
+            });
+        }
     </script>
 </body>
 </html>

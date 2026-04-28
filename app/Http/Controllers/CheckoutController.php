@@ -6,6 +6,8 @@ use App\Mail\WelcomeUserMail;
 use App\Models\Kost;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Voucher;
+use App\Models\VoucherUsage;
 use App\Services\XenditService;
 use App\Services\XSenderService;
 use Illuminate\Http\Request;
@@ -36,6 +38,33 @@ class CheckoutController extends Controller
         return view('checkout.show', compact('kost'));
     }
 
+    public function validateVoucher(Request $request)
+    {
+        $request->validate(['code' => 'required|string', 'amount' => 'required|integer']);
+
+        $voucher = Voucher::where('code', strtoupper($request->code))->first();
+
+        if (!$voucher) {
+            return response()->json(['valid' => false, 'message' => 'Kode voucher tidak ditemukan.']);
+        }
+
+        $check = $voucher->isValid($request->amount);
+        if (!$check['valid']) {
+            return response()->json($check);
+        }
+
+        $discount = $voucher->calculateDiscount($request->amount);
+        $finalAmount = max(0, $request->amount - $discount);
+
+        return response()->json([
+            'valid' => true,
+            'message' => "Diskon {$voucher->formatted_discount} berhasil diterapkan!",
+            'discount' => $discount,
+            'final_amount' => $finalAmount,
+            'voucher_id' => $voucher->id,
+        ]);
+    }
+
     public function process(Request $request, $kostSlug)
     {
         $rules = [
@@ -43,6 +72,7 @@ class CheckoutController extends Controller
             'name' => 'required|string|max:255',
             'whatsapp' => 'required|string|max:20',
             'email' => 'required|email|max:255',
+            'voucher_code' => 'nullable|string|max:50',
         ];
 
         $request->validate($rules);
@@ -79,7 +109,24 @@ class CheckoutController extends Controller
             }
         }
 
-        // Create order (initially pending)
+        $originalAmount = $kost->unlock_price;
+        $discountAmount = 0;
+        $voucherId = null;
+        $voucher = null;
+
+        if ($request->filled('voucher_code')) {
+            $voucher = Voucher::where('code', strtoupper($request->voucher_code))->first();
+            if ($voucher) {
+                $check = $voucher->isValid($originalAmount);
+                if ($check['valid']) {
+                    $discountAmount = $voucher->calculateDiscount($originalAmount);
+                    $voucherId = $voucher->id;
+                }
+            }
+        }
+
+        $finalAmount = max(0, $originalAmount - $discountAmount);
+
         $order = Order::create([
             'invoice_no' => Order::generateInvoiceNo(),
             'kost_id' => $kost->id,
@@ -87,10 +134,23 @@ class CheckoutController extends Controller
             'customer_name' => $customerName,
             'customer_whatsapp' => $customerWhatsapp,
             'customer_email' => $customerEmail,
-            'amount' => $kost->unlock_price,
+            'amount' => $finalAmount,
+            'original_amount' => $originalAmount,
+            'discount_amount' => $discountAmount,
+            'voucher_id' => $voucherId,
             'payment_method' => $request->payment,
             'status' => 'pending',
         ]);
+
+        if ($voucher && $voucherId) {
+            $voucher->increment('used_count');
+            VoucherUsage::create([
+                'voucher_id' => $voucherId,
+                'order_id' => $order->id,
+                'user_id' => $user->id,
+                'discount_amount' => $discountAmount,
+            ]);
+        }
 
         // Check if Xendit is enabled
         $xendit = new XenditService();
