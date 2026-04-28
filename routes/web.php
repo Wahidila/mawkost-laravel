@@ -35,9 +35,9 @@ Route::get('/kost/{citySlug}', [KostController::class , 'byCity'])->name('kost.b
 Route::get('/kost/{citySlug}/{slug}', [KostController::class , 'show'])->name('kost.show');
 
 // Checkout
+Route::post('/checkout/validate-voucher', [CheckoutController::class , 'validateVoucher'])->name('checkout.validateVoucher');
 Route::get('/checkout/{kostSlug}', [CheckoutController::class , 'show'])->name('checkout.show');
 Route::post('/checkout/{kostSlug}', [CheckoutController::class , 'process'])->name('checkout.process');
-Route::post('/checkout/validate-voucher', [CheckoutController::class , 'validateVoucher'])->name('checkout.validateVoucher');
 Route::post('/payment/callback', [CheckoutController::class , 'callback'])->name('payment.callback');
 Route::get('/success/{invoiceNo}', [CheckoutController::class , 'success'])->name('checkout.success');
 Route::get('/checkout/status/{invoiceNo}', [CheckoutController::class , 'checkStatus'])->name('checkout.status');
