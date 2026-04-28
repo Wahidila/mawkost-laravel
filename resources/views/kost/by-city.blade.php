@@ -32,7 +32,6 @@
         <!-- Filter Bar -->
         <form action="{{ route('kost.byCity', $city->slug) }}" method="GET" class="filter-bar fade-in">
             <div class="filter-group">
-                <label>Tipe Kost</label>
                 <select name="tipe">
                     <option value="">Semua Tipe</option>
                     @foreach($kostTypes as $type)
@@ -41,7 +40,7 @@
                 </select>
             </div>
             <div class="filter-group price-range-wrapper">
-                <label class="range-label">Rentang Harga</label>
+
                 <div class="range-values">
                     <span id="minPriceLabel">Rp 500rb</span>
                     <span id="maxPriceLabel">Rp 5jt</span>
