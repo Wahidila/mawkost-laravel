@@ -168,7 +168,7 @@
       @endforeach
     </div>
     <div style="text-align: center; margin-top: 40px;" class="fade-in">
-      <a href="{{ route('kost.search') }}?featured=1" class="btn btn-outline" style="background:white;">Lihat Semua Kost Pilihan</a>
+      <a href="{{ route('kost.search') }}?featured=1" class="btn btn-outline-surface">Lihat Semua Kost Pilihan</a>
     </div>
   </div>
 </section>
@@ -187,7 +187,7 @@
       @endforeach
     </div>
     <div style="text-align: center; margin-top: 40px;" class="fade-in">
-      <a href="{{ route('kost.search') }}?rekomendasi=1" class="btn btn-outline" style="background:white;">Lihat Semua Rekomendasi</a>
+      <a href="{{ route('kost.search') }}?rekomendasi=1" class="btn btn-outline-surface">Lihat Semua Rekomendasi</a>
     </div>
   </div>
 </section>

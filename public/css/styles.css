@@ -238,6 +238,20 @@ textarea {
   transform: translateY(-1px);
 }
 
+.btn-outline-surface {
+  background: var(--surface);
+  color: var(--primary-dark);
+  border-color: var(--border);
+}
+
+.btn-outline-surface:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
 .btn-ghost {
   background: transparent;
   color: var(--primary);
