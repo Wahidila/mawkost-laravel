@@ -72,15 +72,43 @@
             </div>
             @endif
 
-            <!-- Provide the actual contact info -->
-            <div class="success-info" style="margin-top: 16px; background-color: var(--surface);">
-                <h4>Info Kontak & Alamat (Unlocked)</h4>
-                <p style="margin-bottom: 8px;"><strong>Nama Pemilik:</strong> {{ $order->kost->owner_name ?? 'Bapak/Ibu Kost' }}</p>
-                <p style="margin-bottom: 8px;"><strong>WhatsApp:</strong> <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact ?? '')) }}" target="_blank" style="color: var(--cta); text-decoration: none; font-weight: 600;">{{ $order->kost->owner_contact ?? '-' }} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 12px; margin-left:4px;"></i></a></p>
-                <p style="margin-bottom: 8px;"><strong>Alamat Pas:</strong> {{ $order->kost->address ?? 'Jl. Placeholder No XXX' }}</p>
-                @if($order->kost->maps_link)
-                <p style="margin-bottom: 0;"><strong>Link Maps:</strong> <a href="{{ $order->kost->maps_link }}" target="_blank" style="color: var(--cta); text-decoration: none;">Buka di Google Maps</a></p>
-                @endif
+            <div style="margin-top: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 20px;">
+                <h4 style="color: #166534; display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 15px;">
+                    <i class="fa-solid fa-unlock-keyhole"></i> Info Kost Terbuka
+                </h4>
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: #374151;">
+                    <div>
+                        <strong style="color: #166534; font-size: 12px; display: block; margin-bottom: 2px;">Nama Kost</strong>
+                        <span style="font-weight: 600;">{{ $order->kost->name }}</span>
+                    </div>
+                    <div>
+                        <strong style="color: #166534; font-size: 12px; display: block; margin-bottom: 2px;">Nama Pemilik</strong>
+                        <span>{{ $order->kost->owner_name ?? 'Bapak/Ibu Kost' }}</span>
+                    </div>
+                    <div>
+                        <strong style="color: #166534; font-size: 12px; display: block; margin-bottom: 2px;">WhatsApp Pemilik</strong>
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact ?? '')) }}" target="_blank" style="color: #16a34a; text-decoration: none; font-weight: 600;">
+                            {{ $order->kost->owner_contact ?? '-' }} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 11px;"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <strong style="color: #166534; font-size: 12px; display: block; margin-bottom: 2px;">Alamat Lengkap</strong>
+                        <span>{{ $order->kost->address ?? '-' }}</span>
+                    </div>
+                    @if($order->kost->maps_link)
+                    <div>
+                        <strong style="color: #166534; font-size: 12px; display: block; margin-bottom: 2px;">Google Maps</strong>
+                        <a href="{{ $order->kost->maps_link }}" target="_blank" style="color: #2563eb; text-decoration: none; font-weight: 500;">
+                            <i class="fa-solid fa-map-location-dot" style="margin-right: 4px;"></i> Buka Titik Lokasi
+                        </a>
+                    </div>
+                    @endif
+                </div>
+                <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #bbf7d0;">
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', str_replace('+62', '62', $order->kost->owner_contact ?? '')) }}?text={{ urlencode('Halo, saya ' . $order->customer_name . '. Saya tertarik dengan ' . $order->kost->name . ' (Kode: ' . $order->kost->kode . '). Apakah kamar masih tersedia?') }}" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: #16a34a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 13px;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> Hubungi Pemilik via WhatsApp
+                    </a>
+                </div>
             </div>
 
             <p style="font-size: .85rem; margin-top: 24px; margin-bottom: 24px; color: var(--text-muted);">Selain ditampilan di atas, info ini juga telah masuk ke WhatsApp dan Email Anda.</p>
