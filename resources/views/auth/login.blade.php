@@ -1,61 +1,304 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login — mawkost</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
     <link rel="icon" href="{{ asset('assets/img/logo.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B5E3C;
+            --primary-light: #DEB8A0;
+            --primary-lighter: #F5E6DB;
+            --primary-dark: #5C3D2E;
+            --cta: #E8734A;
+            --bg: #FFF9F5;
+            --surface: #FFFFFF;
+            --text: #3D2B1F;
+            --text-muted: #8C7A6E;
+            --border: #E8DDD5;
+            --border-light: #F0E8E1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+        }
+        .blob-1 { width: 400px; height: 400px; background: var(--primary-light); opacity: 0.35; top: -120px; left: -100px; }
+        .blob-2 { width: 300px; height: 300px; background: var(--cta); opacity: 0.15; bottom: -80px; right: -60px; }
+        .blob-3 { width: 200px; height: 200px; background: var(--primary-lighter); opacity: 0.4; top: 50%; right: 10%; }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            padding: 24px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(232, 221, 213, 0.5);
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 16px 48px rgba(92, 61, 46, 0.12);
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .login-logo img {
+            width: 44px;
+            height: 44px;
+        }
+
+        .login-logo span {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: var(--primary-dark);
+        }
+
+        .login-logo span em {
+            font-style: normal;
+            color: var(--cta);
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: .9rem;
+            margin-bottom: 28px;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: .85rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: .82rem;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-light);
+            font-size: .85rem;
+            transition: color 200ms ease;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: .95rem;
+            color: var(--text);
+            background: var(--surface);
+            transition: all 200ms ease;
+            outline: none;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .input-wrapper input::placeholder {
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.1);
+        }
+
+        .input-wrapper input:focus + i,
+        .input-wrapper:focus-within i {
+            color: var(--primary);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 13px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 9999px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: .95rem;
+            cursor: pointer;
+            transition: all 200ms ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-login:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(92, 61, 46, 0.2);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: .85rem;
+            font-weight: 500;
+            transition: color 200ms ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .login-footer a:hover {
+            color: var(--cta);
+        }
+
+        .login-paw {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+            opacity: 0.12;
+        }
+
+        .login-paw i {
+            font-size: .9rem;
+            color: var(--primary);
+        }
+
+        .login-paw i:nth-child(2) { transform: rotate(-12deg); }
+        .login-paw i:nth-child(3) { transform: rotate(8deg); }
+    </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
-        <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-blue-800">maw.kost</h2>
-            <p class="text-gray-500 text-sm mt-1">Masuk ke akun Anda</p>
-        </div>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
 
-        @if ($errors->any())
-            <div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg mb-4 text-sm">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li><i class="fas fa-exclamation-circle mr-1"></i> {{ $error }}</li>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="mawkost">
+                <span>maw.<em>kost</em></span>
+            </div>
+            <p class="login-subtitle">Masuk ke akun Anda</p>
+
+            @if($errors->any())
+            <div class="alert alert-error">
+                <i class="fa-solid fa-circle-exclamation" style="margin-top:2px;"></i>
+                <div>
+                    @foreach($errors->all() as $error)
+                        <div>{{ $error }}</div>
                     @endforeach
-                </ul>
-            </div>
-        @endif
-
-        @if(session('success'))
-            <div class="bg-green-50 border border-green-200 text-green-700 p-3 rounded-lg mb-4 text-sm">
-                <i class="fas fa-check-circle mr-1"></i> {{ session('success') }}
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                <div class="relative">
-                    <i class="fas fa-envelope absolute left-3 top-3 text-gray-400 text-sm"></i>
-                    <input type="email" name="email" id="email" class="shadow-sm border rounded-lg w-full py-2.5 pl-10 pr-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300" required autofocus value="{{ old('email') }}" placeholder="email@example.com">
                 </div>
             </div>
-            <div class="mb-6">
-                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                <div class="relative">
-                    <i class="fas fa-lock absolute left-3 top-3 text-gray-400 text-sm"></i>
-                    <input type="password" name="password" id="password" class="shadow-sm border rounded-lg w-full py-2.5 pl-10 pr-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300" required placeholder="••••••••">
-                </div>
+            @endif
+
+            @if(session('success'))
+            <div class="alert alert-success">
+                <i class="fa-solid fa-circle-check" style="margin-top:2px;"></i>
+                <div>{{ session('success') }}</div>
             </div>
-            <button type="submit" class="bg-blue-600 hover:bg-blue-800 w-full text-white font-bold py-2.5 px-4 rounded-lg focus:outline-none focus:shadow-outline transition">
-                <i class="fas fa-right-to-bracket mr-1"></i> Sign In
-            </button>
-            <div class="mt-4 text-center text-sm">
-                <a href="{{ route('home') }}" class="text-blue-500 hover:text-blue-800">
-                    <i class="fas fa-arrow-left mr-1"></i> Kembali ke Beranda
+            @endif
+
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <div class="input-wrapper">
+                        <input type="email" name="email" required autofocus value="{{ old('email') }}" placeholder="email@example.com">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" name="password" required placeholder="••••••••">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    <i class="fa-solid fa-right-to-bracket"></i> Masuk
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <a href="{{ route('home') }}">
+                    <i class="fa-solid fa-arrow-left" style="font-size:.75rem;"></i> Kembali ke Beranda
                 </a>
             </div>
-        </form>
+
+            <div class="login-paw">
+                <i class="fa-solid fa-paw"></i>
+                <i class="fa-solid fa-paw"></i>
+                <i class="fa-solid fa-paw"></i>
+            </div>
+        </div>
     </div>
 </body>
 </html>
