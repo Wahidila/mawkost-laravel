@@ -3072,26 +3072,22 @@ textarea {
 /* Price range wrapper */
 .price-range-wrapper {
   flex: 1.5;
-  min-width: 220px;
+  min-width: 180px;
+  gap: 0;
 }
 
-.range-label {
-  display: block;
-}
-
-/* Price labels above slider */
 .range-values {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2px;
+  margin-bottom: 0;
 }
 
 .range-values span {
   font-family: 'Poppins', sans-serif;
-  font-size: .85rem;
+  font-size: .7rem;
   font-weight: 600;
-  color: var(--primary-dark);
+  color: var(--text-muted);
 }
 
 /* Dual range — container IS the track (gradient-based) */
