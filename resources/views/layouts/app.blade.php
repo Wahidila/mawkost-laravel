@@ -6,6 +6,17 @@
     <title>@yield('title', config('app.name', 'mawkost'))</title>
     <meta name="description" content="@yield('meta_description', 'mawkost adalah platform pencarian kost terpercaya di Malang, Jogja, dan Surabaya.')">
     <link rel="icon" href="{{ asset('assets/img/logo.png') }}" type="image/png">
+
+    <meta property="og:title" content="@yield('og_title', 'mawkost — Cari Kost Gampang, Ga Perlu Keliling!')">
+    <meta property="og:description" content="@yield('og_description', 'Platform pencarian kost terpercaya di Malang, Jogja, dan Surabaya.')">
+    <meta property="og:image" content="@yield('og_image', asset('assets/img/logo.png'))">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="mawkost">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('og_title', 'mawkost — Cari Kost Gampang, Ga Perlu Keliling!')">
+    <meta name="twitter:description" content="@yield('og_description', 'Platform pencarian kost terpercaya di Malang, Jogja, dan Surabaya.')">
+    <meta name="twitter:image" content="@yield('og_image', asset('assets/img/logo.png'))">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
