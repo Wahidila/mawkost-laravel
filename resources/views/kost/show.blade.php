@@ -154,6 +154,22 @@
                         </span>
                         @endif
                     </p>
+
+                    <div class="share-bar">
+                        <span class="share-label"><i class="fa-solid fa-share-nodes"></i> Bagikan:</span>
+                        <a href="https://wa.me/?text={{ urlencode($shareText . "\n👉 " . $shareUrl) }}" target="_blank" rel="noopener" class="share-btn share-wa" title="Share via WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text={{ urlencode($shareText) }}&url={{ urlencode($shareUrl) }}" target="_blank" rel="noopener" class="share-btn share-twitter" title="Share via X/Twitter">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($shareUrl) }}" target="_blank" rel="noopener" class="share-btn share-fb" title="Share via Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <button type="button" onclick="copyShareLink()" class="share-btn share-copy" title="Copy Link">
+                            <i class="fa-solid fa-link"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Deskripsi -->
@@ -219,28 +235,10 @@
                     </ul>
                 </div>
                 @endif
-
             </div>
 
             <!-- SIDEBAR (Kanan) -->
             <div class="info-sidebar fade-in">
-
-                <!-- Share Bar -->
-                <div class="share-bar" style="justify-content: center; margin-bottom: 16px;">
-                    <span class="share-label"><i class="fa-solid fa-share-nodes"></i> Bagikan:</span>
-                    <a href="https://wa.me/?text={{ urlencode($shareText . "\n👉 " . $shareUrl) }}" target="_blank" rel="noopener" class="share-btn share-wa" title="Share via WhatsApp">
-                        <i class="fa-brands fa-whatsapp"></i>
-                    </a>
-                    <a href="https://twitter.com/intent/tweet?text={{ urlencode($shareText) }}&url={{ urlencode($shareUrl) }}" target="_blank" rel="noopener" class="share-btn share-twitter" title="Share via X/Twitter">
-                        <i class="fa-brands fa-x-twitter"></i>
-                    </a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($shareUrl) }}" target="_blank" rel="noopener" class="share-btn share-fb" title="Share via Facebook">
-                        <i class="fa-brands fa-facebook-f"></i>
-                    </a>
-                    <button type="button" onclick="copyShareLink()" class="share-btn share-copy" title="Copy Link">
-                        <i class="fa-solid fa-link"></i>
-                    </button>
-                </div>
 
                 <!-- Pricing Block -->
                 <div class="info-block" style="position: sticky; top: calc(var(--nav-h) + 24px); border-color: var(--primary); box-shadow: var(--shadow-sm);">
