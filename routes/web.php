@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\AiSettingController as AdminAiSettingController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamController;
+use App\Http\Controllers\User\KostAlertController;
 use App\Http\Controllers\User\UserDashboardController;
 
 // Public Pages
@@ -65,6 +66,10 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], func
     Route::put('/profile', [UserDashboardController::class , 'updateProfile'])->name('profile.update');
     Route::put('/profile/password', [UserDashboardController::class , 'updatePassword'])->name('profile.password');
     Route::delete('/profile/avatar', [UserDashboardController::class , 'deleteAvatar'])->name('profile.avatar.delete');
+    Route::get('/alerts', [KostAlertController::class , 'index'])->name('alerts');
+    Route::post('/alerts', [KostAlertController::class , 'store'])->name('alerts.store');
+    Route::patch('/alerts/{id}/toggle', [KostAlertController::class , 'toggle'])->name('alerts.toggle');
+    Route::delete('/alerts/{id}', [KostAlertController::class , 'destroy'])->name('alerts.destroy');
 });
 
 // Admin Panel
@@ -107,6 +112,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::post('settings/watermark/apply-batch', [AdminSettingController::class , 'watermarkApplyBatch'])->name('settings.watermark.apply-batch');
 
     // AI Chat Settings
+    Route::get('settings/alerts', [AdminSettingController::class , 'alerts'])->name('settings.alerts');
+    Route::put('settings/alerts', [AdminSettingController::class , 'updateAlerts'])->name('settings.alerts.update');
+    Route::post('settings/alerts/test', [AdminSettingController::class , 'testAlert'])->name('settings.alerts.test');
+
     Route::get('settings/ai', [AdminAiSettingController::class , 'show'])->name('settings.ai');
     Route::put('settings/ai', [AdminAiSettingController::class , 'update'])->name('settings.ai.update');
     Route::post('settings/ai/test', [AdminAiSettingController::class , 'test'])->name('settings.ai.test');

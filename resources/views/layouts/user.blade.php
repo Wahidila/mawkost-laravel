@@ -88,6 +88,14 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('user.alerts') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('user.alerts*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
+                            <span class="inline-flex justify-center items-center ml-4">
+                                <i class="fas fa-bell {{ request()->routeIs('user.alerts*') ? 'text-cta' : '' }}"></i>
+                            </span>
+                            <span class="ml-3 text-sm tracking-wide truncate">Alert Kost</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('user.profile') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('user.profile*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
                             <span class="inline-flex justify-center items-center ml-4">
                                 <i class="fas fa-user-pen {{ request()->routeIs('user.profile*') ? 'text-cta' : '' }}"></i>
