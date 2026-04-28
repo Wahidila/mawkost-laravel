@@ -19,7 +19,9 @@ use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\AiSettingController as AdminAiSettingController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Admin\VoucherController as AdminVoucherController;
 use App\Http\Controllers\User\KostAlertController;
 use App\Http\Controllers\User\UserDashboardController;
@@ -49,6 +51,8 @@ Route::get('/konsultasi', [ChatController::class , 'index'])->name('chat.index')
 Route::get('/kontak', [ContactController::class , 'index'])->name('contact.index');
 Route::post('/kontak', [ContactController::class , 'store'])->name('contact.store');
 Route::get('/tentang', [PageController::class , 'tentang'])->name('tentang');
+Route::get('/blog', [BlogController::class , 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class , 'show'])->name('blog.show');
 Route::get('/terms-of-service', [PageController::class , 'tos'])->name('tos');
 Route::get('/kebijakan-privasi', [PageController::class , 'privacy'])->name('privacy');
 Route::get('/kebijakan-pengembalian-dana', [PageController::class , 'refund'])->name('refund');
@@ -92,6 +96,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::resource('users', AdminUserController::class);
     Route::resource('team', AdminTeamController::class)->except(['show', 'create']);
     Route::resource('vouchers', AdminVoucherController::class)->except(['show', 'create']);
+    Route::resource('articles', AdminArticleController::class)->except(['show']);
     Route::post('users/{user}/send-credentials', [AdminUserController::class , 'sendCredentials'])->name('users.sendCredentials');
 
     // WhatsApp Settings
