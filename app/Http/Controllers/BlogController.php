@@ -24,7 +24,7 @@ class BlogController extends Controller
         $relatedArticles = Article::published()
             ->where('id', '!=', $article->id)
             ->latest('published_at')
-            ->take(3)
+            ->take(5)
             ->get();
 
         return view('blog.show', compact('article', 'relatedArticles'));
