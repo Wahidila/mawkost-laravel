@@ -53,18 +53,15 @@
                 <input type="hidden" name="min_harga" id="minHargaInput" value="{{ request('min_harga') }}">
                 <input type="hidden" name="max_harga" id="maxHargaInput" value="{{ request('max_harga') }}">
             </div>
-            <div class="filter-group" style="flex: 0 0 auto;">
-                <label>Label</label>
-                <div class="filter-label-group">
-                    <label class="filter-chip chip-featured {{ request('featured') ? 'active' : '' }}">
-                        <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }}>
-                        <i class="fa-solid fa-crown" style="font-size: .7rem;"></i> Featured
-                    </label>
-                    <label class="filter-chip chip-rekomendasi {{ request('rekomendasi') ? 'active' : '' }}">
-                        <input type="checkbox" name="rekomendasi" value="1" {{ request('rekomendasi') ? 'checked' : '' }}>
-                        <i class="fa-solid fa-thumbs-up" style="font-size: .7rem;"></i> Rekomendasi
-                    </label>
-                </div>
+            <div class="filter-label-group">
+                <label class="filter-chip chip-featured {{ request('featured') ? 'active' : '' }}">
+                    <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }}>
+                    <i class="fa-solid fa-crown"></i> Featured
+                </label>
+                <label class="filter-chip chip-rekomendasi {{ request('rekomendasi') ? 'active' : '' }}">
+                    <input type="checkbox" name="rekomendasi" value="1" {{ request('rekomendasi') ? 'checked' : '' }}>
+                    <i class="fa-solid fa-thumbs-up"></i> Rekomendasi
+                </label>
             </div>
             <div class="filter-group" style="flex: 0 0 auto;">
                 <button type="submit" class="btn btn-primary" style="height: 46px; border-radius: var(--radius-sm);">Terapkan Filter</button>

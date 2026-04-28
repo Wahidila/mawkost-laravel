@@ -1418,19 +1418,23 @@ textarea {
 .filter-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
+  gap: 4px;
+  padding: 5px 10px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border);
   background: var(--bg);
   cursor: pointer;
   transition: all 200ms ease;
   font-family: 'Poppins', sans-serif;
-  font-size: .8rem;
+  font-size: .72rem;
   font-weight: 600;
   color: var(--text-muted);
   white-space: nowrap;
   user-select: none;
+}
+
+.filter-chip i {
+  font-size: .6rem;
 }
 
 .filter-chip:hover {
