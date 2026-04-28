@@ -48,17 +48,38 @@ class KostController extends Controller
         return view('kost.search', compact('kosts', 'cities', 'kostTypes'));
     }
 
-    public function byCity($citySlug)
+    public function byCity(Request $request, $citySlug)
     {
         $city = City::where('slug', $citySlug)->firstOrFail();
-        $kosts = Kost::with('city', 'images', 'facilities', 'kostType')
-            ->where('city_id', $city->id)
-            ->orderByDesc('is_featured')
+        $query = Kost::with('city', 'images', 'facilities', 'kostType')
+            ->where('city_id', $city->id);
+
+        if ($request->filled('tipe')) {
+            $type = KostType::where('slug', $request->tipe)->first();
+            if ($type) {
+                $query->where('kost_type_id', $type->id);
+            } else {
+                $query->where('type', $request->tipe);
+            }
+        }
+
+        if ($request->filled('min_harga')) {
+            $query->where('price', '>=', $request->min_harga);
+        }
+
+        if ($request->filled('max_harga')) {
+            $query->where('price', '<=', $request->max_harga);
+        }
+
+        $kosts = $query->orderByDesc('is_featured')
             ->orderByDesc('is_recommended')
             ->latest()
-            ->paginate(9);
+            ->paginate(9)
+            ->withQueryString();
 
-        return view('kost.by-city', compact('city', 'kosts'));
+        $kostTypes = KostType::orderBy('name')->get();
+
+        return view('kost.by-city', compact('city', 'kosts', 'kostTypes'));
     }
 
     public function show($citySlug, $slug)
