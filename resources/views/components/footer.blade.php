@@ -72,10 +72,10 @@
         </div>
         <div class="footer-bottom">
             <div style="margin-bottom: 8px;">&copy; {{ date('Y') }} mawkost. All rights reserved.</div>
-            <div style="font-size: 0.9em;">
-                <a href="{{ route('tos') }}" style="color: inherit; text-decoration: none; margin-right: 16px;">Terms of Service</a>
-                <a href="{{ route('privacy') }}" style="color: inherit; text-decoration: none; margin-right: 16px;">Kebijakan Privasi</a>
-                <a href="{{ route('refund') }}" style="color: inherit; text-decoration: none;">Kebijakan Pengembalian Dana</a>
+            <div class="footer-links">
+                <a href="{{ route('tos') }}">Terms of Service</a>
+                <a href="{{ route('privacy') }}">Kebijakan Privasi</a>
+                <a href="{{ route('refund') }}">Kebijakan Pengembalian Dana</a>
             </div>
         </div>
     </div>
