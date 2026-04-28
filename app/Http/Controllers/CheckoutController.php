@@ -186,12 +186,9 @@ class CheckoutController extends Controller
                     'xendit_invoice_url' => $result['invoice_url'],
                 ]);
 
-                // Store new user info in session (for webhook to pick up later)
                 if ($isNewUser && $plainPassword) {
-                    session([
-                        'checkout_new_user_' . $order->invoice_no => true,
-                        'checkout_password_' . $order->invoice_no => $plainPassword,
-                    ]);
+                    cache()->put('checkout_new_user_' . $order->invoice_no, true, 3600);
+                    cache()->put('checkout_password_' . $order->invoice_no, $plainPassword, 3600);
                 }
 
                 // Redirect to Xendit payment page
@@ -265,18 +262,10 @@ class CheckoutController extends Controller
                 'xendit_payment_channel' => $request->input('payment_channel'),
             ]);
 
-            // Determine if this was a new user registration
-            $isNewUser = session('checkout_new_user_' . $order->invoice_no, false);
-            $plainPassword = session('checkout_password_' . $order->invoice_no);
+            $isNewUser = cache()->pull('checkout_new_user_' . $order->invoice_no, false);
+            $plainPassword = cache()->pull('checkout_password_' . $order->invoice_no);
 
-            // Send notifications
             $this->sendNotifications($order, $order->user, $isNewUser, $plainPassword);
-
-            // Clear session data
-            session()->forget([
-                'checkout_new_user_' . $order->invoice_no,
-                'checkout_password_' . $order->invoice_no,
-            ]);
 
             Log::info('Xendit payment confirmed', [
                 'invoice' => $order->invoice_no,
