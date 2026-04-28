@@ -142,60 +142,49 @@
                         </a>
                     </li>
 
-                    <li class="px-5 mt-4">
-                        <div class="flex flex-row items-center h-8">
-                            <div class="text-xs font-semibold tracking-wider text-primary-light uppercase border-b border-orange-50 pb-1 mb-2 w-full">Pengaturan</div>
-                        </div>
-                    </li>
+                    @php $settingsOpen = request()->routeIs('admin.settings.*'); @endphp
                     <li>
-                        <a href="{{ route('admin.settings.whatsapp') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.settings.whatsapp*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
+                        <button type="button" onclick="this.closest('li').classList.toggle('admin-submenu-open')" class="w-full relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ $settingsOpen ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
                             <span class="inline-flex justify-center items-center ml-4">
-                                <i class="fab fa-whatsapp {{ request()->routeIs('admin.settings.whatsapp*') ? 'text-cta' : '' }}"></i>
+                                <i class="fas fa-cog {{ $settingsOpen ? 'text-cta' : '' }}"></i>
                             </span>
-                            <span class="ml-3 text-sm tracking-wide truncate">Pengaturan WA</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.settings.xendit') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.settings.xendit*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
-                            <span class="inline-flex justify-center items-center ml-4">
-                                <i class="fas fa-credit-card {{ request()->routeIs('admin.settings.xendit*') ? 'text-cta' : '' }}"></i>
-                            </span>
-                            <span class="ml-3 text-sm tracking-wide truncate">Pengaturan Xendit</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.settings.footer') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.settings.footer*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
-                            <span class="inline-flex justify-center items-center ml-4">
-                                <i class="fas fa-columns {{ request()->routeIs('admin.settings.footer*') ? 'text-cta' : '' }}"></i>
-                            </span>
-                            <span class="ml-3 text-sm tracking-wide truncate">Pengaturan Footer</span>
-                        </a>
-                    </li>
-                    @if(Route::has('admin.settings.watermark'))
-                    <li>
-                        <a href="{{ route('admin.settings.watermark') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.settings.watermark*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
-                            <span class="inline-flex justify-center items-center ml-4">
-                                <i class="fas fa-stamp {{ request()->routeIs('admin.settings.watermark*') ? 'text-cta' : '' }}"></i>
-                            </span>
-                            <span class="ml-3 text-sm tracking-wide truncate">Pengaturan Watermark</span>
-                        </a>
-                    </li>
-                    @endif
-                    <li>
-                        <a href="{{ route('admin.settings.alerts') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.settings.alerts*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
-                            <span class="inline-flex justify-center items-center ml-4">
-                                <i class="fas fa-bell {{ request()->routeIs('admin.settings.alerts*') ? 'text-cta' : '' }}"></i>
-                            </span>
-                            <span class="ml-3 text-sm tracking-wide truncate">Alert Kost Baru</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.settings.ai') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-primary-lighter text-gray-600 hover:text-primary-dark border-l-4 {{ request()->routeIs('admin.settings.ai*') ? 'border-cta text-primary-dark bg-primary-lighter font-semibold' : 'border-transparent' }} pr-6 transition duration-200">
-                            <span class="inline-flex justify-center items-center ml-4">
-                                <i class="fas fa-robot {{ request()->routeIs('admin.settings.ai*') ? 'text-cta' : '' }}"></i>
-                            </span>
-                            <span class="ml-3 text-sm tracking-wide truncate">Pengaturan AI Chat</span>
-                        </a>
+                            <span class="ml-3 text-sm tracking-wide truncate flex-1 text-left">Pengaturan</span>
+                            <i class="fas fa-chevron-down text-[10px] text-gray-400 transition-transform duration-200 admin-submenu-arrow"></i>
+                        </button>
+                        <ul class="admin-submenu bg-primary-lighter/30 overflow-hidden transition-all duration-200" style="max-height:0;">
+                            <li>
+                                <a href="{{ route('admin.settings.whatsapp') }}" class="flex items-center h-10 pl-12 pr-6 text-sm text-gray-600 hover:text-primary-dark hover:bg-primary-lighter/50 transition {{ request()->routeIs('admin.settings.whatsapp*') ? 'text-primary-dark font-semibold bg-primary-lighter/50' : '' }}">
+                                    <i class="fab fa-whatsapp w-5 text-center mr-2 text-xs {{ request()->routeIs('admin.settings.whatsapp*') ? 'text-cta' : '' }}"></i> WhatsApp
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.settings.xendit') }}" class="flex items-center h-10 pl-12 pr-6 text-sm text-gray-600 hover:text-primary-dark hover:bg-primary-lighter/50 transition {{ request()->routeIs('admin.settings.xendit*') ? 'text-primary-dark font-semibold bg-primary-lighter/50' : '' }}">
+                                    <i class="fas fa-credit-card w-5 text-center mr-2 text-xs {{ request()->routeIs('admin.settings.xendit*') ? 'text-cta' : '' }}"></i> Xendit
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.settings.footer') }}" class="flex items-center h-10 pl-12 pr-6 text-sm text-gray-600 hover:text-primary-dark hover:bg-primary-lighter/50 transition {{ request()->routeIs('admin.settings.footer*') ? 'text-primary-dark font-semibold bg-primary-lighter/50' : '' }}">
+                                    <i class="fas fa-columns w-5 text-center mr-2 text-xs {{ request()->routeIs('admin.settings.footer*') ? 'text-cta' : '' }}"></i> Footer
+                                </a>
+                            </li>
+                            @if(Route::has('admin.settings.watermark'))
+                            <li>
+                                <a href="{{ route('admin.settings.watermark') }}" class="flex items-center h-10 pl-12 pr-6 text-sm text-gray-600 hover:text-primary-dark hover:bg-primary-lighter/50 transition {{ request()->routeIs('admin.settings.watermark*') ? 'text-primary-dark font-semibold bg-primary-lighter/50' : '' }}">
+                                    <i class="fas fa-stamp w-5 text-center mr-2 text-xs {{ request()->routeIs('admin.settings.watermark*') ? 'text-cta' : '' }}"></i> Watermark
+                                </a>
+                            </li>
+                            @endif
+                            <li>
+                                <a href="{{ route('admin.settings.alerts') }}" class="flex items-center h-10 pl-12 pr-6 text-sm text-gray-600 hover:text-primary-dark hover:bg-primary-lighter/50 transition {{ request()->routeIs('admin.settings.alerts*') ? 'text-primary-dark font-semibold bg-primary-lighter/50' : '' }}">
+                                    <i class="fas fa-bell w-5 text-center mr-2 text-xs {{ request()->routeIs('admin.settings.alerts*') ? 'text-cta' : '' }}"></i> Alert Kost
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.settings.ai') }}" class="flex items-center h-10 pl-12 pr-6 text-sm text-gray-600 hover:text-primary-dark hover:bg-primary-lighter/50 transition {{ request()->routeIs('admin.settings.ai*') ? 'text-primary-dark font-semibold bg-primary-lighter/50' : '' }}">
+                                    <i class="fas fa-robot w-5 text-center mr-2 text-xs {{ request()->routeIs('admin.settings.ai*') ? 'text-cta' : '' }}"></i> AI Chat
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -273,9 +262,20 @@
         ::-webkit-scrollbar-thumb:hover {
             background-color: var(--primary, #8B5E3C);
         }
+        .admin-submenu-open .admin-submenu { max-height: 300px !important; }
+        .admin-submenu-open .admin-submenu-arrow { transform: rotate(180deg); }
     </style>
     @stack('modals')
     @stack('scripts')
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var settingsOpen = {{ $settingsOpen ? 'true' : 'false' }};
+        if (settingsOpen) {
+            var li = document.querySelector('.admin-submenu-arrow').closest('li');
+            if (li) li.classList.add('admin-submenu-open');
+        }
+    });
+    </script>
 </body>
 </html>
 
