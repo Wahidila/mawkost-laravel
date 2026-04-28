@@ -81,6 +81,17 @@
 
             @if($relatedArticles->count() > 0)
             <aside class="blog-sidebar fade-in">
+                <div style="background:linear-gradient(135deg,#8B5E3C 0%,#5C3D2E 100%);border-radius:12px;padding:24px;margin-bottom:20px;text-align:center;">
+                    <div style="width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+                        <i class="fa-solid fa-robot" style="color:#fff;font-size:1.3rem;"></i>
+                    </div>
+                    <h4 style="font-family:'Poppins',sans-serif;font-weight:700;color:#fff;font-size:.95rem;margin-bottom:6px;">Cari Kost dengan AI</h4>
+                    <p style="color:rgba(255,255,255,0.75);font-size:.8rem;line-height:1.5;margin-bottom:16px;">Sesuai kebutuhanmu — kota, budget, tipe, fasilitas. Tanya langsung ke AI mawkost!</p>
+                    <a href="{{ route('chat.index') }}" style="display:inline-flex;align-items:center;gap:6px;background:#E8734A;color:#fff;padding:10px 22px;border-radius:9999px;text-decoration:none;font-family:'Poppins',sans-serif;font-weight:600;font-size:.85rem;transition:all 200ms ease;" onmouseover="this.style.background='#D4622E'" onmouseout="this.style.background='#E8734A'">
+                        <i class="fa-solid fa-magnifying-glass" style="font-size:.75rem;"></i> Konsultasi AI
+                    </a>
+                </div>
+
                 <h4 style="font-family:'Poppins',sans-serif;font-weight:700;color:var(--primary-dark);margin-bottom:16px;font-size:1rem;">Artikel Lainnya</h4>
                 @foreach($relatedArticles as $related)
                 <a href="{{ route('blog.show', $related->slug) }}" class="blog-sidebar-card">
