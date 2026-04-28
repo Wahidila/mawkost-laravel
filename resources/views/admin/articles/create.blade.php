@@ -77,6 +77,10 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <style>
     .ck-editor__editable { min-height: 350px; font-family: 'Open Sans', sans-serif; font-size: 15px; line-height: 1.7; }
+    .ck-editor__editable h2 { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: #5C3D2E; margin: 24px 0 12px; }
+    .ck-editor__editable h3 { font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 700; color: #5C3D2E; margin: 20px 0 10px; }
+    .ck-editor__editable h4 { font-family: 'Poppins', sans-serif; font-size: 1.05rem; font-weight: 600; color: #5C3D2E; margin: 16px 0 8px; }
+    .ck-editor__editable blockquote { border-left: 4px solid #8B5E3C; padding: 12px 16px; background: #F5E6DB; border-radius: 0 8px 8px 0; font-style: italic; color: #5C3D2E; }
     .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) { border-color: transparent; }
     .ck.ck-toolbar { border-radius: 12px 12px 0 0 !important; }
 </style>
