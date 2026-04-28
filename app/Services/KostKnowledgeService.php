@@ -90,7 +90,7 @@ class KostKnowledgeService
 
                     return [
                         'kode' => $kost->kode,
-                        'nama' => $kost->title,
+                        'judul' => $kost->title,
                         'kota' => $kost->city->name ?? '-',
                         'tipe' => $kost->kostType->name ?? $kost->type ?? '-',
                         'harga_rb' => $priceK,
@@ -132,13 +132,13 @@ class KostKnowledgeService
         $text .= "Tipe: " . implode(', ', $typeParts) . "\n\n";
 
         // CSV header
-        $text .= "KODE|NAMA|KOTA|TIPE|HARGA_RB|AREA|PARKIR|FASILITAS|DEKAT|LABEL|URL\n";
+        $text .= "KODE|JUDUL|KOTA|TIPE|HARGA_RB|AREA|PARKIR|FASILITAS|DEKAT|LABEL|URL\n";
 
         // CSV rows
         foreach ($listings as $kost) {
             $text .= implode('|', [
                 $kost['kode'],
-                $kost['nama'],
+                $kost['judul'],
                 $kost['kota'],
                 $kost['tipe'],
                 $kost['harga_rb'],
