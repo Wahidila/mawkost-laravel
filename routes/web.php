@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\AiSettingController as AdminAiSettingController;
+use App\Http\Controllers\Admin\TeamMemberController as AdminTeamController;
 use App\Http\Controllers\User\UserDashboardController;
 
 // Public Pages
@@ -81,6 +82,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     Route::get('orders-export', [AdminOrderController::class , 'export'])->name('orders.export');
     Route::resource('contacts', AdminContactController::class)->only(['index', 'show']);
     Route::resource('users', AdminUserController::class);
+    Route::resource('team', AdminTeamController::class)->except(['show', 'create']);
     Route::post('users/{user}/send-credentials', [AdminUserController::class , 'sendCredentials'])->name('users.sendCredentials');
 
     // WhatsApp Settings
