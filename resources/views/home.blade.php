@@ -43,9 +43,9 @@
                 <label>Tipe Kost</label>
                 <select name="tipe">
                   <option value="">Semua Tipe</option>
-                  <option value="putra">Putra</option>
-                  <option value="putri">Putri</option>
-                  <option value="campur">Campur</option>
+                  @foreach($kostTypes as $type)
+                    <option value="{{ $type->slug }}">{{ $type->name }}</option>
+                  @endforeach
                 </select>
               </div>
               <button type="submit" class="btn btn-primary btn-search">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Kost;
+use App\Models\KostType;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,8 @@ class HomeController extends Controller
         $kostCount = Kost::count();
         $cityCount = City::count();
         $orderCount = Order::where('status', 'paid')->count();
+        $kostTypes = KostType::orderBy('name')->get();
 
-        return view('home', compact('cities', 'featuredKosts', 'recommendedKosts', 'recentKosts', 'kostCount', 'cityCount', 'orderCount'));
+        return view('home', compact('cities', 'featuredKosts', 'recommendedKosts', 'recentKosts', 'kostCount', 'cityCount', 'orderCount', 'kostTypes'));
     }
 }
