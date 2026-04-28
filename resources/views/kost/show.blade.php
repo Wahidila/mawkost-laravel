@@ -372,4 +372,34 @@
     </div>
 </section>
 @endif
+
+<!-- ========== NEWSLETTER CTA ========== -->
+<section class="section" style="background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); position: relative; overflow: hidden;">
+    <div style="position:absolute;width:300px;height:300px;background:var(--cta);border-radius:50%;filter:blur(100px);opacity:0.12;top:-80px;right:-60px;"></div>
+    <div style="position:absolute;width:200px;height:200px;background:var(--primary-light);border-radius:50%;filter:blur(80px);opacity:0.15;bottom:-60px;left:-40px;"></div>
+    <div class="container" style="position:relative;z-index:1;">
+        <div style="max-width:640px;margin:0 auto;text-align:center;">
+            <div style="width:56px;height:56px;background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+                <i class="fa-solid fa-bell" style="color:#fff;font-size:1.4rem;"></i>
+            </div>
+            <h2 style="color:#fff;font-size:clamp(1.5rem,3vw,2rem);margin-bottom:12px;">Jangan Lewatkan Kost Terbaik!</h2>
+            <p style="color:rgba(255,255,255,0.75);font-size:1rem;line-height:1.7;margin-bottom:28px;">Aktifkan alert dan dapatkan notifikasi langsung saat ada kost baru yang sesuai kriteriamu — kota, budget, dan tipe kost.</p>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                @auth
+                <a href="{{ route('user.alerts') }}" class="btn" style="background:#fff;color:var(--primary-dark);font-weight:700;padding:14px 32px;border-radius:9999px;font-size:.95rem;transition:all 200ms ease;box-shadow:0 4px 16px rgba(0,0,0,0.15);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.15)'">
+                    <i class="fa-solid fa-bell" style="margin-right:6px;"></i> Buat Alert Kost
+                </a>
+                @else
+                <a href="{{ route('login') }}" class="btn" style="background:#fff;color:var(--primary-dark);font-weight:700;padding:14px 32px;border-radius:9999px;font-size:.95rem;transition:all 200ms ease;box-shadow:0 4px 16px rgba(0,0,0,0.15);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.15)'">
+                    <i class="fa-solid fa-bell" style="margin-right:6px;"></i> Buat Alert Kost
+                </a>
+                @endauth
+                <a href="{{ route('kost.search') }}" class="btn" style="background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.3);font-weight:600;padding:14px 28px;border-radius:9999px;font-size:.95rem;transition:all 200ms ease;" onmouseover="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(255,255,255,0.3)'">
+                    <i class="fa-solid fa-magnifying-glass" style="margin-right:6px;"></i> Cari Kost
+                </a>
+            </div>
+            <p style="color:rgba(255,255,255,0.4);font-size:.78rem;margin-top:20px;"><i class="fa-solid fa-shield-halved" style="margin-right:4px;"></i> Gratis, tanpa spam. Bisa dinonaktifkan kapan saja.</p>
+        </div>
+    </div>
+</section>
 @endsection
