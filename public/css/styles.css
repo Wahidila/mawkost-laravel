@@ -3102,7 +3102,7 @@ textarea {
     var(--border) 0%, var(--border) var(--min-pct),
     var(--cta) var(--min-pct), var(--cta) var(--max-pct),
     var(--border) var(--max-pct), var(--border) 100%);
-  margin: 16px 0 8px;
+  margin: 8px 0 8px;
 }
 
 /* Range inputs — full width, stacked, transparent */
