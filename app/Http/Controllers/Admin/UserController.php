@@ -27,7 +27,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'whatsapp' => 'nullable|string|max:20',
+            'whatsapp' => 'nullable|string|max:20|unique:users,whatsapp',
             'role' => 'required|in:admin,user',
             'password' => 'required|string|min:8',
         ]);
@@ -53,7 +53,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'whatsapp' => 'nullable|string|max:20',
+            'whatsapp' => 'nullable|string|max:20|unique:users,whatsapp,' . $user->id,
             'role' => 'required|in:admin,user',
             'password' => 'nullable|string|min:8',
         ]);

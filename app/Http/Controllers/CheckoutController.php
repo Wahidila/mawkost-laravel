@@ -91,11 +91,22 @@ class CheckoutController extends Controller
         }
         else {
             $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                $user = User::where('whatsapp', $request->whatsapp)->first();
+            }
+
             $customerName = $request->name;
             $customerWhatsapp = $request->whatsapp;
             $customerEmail = $request->email;
 
             if (!$user) {
+                $waExists = User::where('whatsapp', $customerWhatsapp)->exists();
+                if ($waExists) {
+                    return redirect()->route('checkout.show', $kostSlug)
+                        ->with('error', 'Nomor WhatsApp sudah terdaftar dengan email lain. Gunakan email yang sesuai atau hubungi admin.');
+                }
+
                 $plainPassword = $this->generateStrongPassword();
 
                 $user = User::create([

@@ -90,7 +90,7 @@ class UserDashboardController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'whatsapp' => 'nullable|string|max:20',
+            'whatsapp' => ['nullable', 'string', 'max:20', Rule::unique('users')->ignore($user->id)],
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
