@@ -121,8 +121,13 @@
 
             <div class="success-actions">
                 <a href="{{ route('home') }}" class="btn btn-outline">Kembali ke Beranda</a>
-                <a href="{{ route('login') }}" class="btn btn-primary"><i class="fa-solid fa-right-to-bracket" style="margin-right:6px;"></i>Login Akunmu</a>
+                <a href="{{ route('login') }}" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#E8734A,#D4622E);color:#fff;padding:14px 32px;border-radius:9999px;text-decoration:none;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;box-shadow:0 6px 20px rgba(232,115,74,0.35);transition:all 200ms ease;animation:loginPulse 2s ease-in-out infinite;" onmouseover="this.style.transform='translateY(-3px) scale(1.03)';this.style.boxShadow='0 10px 28px rgba(232,115,74,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 6px 20px rgba(232,115,74,0.35)'">
+                    <i class="fa-solid fa-right-to-bracket" style="font-size:1.1rem;"></i> Login Akunmu
+                </a>
             </div>
+            <style>
+                @keyframes loginPulse { 0%,100%{box-shadow:0 6px 20px rgba(232,115,74,0.35)} 50%{box-shadow:0 6px 28px rgba(232,115,74,0.5)} }
+            </style>
         </div>
     </div>
 </body>
