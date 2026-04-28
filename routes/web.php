@@ -70,6 +70,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], func
 // Admin Panel
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'admin.'], function () {
     Route::get('/dashboard', [DashboardController::class , 'index'])->name('dashboard');
+    Route::get('/dashboard/chart-data', [DashboardController::class , 'chartData'])->name('dashboard.chartData');
     Route::resource('kosts', AdminKostController::class);
     Route::patch('kosts/{kost}/toggle-featured', [AdminKostController::class , 'toggleFeatured'])->name('kosts.toggleFeatured');
     Route::patch('kosts/{kost}/toggle-recommended', [AdminKostController::class , 'toggleRecommended'])->name('kosts.toggleRecommended');
