@@ -239,35 +239,36 @@ class SettingController extends Controller
             Setting::set('watermark_image', '');
         }
 
+        WatermarkService::bumpVersion();
+
         return redirect()->route('admin.settings.watermark')
             ->with('success', 'Pengaturan watermark berhasil disimpan.');
     }
 
-    /**
-     * Apply watermark to all existing kost images.
-     */
-    public function applyWatermarkAll(WatermarkService $watermarkService)
+    public function watermarkImageIds(WatermarkService $watermarkService)
     {
         if (!$watermarkService->isEnabled()) {
-            return redirect()->route('admin.settings.watermark')
-                ->with('error', 'Watermark belum aktif atau gambar watermark belum diupload.');
+            return response()->json(['error' => 'Watermark belum aktif atau gambar belum diupload.'], 422);
         }
 
-        // Increase time limit for bulk processing
-        set_time_limit(300);
+        $ids = $watermarkService->getUploadedImageIds();
 
-        $result = $watermarkService->applyToAll();
+        return response()->json(['ids' => $ids, 'total' => count($ids)]);
+    }
 
-        $message = "Watermark berhasil diterapkan ke {$result['processed']} gambar.";
-        if ($result['failed'] > 0) {
-            $message .= " {$result['failed']} gambar gagal diproses.";
-        }
-        if ($result['skipped'] > 0) {
-            $message .= " {$result['skipped']} gambar dilewati (file tidak ditemukan).";
+    public function watermarkApplyBatch(Request $request, WatermarkService $watermarkService)
+    {
+        if (!$watermarkService->isEnabled()) {
+            return response()->json(['error' => 'Watermark tidak aktif.'], 422);
         }
 
-        return redirect()->route('admin.settings.watermark')
-            ->with('success', $message);
+        $request->validate(['ids' => 'required|array', 'ids.*' => 'integer']);
+
+        $result = $watermarkService->applyBatch($request->ids);
+
+        WatermarkService::bumpVersion();
+
+        return response()->json($result);
     }
 
     /**

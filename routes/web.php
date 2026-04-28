@@ -100,7 +100,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
     // Watermark Settings
     Route::get('settings/watermark', [AdminSettingController::class , 'watermark'])->name('settings.watermark');
     Route::put('settings/watermark', [AdminSettingController::class , 'updateWatermark'])->name('settings.watermark.update');
-    Route::post('settings/watermark/apply-all', [AdminSettingController::class , 'applyWatermarkAll'])->name('settings.watermark.apply-all');
+    Route::get('settings/watermark/image-ids', [AdminSettingController::class , 'watermarkImageIds'])->name('settings.watermark.image-ids');
+    Route::post('settings/watermark/apply-batch', [AdminSettingController::class , 'watermarkApplyBatch'])->name('settings.watermark.apply-batch');
 
     // AI Chat Settings
     Route::get('settings/ai', [AdminAiSettingController::class , 'show'])->name('settings.ai');

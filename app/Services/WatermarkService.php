@@ -9,9 +9,6 @@ use Intervention\Image\Facades\Image;
 
 class WatermarkService
 {
-    /**
-     * Check if watermark feature is enabled and configured.
-     */
     public function isEnabled(): bool
     {
         return Setting::get('watermark_enabled', '0') === '1'
@@ -76,7 +73,14 @@ class WatermarkService
         }
     }
 
-    public function applyToAll(): array
+    public function getUploadedImageIds(): array
+    {
+        return KostImage::where('image_path', 'like', 'storage/kosts/%')
+            ->pluck('id')
+            ->toArray();
+    }
+
+    public function applyBatch(array $imageIds): array
     {
         $result = ['processed' => 0, 'failed' => 0, 'skipped' => 0];
 
@@ -84,7 +88,7 @@ class WatermarkService
             return $result;
         }
 
-        $images = KostImage::where('image_path', 'like', 'storage/kosts/%')->get();
+        $images = KostImage::whereIn('id', $imageIds)->get();
 
         foreach ($images as $img) {
             $diskPath = str_replace('storage/', '', $img->image_path);
@@ -104,6 +108,16 @@ class WatermarkService
         }
 
         return $result;
+    }
+
+    public static function bumpVersion(): void
+    {
+        Setting::set('watermark_version', (string) time());
+    }
+
+    public static function getVersion(): string
+    {
+        return Setting::get('watermark_version', '0');
     }
 
     private function backupOriginal(string $diskPath): void
