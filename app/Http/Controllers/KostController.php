@@ -46,7 +46,11 @@ class KostController extends Controller
             $query->where('is_recommended', true);
         }
 
-        $query->orderByDesc('is_featured')->orderByDesc('is_recommended')->latest();
+        if ($request->input('sort') === 'terbaru') {
+            $query->latest();
+        } else {
+            $query->orderByDesc('is_featured')->orderByDesc('is_recommended')->latest();
+        }
 
         $kosts = $query->paginate(9)->withQueryString();
         $cities = City::orderBy('name')->get();
