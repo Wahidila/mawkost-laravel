@@ -89,15 +89,15 @@
         </script>
         <div class="hero-stats">
           <div class="hero-stat">
-            <strong>500+</strong>
+            <strong>{{ number_format($kostCount) }}</strong>
             <span>Kost Tersedia</span>
           </div>
           <div class="hero-stat">
-            <strong>3</strong>
+            <strong>{{ $cityCount }}</strong>
             <span>Kota Operasi</span>
           </div>
           <div class="hero-stat">
-            <strong>2.5K+</strong>
+            <strong>{{ number_format($orderCount) }}</strong>
             <span>Customer Puas</span>
           </div>
         </div>
