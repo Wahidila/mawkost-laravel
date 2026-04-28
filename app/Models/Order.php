@@ -11,7 +11,8 @@ class Order extends Model
 
     protected $fillable = [
         'invoice_no', 'kost_id', 'user_id', 'customer_name', 'customer_whatsapp',
-        'customer_email', 'amount', 'payment_method', 'status', 'paid_at',
+        'customer_email', 'amount', 'original_amount', 'discount_amount', 'voucher_id',
+        'payment_method', 'status', 'paid_at',
         'xendit_invoice_id', 'xendit_invoice_url', 'xendit_payment_method', 'xendit_payment_channel',
     ];
 
