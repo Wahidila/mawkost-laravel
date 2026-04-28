@@ -88,6 +88,33 @@
             </div>
         </div>
 
+        {{-- ============ SOSIAL MEDIA ============ --}}
+        <div class="bg-white shadow rounded-lg mb-6">
+            <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                    <h4 class="font-semibold text-gray-800"><i class="fas fa-share-alt text-primary mr-2"></i>Sosial Media</h4>
+                    <p class="text-sm text-gray-500 mt-1">Ikon sosial media yang tampil di footer. Pilih platform dan isi URL profil.</p>
+                </div>
+                <button type="button" onclick="addSosmedRow()" class="bg-primary hover:bg-primary-dark text-white font-semibold py-1.5 px-4 rounded-lg text-sm transition">
+                    <i class="fas fa-plus mr-1"></i> Tambah
+                </button>
+            </div>
+            <div class="p-6" id="sosmed-container">
+                @foreach($footerSosmed as $i => $item)
+                <div class="flex gap-3 items-center mb-3 link-row">
+                    <select name="sosmed[{{ $i }}][platform]" class="w-44 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary transition" required>
+                        <option value="">Pilih Platform</option>
+                        @foreach(['tiktok' => 'TikTok', 'instagram' => 'Instagram', 'whatsapp' => 'WhatsApp', 'facebook' => 'Facebook', 'twitter' => 'X / Twitter', 'youtube' => 'YouTube', 'linkedin' => 'LinkedIn', 'telegram' => 'Telegram'] as $val => $label)
+                            <option value="{{ $val }}" {{ ($item['platform'] ?? '') === $val ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    <input type="text" name="sosmed[{{ $i }}][url]" value="{{ $item['url'] ?? '' }}" placeholder="URL (contoh: https://instagram.com/maw.kost)" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary transition" required>
+                    <button type="button" onclick="removeRow(this)" class="text-red-500 hover:text-red-700 transition p-2"><i class="fas fa-trash"></i></button>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
         {{-- Save Button --}}
         <div class="bg-white shadow rounded-lg p-6">
             <button type="submit" class="bg-cta hover:bg-cta-hover text-white font-semibold py-2.5 px-6 rounded-lg transition duration-150 shadow-sm">
@@ -103,8 +130,15 @@
 let counters = {
     kota: {{ count($footerKota) }},
     layanan: {{ count($footerLayanan) }},
-    kontak: {{ count($footerKontak) }}
+    kontak: {{ count($footerKontak) }},
+    sosmed: {{ count($footerSosmed) }}
 };
+
+const platformOptions = [
+    ['tiktok', 'TikTok'], ['instagram', 'Instagram'], ['whatsapp', 'WhatsApp'],
+    ['facebook', 'Facebook'], ['twitter', 'X / Twitter'], ['youtube', 'YouTube'],
+    ['linkedin', 'LinkedIn'], ['telegram', 'Telegram']
+];
 
 function addRow(section) {
     const container = document.getElementById(section + '-container');
@@ -114,6 +148,21 @@ function addRow(section) {
     row.innerHTML = `
         <input type="text" name="${section}[${idx}][label]" placeholder="Label" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary transition" required>
         <input type="text" name="${section}[${idx}][url]" placeholder="URL" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary transition" required>
+        <button type="button" onclick="removeRow(this)" class="text-red-500 hover:text-red-700 transition p-2"><i class="fas fa-trash"></i></button>
+    `;
+    container.appendChild(row);
+}
+
+function addSosmedRow() {
+    const container = document.getElementById('sosmed-container');
+    const idx = counters.sosmed++;
+    const row = document.createElement('div');
+    row.className = 'flex gap-3 items-center mb-3 link-row';
+    let options = '<option value="">Pilih Platform</option>';
+    platformOptions.forEach(function(p) { options += '<option value="' + p[0] + '">' + p[1] + '</option>'; });
+    row.innerHTML = `
+        <select name="sosmed[${idx}][platform]" class="w-44 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary transition" required>${options}</select>
+        <input type="text" name="sosmed[${idx}][url]" placeholder="URL profil" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary transition" required>
         <button type="button" onclick="removeRow(this)" class="text-red-500 hover:text-red-700 transition p-2"><i class="fas fa-trash"></i></button>
     `;
     container.appendChild(row);

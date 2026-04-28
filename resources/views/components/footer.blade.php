@@ -7,16 +7,30 @@
                     <span>maw.kost</span>
                 </div>
                 <p class="footer-desc">Platform digital yang memudahkan kamu menemukan, mengecek, dan mempromosikan kost secara praktis dan terpercaya</p>
+                @php
+                    $defaultSosmed = json_encode([
+                        ['platform' => 'tiktok', 'url' => '#'],
+                        ['platform' => 'instagram', 'url' => '#'],
+                        ['platform' => 'whatsapp', 'url' => '#'],
+                    ]);
+                    $footerSosmed = json_decode(\App\Models\Setting::get('footer_sosmed', $defaultSosmed), true) ?: [];
+                    $platformIcons = [
+                        'tiktok' => 'fa-brands fa-tiktok',
+                        'instagram' => 'fa-brands fa-instagram',
+                        'whatsapp' => 'fa-brands fa-whatsapp',
+                        'facebook' => 'fa-brands fa-facebook-f',
+                        'twitter' => 'fa-brands fa-x-twitter',
+                        'youtube' => 'fa-brands fa-youtube',
+                        'linkedin' => 'fa-brands fa-linkedin-in',
+                        'telegram' => 'fa-brands fa-telegram',
+                    ];
+                @endphp
                 <div class="footer-social">
-                    <a href="#" aria-label="TikTok">
-                        <i class="fa-brands fa-tiktok" style="font-size: 24px; color: #fff;"></i>
-                    </a>
-                    <a href="#" aria-label="Instagram">
-                        <i class="fa-brands fa-instagram" style="font-size: 24px; color: #fff;"></i>
-                    </a>
-                    <a href="#" aria-label="WhatsApp">
-                        <i class="fa-brands fa-whatsapp" style="font-size: 24px; color: #fff;"></i>
-                    </a>
+                    @foreach($footerSosmed as $social)
+                        <a href="{{ $social['url'] }}" target="_blank" rel="noopener" aria-label="{{ ucfirst($social['platform']) }}">
+                            <i class="{{ $platformIcons[$social['platform']] ?? 'fa-solid fa-link' }}" style="font-size: 20px; color: #fff;"></i>
+                        </a>
+                    @endforeach
                 </div>
             </div>
             <div>

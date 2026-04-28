@@ -175,11 +175,18 @@ class SettingController extends Controller
             ['label' => '@maw.kost', 'url' => '#'],
         ]);
 
+        $defaultSosmed = json_encode([
+            ['platform' => 'tiktok', 'url' => '#'],
+            ['platform' => 'instagram', 'url' => '#'],
+            ['platform' => 'whatsapp', 'url' => '#'],
+        ]);
+
         $footerKota = json_decode(Setting::get('footer_kota', $defaultKota), true) ?: [];
         $footerLayanan = json_decode(Setting::get('footer_layanan', $defaultLayanan), true) ?: [];
         $footerKontak = json_decode(Setting::get('footer_kontak', $defaultKontak), true) ?: [];
+        $footerSosmed = json_decode(Setting::get('footer_sosmed', $defaultSosmed), true) ?: [];
 
-        return view('admin.settings.footer', compact('footerKota', 'footerLayanan', 'footerKontak'));
+        return view('admin.settings.footer', compact('footerKota', 'footerLayanan', 'footerKontak', 'footerSosmed'));
     }
 
     // =========================================================================
@@ -291,9 +298,15 @@ class SettingController extends Controller
         'url' => $item['url'] ?? '#',
         ])->filter(fn($item) => !empty($item['label']))->values()->toArray();
 
+        $sosmed = collect($request->input('sosmed', []))->values()->map(fn($item) => [
+        'platform' => $item['platform'] ?? '',
+        'url' => $item['url'] ?? '#',
+        ])->filter(fn($item) => !empty($item['platform']))->values()->toArray();
+
         Setting::set('footer_kota', json_encode($kota));
         Setting::set('footer_layanan', json_encode($layanan));
         Setting::set('footer_kontak', json_encode($kontak));
+        Setting::set('footer_sosmed', json_encode($sosmed));
 
         return redirect()->route('admin.settings.footer')
             ->with('success', 'Pengaturan footer berhasil disimpan.');
