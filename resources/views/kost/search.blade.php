@@ -55,9 +55,22 @@
                 <input type="hidden" name="max_harga" id="maxHargaInput" value="{{ request('max_harga') }}">
             </div>
             <div class="filter-group" style="flex: 0 0 auto;">
+                <label style="font-size: .85rem; color: var(--text-muted); margin-bottom: 4px; display: block;">Label</label>
+                <div style="display: flex; gap: 12px; height: 46px; align-items: center;">
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: .9rem; color: var(--primary-dark); font-weight: 500; white-space: nowrap;">
+                        <input type="checkbox" name="featured" value="1" {{ request('featured') ? 'checked' : '' }} style="accent-color: #F59E0B; width: 16px; height: 16px;">
+                        <i class="fa-solid fa-crown" style="color: #F59E0B; font-size: .75rem;"></i> Featured
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: .9rem; color: var(--primary-dark); font-weight: 500; white-space: nowrap;">
+                        <input type="checkbox" name="rekomendasi" value="1" {{ request('rekomendasi') ? 'checked' : '' }} style="accent-color: #3B82F6; width: 16px; height: 16px;">
+                        <i class="fa-solid fa-thumbs-up" style="color: #3B82F6; font-size: .75rem;"></i> Rekomendasi
+                    </label>
+                </div>
+            </div>
+            <div class="filter-group" style="flex: 0 0 auto;">
                 <button type="submit" class="btn btn-primary" style="height: 46px; border-radius: var(--radius-sm);">Terapkan Filter</button>
             </div>
-            @if(request()->has('lokasi') || request()->has('tipe') || request()->has('min_harga'))
+            @if(request()->has('lokasi') || request()->has('tipe') || request()->has('min_harga') || request()->has('featured') || request()->has('rekomendasi'))
                 <div class="filter-group" style="flex: 0 0 auto;">
                     <a href="{{ route('kost.search') }}" class="btn btn-outline" style="height: 46px; border-radius: var(--radius-sm);">Reset</a>
                 </div>

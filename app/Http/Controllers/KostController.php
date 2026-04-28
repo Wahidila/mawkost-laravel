@@ -38,7 +38,14 @@ class KostController extends Controller
             $query->where('price', '<=', $request->max_harga);
         }
 
-        // Featured kost muncul duluan di listing
+        if ($request->has('featured')) {
+            $query->where('is_featured', true);
+        }
+
+        if ($request->has('rekomendasi')) {
+            $query->where('is_recommended', true);
+        }
+
         $query->orderByDesc('is_featured')->orderByDesc('is_recommended')->latest();
 
         $kosts = $query->paginate(9)->withQueryString();
@@ -69,6 +76,14 @@ class KostController extends Controller
 
         if ($request->filled('max_harga')) {
             $query->where('price', '<=', $request->max_harga);
+        }
+
+        if ($request->has('featured')) {
+            $query->where('is_featured', true);
+        }
+
+        if ($request->has('rekomendasi')) {
+            $query->where('is_recommended', true);
         }
 
         $kosts = $query->orderByDesc('is_featured')
