@@ -1408,6 +1408,55 @@ textarea {
   box-shadow: 0 0 0 3px rgba(var(--primary-rgb), .1);
 }
 
+.filter-label-group {
+  display: flex;
+  gap: 8px;
+  height: 46px;
+  align-items: center;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-family: 'Poppins', sans-serif;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.filter-chip:hover {
+  border-color: var(--primary-light);
+  background: var(--primary-lighter);
+  color: var(--primary-dark);
+}
+
+.filter-chip input[type="checkbox"] {
+  display: none;
+}
+
+.filter-chip.chip-featured.active {
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+.filter-chip.chip-rekomendasi.active {
+  background: linear-gradient(135deg, #3B82F6, #2563EB);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+}
+
 /* ---------- Detail Page — Gallery ---------- */
 .gallery {
   display: grid;
