@@ -96,9 +96,13 @@
                         @endif
                     </td>
                     <td class="px-5 py-4 whitespace-nowrap text-center">
-                        @php $valid = $v->isValid(); @endphp
-                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold {{ $valid['valid'] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600' }}">
-                            {{ $valid['valid'] ? 'Aktif' : 'Nonaktif' }}
+                        @php
+                            $isUsable = $v->is_active
+                                && (!$v->expires_at || !$v->expires_at->isPast())
+                                && (!$v->max_uses || $v->used_count < $v->max_uses);
+                        @endphp
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold {{ $isUsable ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600' }}">
+                            {{ $isUsable ? 'Aktif' : ($v->is_active ? 'Expired/Habis' : 'Nonaktif') }}
                         </span>
                     </td>
                     <td class="px-5 py-4 whitespace-nowrap text-sm">
