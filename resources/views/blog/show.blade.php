@@ -68,6 +68,17 @@
                     {!! $article->content !!}
                 </div>
 
+                <div class="blog-inline-cta">
+                    <div class="blog-inline-cta-icon">
+                        <i class="fa-solid fa-magnifying-glass-location"></i>
+                    </div>
+                    <div class="blog-inline-cta-body">
+                        <h4>Sudah siap cari kost?</h4>
+                        <p>Temukan kost terbaik sesuai budget dan lokasimu. Harga transparan, langsung dari pemilik!</p>
+                    </div>
+                    <a href="{{ route('kost.search') }}" class="blog-inline-cta-btn">Cari Kost Sekarang <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
                 <footer class="blog-article-footer">
                     <div class="share-bar" style="justify-content: flex-start;">
                         <span class="share-label"><i class="fa-solid fa-share-nodes"></i> Bagikan:</span>
