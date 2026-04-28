@@ -81,7 +81,7 @@
 
             @if($relatedArticles->count() > 0)
             <aside class="blog-sidebar fade-in">
-                <div style="background:linear-gradient(135deg,#8B5E3C 0%,#5C3D2E 100%);border-radius:12px;padding:24px;margin-bottom:20px;text-align:center;">
+                <div style="background:linear-gradient(135deg,#8B5E3C 0%,#5C3D2E 100%);border-radius:12px;padding:24px;margin:-24px -24px 20px;border-radius:16px 16px 12px 12px;text-align:center;">
                     <div style="width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
                         <i class="fa-solid fa-robot" style="color:#fff;font-size:1.3rem;"></i>
                     </div>
