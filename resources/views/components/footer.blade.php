@@ -70,8 +70,8 @@
                 </ul>
             </div>
         </div>
-        <div class="footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-            <div>&copy; {{ date('Y') }} mawkost. All rights reserved.</div>
+        <div class="footer-bottom">
+            <div style="margin-bottom: 8px;">&copy; {{ date('Y') }} mawkost. All rights reserved.</div>
             <div style="font-size: 0.9em;">
                 <a href="{{ route('tos') }}" style="color: inherit; text-decoration: none; margin-right: 16px;">Terms of Service</a>
                 <a href="{{ route('privacy') }}" style="color: inherit; text-decoration: none; margin-right: 16px;">Kebijakan Privasi</a>
