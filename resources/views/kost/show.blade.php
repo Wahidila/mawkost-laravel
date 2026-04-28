@@ -26,9 +26,9 @@
         <div class="gallery fade-in">
             @php 
                 $images = $kost->images; 
-                $mainImg = $images->count() > 0 ? asset($images[0]->image_path) : asset('assets/img/kost-1.png');
-                $sideImg1 = $images->count() > 1 ? asset($images[1]->image_path) : asset('assets/img/kost-room.png');
-                $sideImg2 = $images->count() > 2 ? asset($images[2]->image_path) : asset('assets/img/kost-bathroom.png');
+                $mainImg = $images->count() > 0 ? $images[0]->url : asset('assets/img/kost-1.png');
+                $sideImg1 = $images->count() > 1 ? $images[1]->url : asset('assets/img/kost-room.png');
+                $sideImg2 = $images->count() > 2 ? $images[2]->url : asset('assets/img/kost-bathroom.png');
             @endphp
             <div class="gallery-main" onclick="openLightbox(0)">
                 <img src="{{ $mainImg }}" alt="{{ $kost->title }}">
@@ -60,7 +60,7 @@
         <script>
             const galleryImages = [
                 @foreach($images as $img)
-                    '{{ asset($img->image_path) }}',
+                    '{{ $img->url }}',
                 @endforeach
                 @if($images->isEmpty())
                     '{{ asset('assets/img/kost-1.png') }}',

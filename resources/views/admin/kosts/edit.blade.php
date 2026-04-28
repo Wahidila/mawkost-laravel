@@ -244,11 +244,11 @@
                                 <div class="flex flex-wrap gap-3">
                                     @foreach($kost->images as $img)
                                         <div class="relative group w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden shadow-sm border border-primary-lighter/50">
-                                            <img src="{{ asset($img->image_path) }}" alt="Foto" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                            <img src="{{ $img->url }}" alt="Foto" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                             <!-- Overlay Delete -->
                                             <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center backdrop-blur-[2px]">
                                                 <button type="button"
-                                                    onclick="confirmDeleteImage({{ $img->id }}, '{{ $img->image_path }}')"
+                                                    onclick="confirmDeleteImage({{ $img->id }}, '{{ $img->url }}')"
                                                     class="bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition-transform hover:scale-110"
                                                     title="Hapus gambar ini">
                                                     <i class="fas fa-trash text-xs"></i>
@@ -355,13 +355,13 @@ document.getElementById('imageInput').addEventListener('change', function(e) {
 });
 
 // Delete image confirmation
-function confirmDeleteImage(imageId, imagePath) {
+function confirmDeleteImage(imageId, imageUrl) {
     const modal = document.getElementById('deleteImageModal');
     const form = document.getElementById('deleteImageForm');
     const preview = document.getElementById('deleteImagePreview');
 
     form.action = '{{ url("admin/kosts") }}/{{ $kost->id }}/images/' + imageId;
-    preview.src = '{{ asset("") }}' + imagePath;
+    preview.src = imageUrl;
 
     modal.classList.remove('hidden');
 }
