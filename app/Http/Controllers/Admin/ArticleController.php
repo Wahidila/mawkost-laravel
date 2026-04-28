@@ -32,7 +32,7 @@ class ArticleController extends Controller
             'meta_description' => 'nullable|string|max:160',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
+        $validated['slug'] = $this->generateUniqueSlug($validated['title']);
         $validated['author'] = $validated['author'] ?: 'Tim Mawkost';
         $validated['is_published'] = $request->input('is_published') === '1';
         $validated['published_at'] = $validated['is_published'] ? now() : null;
@@ -67,7 +67,7 @@ class ArticleController extends Controller
         ]);
 
         if ($request->title !== $article->title) {
-            $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
+            $validated['slug'] = $this->generateUniqueSlug($validated['title'], $article->id);
         }
 
         $validated['author'] = $validated['author'] ?: 'Tim Mawkost';
@@ -112,5 +112,19 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dihapus.');
+    }
+
+    private function generateUniqueSlug(string $title, ?int $excludeId = null): string
+    {
+        $slug = Str::slug($title);
+        $original = $slug;
+        $counter = 2;
+
+        while (Article::where('slug', $slug)->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))->exists()) {
+            $slug = $original . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }
