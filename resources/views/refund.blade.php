@@ -86,8 +86,8 @@
         <div class="tos-footer" style="text-align: left; background: var(--surface); padding: 24px; border-radius: 12px; border: 1px solid var(--border-light); margin-top: 40px;">
           <h4 style="margin-bottom: 16px;">Kontak Kami</h4>
           <p style="margin-bottom: 8px;">Jika ada pertanyaan mengenai kebijakan privasi atau pengembalian dana ini, kamu bisa menghubungi tim mawkost di:</p>
-          <p style="margin-bottom: 4px;"><strong>Email:</strong> admin@mawkost.id</p>
-          <p style="margin-bottom: 16px;"><strong>WhatsApp:</strong> +62 821-2222-3333</p>
+          <p style="margin-bottom: 4px;"><strong>Email:</strong> maw.kost198@gmail.com</p>
+          <p style="margin-bottom: 16px;"><strong>WhatsApp:</strong> <a href="https://wa.me/6282337985404" style="color:var(--cta);text-decoration:none;">+62 823-3798-5404</a></p>
           <p class="text-muted" style="font-size: 0.9em;">Terakhir diperbarui: April 2026</p>
         </div>
 
