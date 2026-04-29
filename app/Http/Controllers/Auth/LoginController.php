@@ -76,6 +76,15 @@ class LoginController extends Controller
 
         $res = $xsender->send($request->whatsapp, $msg);
 
+        \Log::info('OTP send attempt', [
+            'input' => $request->whatsapp,
+            'formatted' => $xsender->formatPhone($request->whatsapp),
+            'user_id' => $user->id,
+            'xsender_ok' => $res['ok'],
+            'xsender_status' => $res['status'] ?? null,
+            'xsender_body' => $res['body'] ?? null,
+        ]);
+
         if ($res['ok']) {
             return response()->json(['ok' => true, 'message' => 'Kode OTP telah dikirim ke WhatsApp kamu.']);
         }
