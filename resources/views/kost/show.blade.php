@@ -63,7 +63,7 @@
         <div class="lightbox" id="lightbox">
             <button class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
             <button class="lightbox-nav lightbox-prev" onclick="changeLightbox(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <img class="lightbox-img" id="lightboxImg" src="" alt="Gallery Image">
+            <img class="lightbox-img" id="lightboxImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Gallery Image">
             <button class="lightbox-nav lightbox-next" onclick="changeLightbox(1)"><i class="fa-solid fa-chevron-right"></i></button>
             <div class="lightbox-counter" id="lightboxCounter">1 / {{ max($images->count(), 3) }}</div>
         </div>
