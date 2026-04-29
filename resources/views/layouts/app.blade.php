@@ -6,7 +6,7 @@
     <title>@yield('title', config('app.name', 'mawkost'))</title>
     <meta name="description" content="@yield('meta_description', 'mawkost adalah platform pencarian kost terpercaya di Malang, Jogja, dan Surabaya.')">
     <link rel="canonical" href="{{ url()->current() }}">
-    <link rel="icon" href="{{ asset('assets/img/logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('assets/img/logo-128.png') }}" type="image/png">
 
     <meta property="og:title" content="@yield('og_title', 'mawkost — Cari Kost Gampang, Ga Perlu Keliling!')">
     <meta property="og:description" content="@yield('og_description', 'Platform pencarian kost terpercaya di Malang, Jogja, dan Surabaya.')">
@@ -18,6 +18,14 @@
     <meta name="twitter:title" content="@yield('og_title', 'mawkost — Cari Kost Gampang, Ga Perlu Keliling!')">
     <meta name="twitter:description" content="@yield('og_description', 'Platform pencarian kost terpercaya di Malang, Jogja, dan Surabaya.')">
     <meta name="twitter:image" content="@yield('og_image', asset('assets/img/logo.png'))">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="{{ asset('css/styles.css') }}?v={{ filemtime(public_path('css/styles.css')) }}" as="style">
+    <link rel="preload" href="{{ asset('vendor/fontawesome/css/all.min.css') }}" as="style">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">

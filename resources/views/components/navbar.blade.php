@@ -6,7 +6,7 @@ $navCities = \App\Models\City::orderBy('name')->get();
 <nav class="navbar" id="navbar">
     <div class="container">
         <a href="{{ route('home') }}" class="nav-brand">
-            <img src="{{ asset('assets/img/logo.png') }}" alt="mawkost logo">
+            <img src="{{ asset('assets/img/logo-128.png') }}" alt="mawkost logo" width="40" height="40">
             <span>maw.kost</span>
         </a>
 

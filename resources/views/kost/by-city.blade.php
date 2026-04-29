@@ -20,7 +20,7 @@
             </div>
             @if($city->image)
             <div style="margin-left: auto; display: none; @media(min-width: 768px) { display: block; }">
-                 <img src="{{ asset($city->image) }}" alt="{{ $city->name }}" style="height: 80px; width: auto; border-radius: var(--radius-sm); object-fit: cover;">
+                 <img src="{{ asset($city->image) }}" alt="{{ $city->name }}" style="height: 80px; width: auto; border-radius: var(--radius-sm); object-fit: cover;" loading="lazy">
             </div>
             @endif
         </div>

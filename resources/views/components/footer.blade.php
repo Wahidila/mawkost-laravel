@@ -3,7 +3,7 @@
         <div class="footer-grid">
             <div>
                 <div class="footer-brand">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="mawkost">
+                    <img src="{{ asset('assets/img/logo-128.png') }}" alt="mawkost" width="40" height="40" loading="lazy">
                     <span>maw.kost</span>
                 </div>
                 <p class="footer-desc">Platform digital yang memudahkan kamu menemukan, mengecek, dan mempromosikan kost secara praktis dan terpercaya</p>

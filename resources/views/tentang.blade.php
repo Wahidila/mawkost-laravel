@@ -43,7 +43,7 @@
 
         <!-- Kolom Kanan: Gambar + Statistik -->
         <div class="fade-in" style="animation-delay: 0.1s;">
-          <img src="{{ asset('assets/img/kost-room.png') }}" alt="Kamar Kost Mawkost"
+          <img src="{{ asset('assets/img/kost-room.png') }}" alt="Kamar Kost Mawkost" loading="lazy"
                style="width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); margin-bottom: 24px;">
 
           <div class="about-stats">
@@ -145,7 +145,7 @@
         @forelse($teamMembers as $member)
         <div class="team-card">
           @if($member->photo_url)
-            <img src="{{ $member->photo_url }}" alt="{{ $member->name }}" class="team-avatar-img">
+            <img src="{{ $member->photo_url }}" alt="{{ $member->name }}" class="team-avatar-img" loading="lazy">
           @else
             <div class="team-avatar">{{ $member->initials }}</div>
           @endif

@@ -10,7 +10,7 @@
 
 <a href="{{ route('kost.show', ['citySlug' => $kost->city->slug, 'slug' => $kost->slug]) }}" class="{{ $cardClass }}">
     <div style="position:relative;">
-        <img src="{{ $imageUrl }}" alt="{{ $kost->title }}" class="card-img">
+        <img src="{{ $imageUrl }}" alt="{{ $kost->title }}" class="card-img" loading="lazy">
         <div class="card-badges">
             @if($kost->is_featured)
                 <span class="badge badge-featured"><i class="fa-solid fa-crown" style="font-size:0.65rem;"></i> Featured</span>

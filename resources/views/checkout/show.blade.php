@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout — mawkost</title>
-    <link rel="icon" href="{{ asset('assets/img/logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('assets/img/logo-128.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
@@ -17,7 +17,7 @@
             <!-- Header -->
             <div class="xendit-header">
                 <div class="xendit-merchant">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="mawkost logo">
+                    <img src="{{ asset('assets/img/logo-128.png') }}" alt="mawkost logo">
                     <span>mawkost</span>
                 </div>
                 <div class="xendit-amount-box">

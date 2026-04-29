@@ -19,7 +19,7 @@
             {{-- Welcome State (centered hero-style) --}}
             <div class="chat-welcome" id="welcomeMessage">
                 <div class="chat-welcome-icon">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="mawkost AI">
+                    <img src="{{ asset('assets/img/logo-256.png') }}" alt="mawkost AI" width="120" height="120">
                 </div>
                 <span class="badge badge-cta chat-welcome-badge fade-in">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Powered by AI
@@ -105,7 +105,7 @@
     // ===== Configuration =====
     const API_BASE = '/api/chat';
     const AI_ENABLED = @json($aiEnabled);
-    const AVATAR_SRC = '{{ asset('assets/img/logo.png') }}';
+    const AVATAR_SRC = '{{ asset('assets/img/logo-128.png') }}';
 
     // CJK Unicode ranges for stripping
     const CJK_REGEX = /[\u4E00-\u9FFF\u3400-\u4DBF\u3000-\u303F\uFF00-\uFFEF\u2E80-\u2EFF\u31C0-\u31EF\u2FF0-\u2FFF]/g;

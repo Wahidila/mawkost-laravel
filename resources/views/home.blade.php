@@ -103,7 +103,7 @@
         </div>
       </div>
       <div class="hero-image fade-in">
-        <img src="{{ asset('assets/img/kost-1.png') }}" alt="Kost modern di Malang">
+        <img src="{{ asset('assets/img/kost-1.png') }}" alt="Kost modern di Malang" loading="eager">
         <div class="hero-float-badge">
           <i class="fa-solid fa-users-viewfinder"></i>
           <div>
@@ -140,7 +140,7 @@
     <div class="city-grid">
       @foreach($cities as $city)
       <a href="{{ route('kost.byCity', $city->slug) }}" class="city-card fade-in">
-        <img src="{{ asset($city->image ?? 'assets/img/city-malang.png') }}" alt="Kost di {{ $city->name }}">
+        <img src="{{ asset($city->image ?? 'assets/img/city-malang.png') }}" alt="Kost di {{ $city->name }}" loading="lazy">
         <div class="city-card-overlay">
           <h3>{{ $city->name }}</h3>
           <p>{{ $city->kosts_count }}+ kost tersedia</p>

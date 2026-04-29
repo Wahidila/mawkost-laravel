@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login — mawkost</title>
-    <link rel="icon" href="{{ asset('assets/img/logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('assets/img/logo-128.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/all.min.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -292,7 +292,7 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-logo">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="mawkost">
+                <img src="{{ asset('assets/img/logo-256.png') }}" alt="mawkost" width="80" height="80">
                 <span>maw.<em>kost</em></span>
             </div>
             <p class="login-subtitle">Masuk ke akun Anda</p>

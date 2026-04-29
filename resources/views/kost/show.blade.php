@@ -44,14 +44,14 @@
                 $sideImg2 = $images->count() > 2 ? $images[2]->url : asset('assets/img/kost-bathroom.png');
             @endphp
             <div class="gallery-main" onclick="openLightbox(0)">
-                <img src="{{ $mainImg }}" alt="{{ $kost->title }}">
+                <img src="{{ $mainImg }}" alt="{{ $kost->title }}" loading="eager">
             </div>
             <div class="gallery-side">
                 <div class="gallery-thumb" onclick="openLightbox(1)">
-                    <img src="{{ $sideImg1 }}" alt="Kamar Kost">
+                    <img src="{{ $sideImg1 }}" alt="Kamar Kost" loading="lazy">
                 </div>
                 <div class="gallery-thumb gallery-more" onclick="openLightbox(2)">
-                    <img src="{{ $sideImg2 }}" alt="Kamar Mandi Kost">
+                    <img src="{{ $sideImg2 }}" alt="Kamar Mandi Kost" loading="lazy">
                     <div class="gallery-more-overlay">
                         <i class="fa-solid fa-images"></i>
                         <span>Lihat Semua Foto</span>
