@@ -61,6 +61,7 @@ Route::get('/kebijakan-pengembalian-dana', [PageController::class , 'refund'])->
 Route::get('/login', [LoginController::class , 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class , 'login']);
 Route::post('/logout', [LoginController::class , 'logout'])->name('logout');
+Route::get('/forgot-password', function () { return redirect()->route('login'); });
 Route::post('/forgot-password', [LoginController::class , 'forgotPassword'])->name('forgot-password');
 Route::post('/otp/send', [LoginController::class , 'sendOtp'])->name('otp.send');
 Route::post('/otp/verify', [LoginController::class , 'verifyOtp'])->name('otp.verify');

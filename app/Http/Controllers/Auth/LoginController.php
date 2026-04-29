@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 
 class LoginController extends Controller
 {
@@ -45,11 +46,18 @@ class LoginController extends Controller
     {
         $request->validate(['whatsapp' => 'required|string|max:20']);
 
+        $rateLimitKey = 'otp_send_' . $request->ip();
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 5)) {
+            $seconds = RateLimiter::availableIn($rateLimitKey);
+            return response()->json(['ok' => false, 'message' => "Terlalu banyak percobaan. Coba lagi dalam {$seconds} detik."]);
+        }
+        RateLimiter::hit($rateLimitKey, 300);
+
         $phone = preg_replace('/[^0-9]/', '', $request->whatsapp);
         $user = User::where('whatsapp', 'LIKE', '%' . substr($phone, -8) . '%')->first();
 
         if (!$user) {
-            return response()->json(['ok' => false, 'message' => 'Nomor WhatsApp tidak terdaftar. Silahkan order di mawkost untuk mendapatkan akun.']);
+            return response()->json(['ok' => false, 'message' => 'Jika nomor terdaftar, kode OTP akan dikirim.']);
         }
 
         $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
@@ -109,8 +117,16 @@ class LoginController extends Controller
             'identifier' => 'required|string|max:255',
         ]);
 
-        $identifier = trim($request->identifier);
+        $rateLimitKey = 'forgot_password_' . $request->ip();
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 3)) {
+            $seconds = RateLimiter::availableIn($rateLimitKey);
+            return back()->with('forgot_error', "Terlalu banyak percobaan. Coba lagi dalam {$seconds} detik.");
+        }
+        RateLimiter::hit($rateLimitKey, 300);
 
+        $genericMessage = 'Jika email/WhatsApp terdaftar, instruksi reset password akan dikirim.';
+
+        $identifier = trim($request->identifier);
         $user = User::where('email', $identifier)->first();
 
         if (!$user) {
@@ -121,30 +137,14 @@ class LoginController extends Controller
         }
 
         if (!$user) {
-            return back()->with('forgot_error', 'Email/No. WhatsApp tidak terdaftar. Silahkan order di mawkost untuk mendapatkan akun.');
+            return back()->with('forgot_success', $genericMessage);
         }
 
-        $upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-        $lower = 'abcdefghjkmnpqrstuvwxyz';
-        $numbers = '23456789';
-        $symbols = '!@#$%&*';
-        $plainPassword = $upper[random_int(0, strlen($upper) - 1)]
-            . $lower[random_int(0, strlen($lower) - 1)]
-            . $numbers[random_int(0, strlen($numbers) - 1)]
-            . $symbols[random_int(0, strlen($symbols) - 1)];
-        $all = $upper . $lower . $numbers . $symbols;
-        for ($i = 4; $i < 12; $i++) {
-            $plainPassword .= $all[random_int(0, strlen($all) - 1)];
-        }
-        $plainPassword = str_shuffle($plainPassword);
-
+        $plainPassword = $this->generateStrongPassword();
         $user->update(['password' => Hash::make($plainPassword)]);
-
-        $sent = false;
 
         try {
             Mail::to($user->email)->send(new SendAccountDetailsMail($user, $plainPassword));
-            $sent = true;
         } catch (\Exception $e) {
         }
 
@@ -153,21 +153,32 @@ class LoginController extends Controller
             if ($xsender->isEnabled()) {
                 $msg = "🔐 *Reset Password mawkost*\n\n"
                     . "Halo {$user->name},\n"
-                    . "Password akun mawkost kamu telah direset.\n\n"
-                    . "📧 Email: {$user->email}\n"
+                    . "Password akun kamu telah direset.\n\n"
                     . "🔑 Password Baru: {$plainPassword}\n\n"
                     . "Login di: " . url('/login') . "\n\n"
                     . "_Segera ganti password setelah login._";
-                $res = $xsender->send($user->whatsapp, $msg);
-                if ($res['ok']) $sent = true;
+                $xsender->send($user->whatsapp, $msg);
             }
         }
 
-        if ($sent) {
-            return back()->with('forgot_success', 'Password baru telah dikirim ke email/WhatsApp Anda. Silahkan cek dan login.');
-        }
+        return back()->with('forgot_success', $genericMessage);
+    }
 
-        return back()->with('forgot_error', 'Gagal mengirim password baru. Silahkan hubungi admin.');
+    private function generateStrongPassword(int $length = 12): string
+    {
+        $upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $lower = 'abcdefghjkmnpqrstuvwxyz';
+        $numbers = '23456789';
+        $symbols = '!@#$%&*';
+        $password = $upper[random_int(0, strlen($upper) - 1)]
+            . $lower[random_int(0, strlen($lower) - 1)]
+            . $numbers[random_int(0, strlen($numbers) - 1)]
+            . $symbols[random_int(0, strlen($symbols) - 1)];
+        $all = $upper . $lower . $numbers . $symbols;
+        for ($i = 4; $i < $length; $i++) {
+            $password .= $all[random_int(0, strlen($all) - 1)];
+        }
+        return str_shuffle($password);
     }
 
     public function logout(Request $request)
