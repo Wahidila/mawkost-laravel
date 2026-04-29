@@ -5,6 +5,7 @@
 @section('og_title', $article->title . ' — Blog mawkost')
 @section('og_description', $article->meta_description ?: $article->short_excerpt)
 @section('og_image', $article->thumbnail_url ?: asset('assets/img/logo.png'))
+@section('og_type', 'article')
 
 @section('content')
 @push('styles')

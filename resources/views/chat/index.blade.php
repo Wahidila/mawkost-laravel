@@ -2,6 +2,8 @@
 
 @section('title', 'Konsultasi AI - Temukan Kost Ideal | mawkost')
 @section('meta_description', 'Konsultasi dengan AI mawkost untuk menemukan kost ideal sesuai kebutuhan dan budget kamu.')
+@section('og_title', 'Konsultasi AI - Temukan Kost Ideal | mawkost')
+@section('og_description', 'Konsultasi dengan AI mawkost untuk menemukan kost ideal sesuai kebutuhan dan budget kamu.')
 @section('hide_footer', true)
 
 @section('content')

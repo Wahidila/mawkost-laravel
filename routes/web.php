@@ -25,9 +25,11 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Admin\VoucherController as AdminVoucherController;
 use App\Http\Controllers\User\KostAlertController;
 use App\Http\Controllers\User\UserDashboardController;
+use App\Http\Controllers\SitemapController;
 
 // Public Pages
 Route::get('/', [HomeController::class , 'index'])->name('home');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Storage fallback (for shared hosting where symlink doesn't work)
 Route::get('/storage/{path}', [StorageController::class , 'serve'])->where('path', '.*')->name('storage.serve');

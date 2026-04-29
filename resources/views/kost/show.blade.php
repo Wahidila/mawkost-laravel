@@ -13,6 +13,7 @@
 @section('og_title', $shareTitle)
 @section('og_description', 'Rp ' . number_format($kost->price, 0, ',', '.') . '/bln · ' . ($kost->kostType->name ?? ucfirst($kost->type)) . ' · ' . ($kost->area_label ?? $kost->city->name))
 @section('og_image', $ogImage)
+@section('og_type', 'product')
 
 @section('content')
 <!-- ========== BREADCRUMB & HEADER ========== -->

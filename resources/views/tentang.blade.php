@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Tentang Kami — mawkost')
+@section('meta_description', 'Kenali mawkost lebih dekat. Platform pencarian kost terpercaya yang mengutamakan transparansi, kemudahan, dan keamanan untuk anak rantau di Malang, Jogja, dan Surabaya.')
+@section('og_title', 'Tentang Kami — mawkost')
+@section('og_description', 'Kenali mawkost lebih dekat. Platform pencarian kost terpercaya yang mengutamakan transparansi, kemudahan, dan keamanan untuk anak rantau.')
 
 @section('content')
 <!-- ========== BREADCRUMB & HEADER ========== -->

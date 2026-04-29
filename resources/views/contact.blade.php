@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Hubungi Kami — mawkost')
+@section('meta_description', 'Hubungi tim mawkost untuk pertanyaan, saran, atau bantuan mendaftarkan properti kost Anda. Kami siap membantu Anda.')
+@section('og_title', 'Hubungi Kami — mawkost')
+@section('og_description', 'Hubungi tim mawkost untuk pertanyaan, saran, atau bantuan mendaftarkan properti kost Anda. Kami siap membantu.')
 
 @section('content')
 <!-- ========== BREADCRUMB & HEADER ========== -->

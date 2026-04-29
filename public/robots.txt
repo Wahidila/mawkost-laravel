@@ -1,2 +1,10 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /user/
+Disallow: /checkout/
+Disallow: /api/
+Disallow: /storage/private/
+Disallow: /_ignition/
+Allow: /storage/
+
+Sitemap: http://mawkost.test/sitemap.xml
