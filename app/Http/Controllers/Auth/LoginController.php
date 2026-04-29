@@ -68,11 +68,11 @@ class LoginController extends Controller
             return response()->json(['ok' => false, 'message' => 'WhatsApp API belum aktif. Hubungi admin.']);
         }
 
-        $msg = "🔐 *Kode OTP mawkost*\n\n"
+        $msg = "*Kode OTP mawkost*\n\n"
             . "Kode verifikasi login kamu:\n\n"
-            . "▶️ *{$otp}*\n\n"
+            . "*{$otp}*\n\n"
             . "Kode berlaku 5 menit.\n"
-            . "_Jangan bagikan kode ini ke siapapun._";
+            . "Jangan bagikan kode ini ke siapapun.";
 
         $res = $xsender->send($request->whatsapp, $msg);
 
@@ -160,12 +160,12 @@ class LoginController extends Controller
         if ($user->whatsapp) {
             $xsender = new XSenderService();
             if ($xsender->isEnabled()) {
-                $msg = "🔐 *Reset Password mawkost*\n\n"
+                $msg = "*Reset Password mawkost*\n\n"
                     . "Halo {$user->name},\n"
                     . "Password akun kamu telah direset.\n\n"
-                    . "🔑 Password Baru: {$plainPassword}\n\n"
+                    . "Password Baru: *{$plainPassword}*\n\n"
                     . "Login di: " . url('/login') . "\n\n"
-                    . "_Segera ganti password setelah login._";
+                    . "Segera ganti password setelah login.";
                 $xsender->send($user->whatsapp, $msg);
             }
         }
