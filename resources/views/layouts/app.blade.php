@@ -49,6 +49,9 @@
         <x-footer />
     @endif
 
+    <!-- AI CTA Modal -->
+    <x-ai-cta-modal />
+
     <!-- Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
